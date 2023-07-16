@@ -2,4 +2,11 @@
     <string name="app_name">E-commerce</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_cart">My cart</string>
+    <string name="add_more_to_cart">Add more products to your cart!</string>
+    <string name="enter_code_voucher">Enter code voucher</string>
+    <string name="apply">Apply</string>
+    <string name="in_total">In total</string>
+    <string name="_288_00">$288.00</string>
+    <string name="checkout">Checkout</string>
 </resources>
