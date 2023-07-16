@@ -11,11 +11,12 @@
         compatShadowEnabled="false"
         android:layout_width="0dp"
         android:layout_height="75dp"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="#FEFAFD"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         app:itemRippleColor="@color/light_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu" />
 
