@@ -1,4 +1,4 @@
-package com.example.checkout.view
+package com.example.e_commerce.checkout.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
