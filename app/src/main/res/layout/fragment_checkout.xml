@@ -1,0 +1,182 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="@string/_1"
+    tools:context="com.example.checkout.view.CheckoutFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="35dp">
+
+        <TextView
+            android:id="@+id/tv_checkout_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/checkout"
+            android:textColor="@color/text_color"
+            android:textSize="26sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/views_rounded_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_checkout_title" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/luka_marjanovic"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/tv_checkout_title"
+            app:layout_constraintTop_toBottomOf="@id/line1" />
+
+        <TextView
+            android:id="@+id/tv_user_address"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/_221b_baker_st_marylebone_london_united_kingdom"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/tv_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+            tools:ignore="TextSizeCheck" />
+
+        <ImageButton
+            android:id="@+id/btn_edit_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:clickable="true"
+            android:contentDescription="@string/edit_address"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/right_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/tv_user_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_user_name"
+            tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/views_rounded_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_address" />
+
+        <ImageButton
+            android:id="@+id/iv_payment_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:contentDescription="@string/app_name"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/google_pay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line2" />
+
+        <TextView
+            android:id="@+id/tv_email_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/malv_gmail_com"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_payment_image"
+            app:layout_constraintStart_toEndOf="@id/iv_payment_image"
+            app:layout_constraintTop_toTopOf="@id/iv_payment_image" />
+
+        <ImageButton
+            android:id="@+id/btn_edit_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:clickable="true"
+            android:contentDescription="@string/edit_address"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/right_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/iv_payment_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_payment_image"
+            tools:ignore="ImageContrastCheck" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/views_rounded_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_payment_image" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cart_items_payment"
+            android:layout_width="0dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line3"
+            tools:listitem="@layout/cart_item" />
+
+        <TextView
+            android:id="@+id/tv_in_total_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/in_total"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_cart_items_payment" />
+
+        <TextView
+            android:id="@+id/tv_sum_total_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/_288_00"
+            android:textColor="@color/text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_in_total_payment" />
+
+        <Button
+            android:id="@+id/btn_place_order"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/views_rounded_background"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/place_order"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sum_total_payment"
+            tools:ignore="VisualLintButtonSize" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
