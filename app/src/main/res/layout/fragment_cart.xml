@@ -42,7 +42,8 @@
             android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_cart_desc"
-            app:layout_constraintTop_toBottomOf="@id/tv_cart_desc" />
+            app:layout_constraintTop_toBottomOf="@id/tv_cart_desc"
+            tools:listitem="@layout/cart_item"/>
 
         <EditText
             android:id="@+id/et_voucher_code"
