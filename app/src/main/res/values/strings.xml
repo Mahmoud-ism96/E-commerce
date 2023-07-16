@@ -9,4 +9,10 @@
     <string name="in_total">In total</string>
     <string name="_288_00">$288.00</string>
     <string name="checkout">Checkout</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="name">Name</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="or_sign_up_with">Or sign up with</string>
 </resources>
