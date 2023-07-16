@@ -103,8 +103,9 @@
             app:layout_constraintTop_toTopOf="@id/tv_in_total" />
 
         <Button
+            android:id="@+id/btn_checkout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/views_rounded_background"
             android:fontFamily="@font/montserrat_semi_bold"

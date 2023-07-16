@@ -14,4 +14,9 @@
     <string name="_1">1</string>
     <string name="add">add</string>
     <string name="item">item</string>
+    <string name="luka_marjanovic">Luka Marjanovic</string>
+    <string name="_221b_baker_st_marylebone_london_united_kingdom">221b Baker St, Marylebone London, United Kingdom</string>
+    <string name="edit_address">Edit Address</string>
+    <string name="malv_gmail_com">*******malv@gmail.com</string>
+    <string name="place_order">Place order</string>
 </resources>

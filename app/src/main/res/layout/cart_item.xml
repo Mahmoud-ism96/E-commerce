@@ -39,7 +39,7 @@
             android:fontFamily="@font/montserrat_semi_bold"
             android:text="@string/nike_react_miler"
             android:textColor="@color/text_color"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_item_price"
             app:layout_constraintStart_toEndOf="@id/cv_item"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
             android:text="@string/_288_00"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="@id/tv_item_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
