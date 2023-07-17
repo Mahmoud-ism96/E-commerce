@@ -25,4 +25,19 @@
     <string name="edit_address">Edit Address</string>
     <string name="malv_gmail_com">*******malv@gmail.com</string>
     <string name="place_order">Place order</string>
+    <string name="my_account">My account</string>
+    <string name="account_details">Account details</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="logout">Logout</string>
+    <string name="address">Address</string>
+    <string name="country">Region</string>
+    <string name="ex_egypt">ex.EGYPT</string>
+    <string name="city">City</string>
+    <string name="additional_information">Additional Information</string>
+    <string name="phone_number">Phone number</string>
+    <string name="save">Save</string>
+    <string name="save_location">Save location</string>
+    <string name="orders">Orders</string>
 </resources>
