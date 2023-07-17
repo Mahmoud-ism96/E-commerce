@@ -12,10 +12,21 @@ class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
+
+        binding.btnSignUpToStartup.setOnClickListener {
+            TODO("Not yet implemented")
+        }
+
+        binding.btnSignup.setOnClickListener {
+            TODO("Not yet implemented")
+        }
+
+        binding.btnGmailSignup.setOnClickListener {
+            TODO("Not yet implemented")
+        }
 
         return binding.root
     }

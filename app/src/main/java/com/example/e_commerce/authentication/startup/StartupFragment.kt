@@ -16,10 +16,15 @@ class StartupFragment : Fragment() {
     ): View {
         binding = FragmentStartupBinding.inflate(layoutInflater, container, false)
 
+        binding.btnStartupToSignup.setOnClickListener{
+            TODO("Not yet implemented")
+        }
+
+        binding.btnStartupToSignin.setOnClickListener{
+            TODO("Not yet implemented")
+        }
+
         return binding.root
     }
 
-    fun signIn(): Int {
-        TODO("Not yet implemented")
-    }
 }

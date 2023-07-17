@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageButton" />
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/btn_sign_up_to_startup"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="@string/name"
-        app:layout_constraintStart_toStartOf="@+id/frameLayout"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintStart_toStartOf="@+id/btn_sign_up_to_startup"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_up_to_startup" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField"
@@ -64,6 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -94,6 +95,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
@@ -125,6 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -132,7 +135,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_signup"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
@@ -165,7 +168,7 @@
         android:text="@string/or_sign_up_with"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_signup" />
 
     <View
         android:id="@+id/view3"
@@ -180,7 +183,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/btn_gmail_signup"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="28dp"
@@ -197,14 +200,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/already_have_an_account"
-        app:layout_constraintEnd_toStartOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/tv_signup_to_signin"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_gmail_signup" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/tv_signup_to_signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

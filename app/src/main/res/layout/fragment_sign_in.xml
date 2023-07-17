@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageButton" />
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/btn_sign_in_to_startup"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -75,6 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_in_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
@@ -105,6 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_in_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -112,7 +114,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/cb_remember_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:checked="true"
@@ -133,7 +135,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textField3" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_signin"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
@@ -144,7 +146,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/cb_remember_me" />
 
     <View
         android:id="@+id/view2"
@@ -166,7 +168,7 @@
         android:text="@string/or_sign_in_with"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_signin" />
 
     <View
         android:id="@+id/view3"
@@ -181,7 +183,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/btn_gmail_signin"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="28dp"
@@ -198,14 +200,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/don_t_have_an_account"
-        app:layout_constraintEnd_toStartOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/tv_signin_to_signup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_gmail_signin" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/tv_signin_to_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
