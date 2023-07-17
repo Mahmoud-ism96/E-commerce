@@ -24,6 +24,10 @@ class StartupFragment : Fragment() {
             TODO("Not yet implemented")
         }
 
+        binding.btnContinueAsGuest.setOnClickListener {
+            TODO("Not yet implemented")
+        }
+
         return binding.root
     }
 
