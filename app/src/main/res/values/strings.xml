@@ -25,4 +25,9 @@
     <string name="edit_address">Edit Address</string>
     <string name="malv_gmail_com">*******malv@gmail.com</string>
     <string name="place_order">Place order</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="please_fill_e_mail_password_to_login_your_shopy_application_account"><![CDATA[Please fill E-mail & password to login your Shopy application account.]]></string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="or_sign_in_with">Or sign in with</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
 </resources>
