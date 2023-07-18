@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
-import com.example.e_commerce.model.Repo
+import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.shoppingcart.viewmodel.CartViewModel
 import com.example.e_commerce.shoppingcart.viewmodel.CartViewModelFactory
