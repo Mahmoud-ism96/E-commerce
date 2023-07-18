@@ -30,4 +30,9 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="or_sign_in_with">Or sign in with</string>
     <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="continue_as_a">Continue as a</string>
+    <string name="guest">Guest</string>
+    <string name="size">Size:</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="my_wishlist">My wishlist</string>
 </resources>

@@ -5,49 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="18dp"
-    app:cardUseCompatPadding="true"
+    android:layout_marginBottom="16dp"
     app:strokeColor="@color/grey"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp">
+        android:layout_margin="6dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:backgroundTint="@color/light_grey"
             app:cardCornerRadius="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_item_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/dummy_item"
-                android:contentDescription="@string/item" />
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@string/item"
+                android:padding="5dp"
+                android:src="@drawable/dummy_shoes" />
         </androidx.cardview.widget.CardView>
 
 
         <TextView
             android:id="@+id/tv_item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/nike_react_miler"
+            android:singleLine="true"
+            android:text="Nike Air"
             android:textColor="@color/text_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_item_price"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cv_item"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/tv_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="@string/_288_00"
             android:textSize="18sp"
@@ -59,46 +68,48 @@
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_item_price"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_price">
 
             <ImageButton
                 android:id="@+id/btn_minus"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/views_rounded_background"
+                android:backgroundTintMode="add"
                 android:contentDescription="@string/minus"
                 android:src="@drawable/remove"
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="1dp"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="@color/grey"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="4dp"
+                app:cardElevation="2dp">
 
                 <TextView
                     android:id="@+id/tv_item_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/montserrat_semi_bold"
                     android:text="@string/_1"
                     android:textColor="@color/text_color"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/montserrat_semi_bold"/>
+                    android:textSize="18sp" />
             </androidx.cardview.widget.CardView>
 
             <ImageButton
                 android:id="@+id/btn_Plus"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/views_rounded_background"
+                android:backgroundTintMode="add"
                 android:contentDescription="@string/add"
                 android:src="@drawable/add_ic"
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck" />

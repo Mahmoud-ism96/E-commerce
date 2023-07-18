@@ -1,11 +1,15 @@
 package com.example.e_commerce.authentication.startup
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentStartupBinding
+import com.example.e_commerce.intro.MyIntro
 
 class StartupFragment : Fragment() {
 
@@ -17,15 +21,16 @@ class StartupFragment : Fragment() {
         binding = FragmentStartupBinding.inflate(layoutInflater, container, false)
 
         binding.btnStartupToSignup.setOnClickListener{
-            TODO("Not yet implemented")
+            findNavController().navigate(R.id.action_startupFragment_to_signUpFragment)
         }
 
         binding.btnStartupToSignin.setOnClickListener{
-            TODO("Not yet implemented")
+            findNavController().navigate(R.id.action_startupFragment_to_signInFragment)
         }
 
         binding.btnContinueAsGuest.setOnClickListener {
-            TODO("Not yet implemented")
+            val intent = Intent(requireContext(), MyIntro::class.java)
+            startActivity(intent)
         }
 
         return binding.root
