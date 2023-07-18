@@ -41,33 +41,56 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField"
+                    <Button
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="70dp"
                         android:layout_marginStart="48dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="48dp"
-                        android:hint="Search"
-                        android:textColorHint="@color/grey"
-                        app:boxBackgroundColor="@color/light_grey"
-                        app:boxCornerRadiusBottomEnd="18dp"
-                        app:boxCornerRadiusBottomStart="18dp"
-                        app:boxCornerRadiusTopEnd="18dp"
-                        app:boxCornerRadiusTopStart="18dp"
-                        app:boxStrokeWidth="1dp"
-                        app:hintTextColor="@color/grey"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:startIconDrawable="@drawable/search"
-                        app:startIconTint="@color/grey">
+                        android:textAlignment="textStart"
+                        android:text="Search"
+                        android:textSize="20sp"
+                        app:iconSize="25dp"
+                        android:elevation="2dp"
+                        android:textColor="@color/grey"
+                        app:iconTint="@color/grey"
+                        app:backgroundTint="@color/light_grey"
+                        app:icon="@drawable/search"
+                    />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_Search"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:id="@+id/textField"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="70dp"-->
+<!--                        android:layout_marginStart="48dp"-->
+<!--                        android:layout_marginTop="32dp"-->
+<!--                        android:layout_marginEnd="48dp"-->
+<!--                        android:hint="Search"-->
+<!--                        android:textColorHint="@color/grey"-->
+<!--                        app:boxBackgroundColor="@color/light_grey"-->
+<!--                        app:boxCornerRadiusBottomEnd="18dp"-->
+<!--                        app:boxCornerRadiusBottomStart="18dp"-->
+<!--                        app:boxCornerRadiusTopEnd="18dp"-->
+<!--                        app:boxCornerRadiusTopStart="18dp"-->
+<!--                        app:boxStrokeWidth="1dp"-->
+<!--                        app:hintTextColor="@color/grey"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:startIconDrawable="@drawable/search"-->
+<!--                        android:focusable="false"-->
+<!--                        android:clickable="true"-->
+<!--                        app:startIconTint="@color/grey">-->
+
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/tf_Search"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent" />-->
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
 <!--                    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
 <!--                        android:layout_width="0dp"-->
