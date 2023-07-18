@@ -1,14 +1,337 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home.view.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:background="@color/blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView7"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:backgroundTint="@color/blue"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="48dp"
+                        android:textAlignment="textStart"
+                        android:text="Search"
+                        android:textSize="20sp"
+                        app:iconSize="25dp"
+                        android:elevation="2dp"
+                        android:textColor="@color/grey"
+                        app:iconTint="@color/grey"
+                        app:backgroundTint="@color/light_grey"
+                        app:icon="@drawable/search"
+                    />
+
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:id="@+id/textField"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="70dp"-->
+<!--                        android:layout_marginStart="48dp"-->
+<!--                        android:layout_marginTop="32dp"-->
+<!--                        android:layout_marginEnd="48dp"-->
+<!--                        android:hint="Search"-->
+<!--                        android:textColorHint="@color/grey"-->
+<!--                        app:boxBackgroundColor="@color/light_grey"-->
+<!--                        app:boxCornerRadiusBottomEnd="18dp"-->
+<!--                        app:boxCornerRadiusBottomStart="18dp"-->
+<!--                        app:boxCornerRadiusTopEnd="18dp"-->
+<!--                        app:boxCornerRadiusTopStart="18dp"-->
+<!--                        app:boxStrokeWidth="1dp"-->
+<!--                        app:hintTextColor="@color/grey"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:startIconDrawable="@drawable/search"-->
+<!--                        android:focusable="false"-->
+<!--                        android:clickable="true"-->
+<!--                        app:startIconTint="@color/grey">-->
+
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/tf_Search"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent" />-->
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="90dp"-->
+<!--                        android:layout_marginStart="32dp"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:layout_marginEnd="32dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                        &lt;!&ndash; NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). &ndash;&gt;-->
+<!--                        <androidx.core.widget.NestedScrollView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            app:layout_behavior="@string/searchbar_scrolling_view_behavior">-->
+<!--                            &lt;!&ndash; Screen content goes here. &ndash;&gt;-->
+<!--                        </androidx.core.widget.NestedScrollView>-->
+
+<!--                        <com.google.android.material.appbar.AppBarLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content">-->
+
+<!--                            <com.google.android.material.search.SearchBar-->
+<!--                                android:id="@+id/search_bar"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="Search"-->
+<!--                                app:backgroundTint="@color/light_grey"-->
+<!--                                />-->
+<!--                        </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--                        <com.google.android.material.search.SearchView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:hint="Search"-->
+<!--                            app:layout_anchor="@id/search_bar">-->
+<!--                            &lt;!&ndash; Search suggestions/results go here (ScrollView, RecyclerView, etc.). &ndash;&gt;-->
+<!--                        </com.google.android.material.search.SearchView>-->
+<!--                    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_offer"
+                android:layout_width="0dp"
+                android:layout_height="175dp"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="-75dp"
+                android:layout_marginEnd="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView7"
+
+                tools:listitem="@layout/offer_list_item" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvMen"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/light_blue"
+                app:cardCornerRadius="18dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_offer">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/men" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvWomen"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="24dp"
+                android:backgroundTint="@color/light_blue"
+                app:cardCornerRadius="18dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cvMen"
+                app:layout_constraintStart_toEndOf="@+id/cvMen"
+                app:layout_constraintTop_toTopOf="@+id/cvMen">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/women"/>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvKids"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="24dp"
+                android:backgroundTint="@color/light_blue"
+                app:cardCornerRadius="18dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cvWomen"
+                app:layout_constraintStart_toEndOf="@+id/cvWomen"
+                app:layout_constraintTop_toTopOf="@+id/cvWomen">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/kide"/>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSale"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="19dp"
+                android:backgroundTint="@color/light_blue"
+                app:cardCornerRadius="18dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cvKids"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cvKids"
+                app:layout_constraintTop_toTopOf="@+id/cvKids">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/discount"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Men"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/cvMen"
+                app:layout_constraintStart_toStartOf="@+id/cvMen"
+                app:layout_constraintTop_toBottomOf="@+id/cvMen" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Women"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/cvWomen"
+                app:layout_constraintStart_toStartOf="@+id/cvWomen"
+                app:layout_constraintTop_toBottomOf="@+id/cvWomen" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Kids"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/cvKids"
+                app:layout_constraintStart_toStartOf="@+id/cvKids"
+                app:layout_constraintTop_toBottomOf="@+id/cvKids" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Sale"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/cvSale"
+                app:layout_constraintStart_toStartOf="@+id/cvSale"
+                app:layout_constraintTop_toBottomOf="@+id/cvSale" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:background="@color/light_grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/light_grey"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_brands"
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView14"
+                        tools:listitem="@layout/carousel_layout" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Brands"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>
+
