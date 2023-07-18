@@ -50,4 +50,7 @@ dependencies {
     //navGraph
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.0-beta01"
     implementation "androidx.navigation:navigation-ui-ktx:2.7.0-beta01"
+
+    //google maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }
