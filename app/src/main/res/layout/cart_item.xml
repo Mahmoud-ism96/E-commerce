@@ -26,8 +26,8 @@
                 android:id="@+id/iv_item_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/dummy_item"
-                android:contentDescription="@string/item" />
+                android:contentDescription="@string/item"
+                android:src="@drawable/dummy_item" />
         </androidx.cardview.widget.CardView>
 
 
@@ -86,10 +86,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/montserrat_semi_bold"
                     android:text="@string/_1"
                     android:textColor="@color/text_color"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/montserrat_semi_bold"/>
+                    android:textSize="18sp" />
             </androidx.cardview.widget.CardView>
 
             <ImageButton
