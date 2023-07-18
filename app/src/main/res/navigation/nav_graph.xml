@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.e_commerce.Home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_listOfProductFragment"
+            app:destination="@id/listOfProductFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cartFragment2"
         android:name="com.example.e_commerce.shoppingcart.view.CartFragment"
@@ -52,4 +56,9 @@
         android:name="com.example.e_commerce.profile.view.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/listOfProductFragment"
+        android:name="com.example.e_commerce.listOfProduct.view.ListOfProductFragment"
+        android:label="fragment_list_of_product"
+        tools:layout="@layout/fragment_list_of_product" />
 </navigation>

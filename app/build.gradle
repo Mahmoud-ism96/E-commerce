@@ -64,4 +64,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    //Lottie
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

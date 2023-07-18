@@ -1,4 +1,4 @@
-package com.example.e_commerce.model
+package com.example.e_commerce.model.pojo
 
 data class Variant(
     val admin_graphql_api_id: String,
