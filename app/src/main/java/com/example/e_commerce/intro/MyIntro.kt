@@ -1,7 +1,9 @@
 package com.example.e_commerce.intro
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.github.appintro.AppIntro
 
@@ -21,10 +23,14 @@ class MyIntro : AppIntro() {
     override fun onSkipPressed(currentFragment: Fragment?) {
         super.onSkipPressed(currentFragment)
         finish()
+        val intent = Intent(application, HomeActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDonePressed(currentFragment: Fragment?) {
         super.onDonePressed(currentFragment)
         finish()
+        val intent = Intent(application, HomeActivity::class.java)
+        startActivity(intent)
     }
 }
