@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityHomeBinding
+    lateinit var binding : ActivityHomeBinding
     lateinit var bottomNavigationBar: BottomNavigationView
     private lateinit var navController: NavController
     private lateinit var homeViewModel: HomeViewModel
