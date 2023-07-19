@@ -9,7 +9,7 @@ import com.example.e_commerce.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityHomeBinding
+    lateinit var binding : ActivityHomeBinding
     lateinit var bottomNavigationBar: BottomNavigationView
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {

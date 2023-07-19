@@ -37,104 +37,51 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeWidth="0dp">
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <Button
+                        android:id="@+id/btnSearch"
                         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="70dp"
                         android:layout_marginStart="48dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="48dp"
-                        android:textAlignment="textStart"
-                        android:text="Search"
-                        android:textSize="20sp"
-                        app:iconSize="25dp"
                         android:elevation="2dp"
+                        android:text="Search"
+                        android:textAlignment="textStart"
                         android:textColor="@color/grey"
-                        app:iconTint="@color/grey"
+                        android:textSize="20sp"
                         app:backgroundTint="@color/light_grey"
                         app:icon="@drawable/search"
-                    />
-
-<!--                    <com.google.android.material.textfield.TextInputLayout-->
-<!--                        android:id="@+id/textField"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="70dp"-->
-<!--                        android:layout_marginStart="48dp"-->
-<!--                        android:layout_marginTop="32dp"-->
-<!--                        android:layout_marginEnd="48dp"-->
-<!--                        android:hint="Search"-->
-<!--                        android:textColorHint="@color/grey"-->
-<!--                        app:boxBackgroundColor="@color/light_grey"-->
-<!--                        app:boxCornerRadiusBottomEnd="18dp"-->
-<!--                        app:boxCornerRadiusBottomStart="18dp"-->
-<!--                        app:boxCornerRadiusTopEnd="18dp"-->
-<!--                        app:boxCornerRadiusTopStart="18dp"-->
-<!--                        app:boxStrokeWidth="1dp"-->
-<!--                        app:hintTextColor="@color/grey"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:startIconDrawable="@drawable/search"-->
-<!--                        android:focusable="false"-->
-<!--                        android:clickable="true"-->
-<!--                        app:startIconTint="@color/grey">-->
-
-<!--                        <com.google.android.material.textfield.TextInputEditText-->
-<!--                            android:id="@+id/tf_Search"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent" />-->
-<!--                    </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--                    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="90dp"-->
-<!--                        android:layout_marginStart="32dp"-->
-<!--                        android:layout_marginTop="16dp"-->
-<!--                        android:layout_marginEnd="32dp"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                        &lt;!&ndash; NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). &ndash;&gt;-->
-<!--                        <androidx.core.widget.NestedScrollView-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            app:layout_behavior="@string/searchbar_scrolling_view_behavior">-->
-<!--                            &lt;!&ndash; Screen content goes here. &ndash;&gt;-->
-<!--                        </androidx.core.widget.NestedScrollView>-->
-
-<!--                        <com.google.android.material.appbar.AppBarLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content">-->
-
-<!--                            <com.google.android.material.search.SearchBar-->
-<!--                                android:id="@+id/search_bar"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:hint="Search"-->
-<!--                                app:backgroundTint="@color/light_grey"-->
-<!--                                />-->
-<!--                        </com.google.android.material.appbar.AppBarLayout>-->
-
-<!--                        <com.google.android.material.search.SearchView-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:hint="Search"-->
-<!--                            app:layout_anchor="@id/search_bar">-->
-<!--                            &lt;!&ndash; Search suggestions/results go here (ScrollView, RecyclerView, etc.). &ndash;&gt;-->
-<!--                        </com.google.android.material.search.SearchView>-->
-<!--                    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
-
+                        app:iconSize="25dp"
+                        app:iconTint="@color/grey"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -280,7 +227,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="125dp"
                 android:background="@color/light_grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
