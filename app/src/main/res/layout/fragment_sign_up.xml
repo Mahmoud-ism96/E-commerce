@@ -22,9 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:text="@string/sign_up"
         android:textSize="26sp"
-        android:fontFamily="@font/montserrat_semi_bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
         app:layout_constraintTop_toTopOf="@+id/imageButton" />
@@ -50,41 +50,43 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_sign_up_to_startup" />
 
     <EditText
-        android:id="@+id/textField"
+        android:id="@+id/et_sign_up_name"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/views_rounded_background"
         android:hint="John Doe"
-        android:textColorHint="@drawable/et_focused_hint_color"
+        android:inputType="text"
         android:paddingHorizontal="16dp"
+        android:textColorHint="@drawable/et_focused_hint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/email"
-        app:layout_constraintStart_toStartOf="@+id/textField"
-        app:layout_constraintTop_toBottomOf="@+id/textField" />
+        app:layout_constraintStart_toStartOf="@+id/et_sign_up_name"
+        app:layout_constraintTop_toBottomOf="@+id/et_sign_up_name" />
 
     <EditText
-        android:id="@+id/textField2"
+        android:id="@+id/et_sign_up_email"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/views_rounded_background"
         android:hint="example@gmail.com"
-        android:textColorHint="@drawable/et_focused_hint_color"
         android:paddingHorizontal="16dp"
+        android:textColorHint="@drawable/et_focused_hint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/textView7"
@@ -92,26 +94,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/password"
-        app:layout_constraintStart_toStartOf="@+id/textField2"
-        app:layout_constraintTop_toBottomOf="@+id/textField2" />
+        app:layout_constraintStart_toStartOf="@+id/et_sign_up_email"
+        app:layout_constraintTop_toBottomOf="@+id/et_sign_up_email" />
 
     <EditText
-        android:id="@+id/textField3"
+        android:id="@+id/et_sign_up_password"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/views_rounded_background"
         android:hint="**************"
-        android:textColorHint="@drawable/et_focused_hint_color"
+        android:inputType="textPassword"
         android:paddingHorizontal="16dp"
+        android:password="true"
+        android:textColorHint="@drawable/et_focused_hint_color"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:endIconMode="password_toggle"
-        android:password="true"
-        android:inputType="textPassword"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="0dp"
@@ -124,7 +127,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textField3" />
+        app:layout_constraintTop_toBottomOf="@+id/et_sign_up_password" />
 
     <View
         android:id="@+id/view2"
