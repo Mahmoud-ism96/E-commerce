@@ -8,5 +8,5 @@ import retrofit2.Response
 interface RemoteSource {
     suspend fun getAllProducts(): Flow<Response<ProductsResponse>>
     suspend fun getBrand():Flow<Response<BrandsResponse>>
-    suspend fun getProductsByBrand(brandId:Long) : Flow<Response<ProductsResponse>>
+    suspend fun getProductsById(id:Long) : Flow<Response<ProductsResponse>>
 }
