@@ -19,6 +19,7 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants
 import com.google.android.material.carousel.CarouselLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -51,13 +52,37 @@ class HomeFragment : Fragment() {
         homeViewModel.getBrands()
 
         brandRecycleAdapter = BrandRecycleAdapter(requireContext()) {
-            homeViewModel.getProductByBrand(it.id)
+            homeViewModel.getProductById(it.id)
             homeViewModel.getBrandImg(it.image.src)
             navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
         }
         binding.rvBrands.apply {
             adapter = brandRecycleAdapter
             layoutManager = CarouselLayoutManager()
+        }
+        binding.apply {
+
+            cvMen.setOnClickListener {
+                homeViewModel.getProductById(Constants.PRODUCT_BY_MEN)
+                homeViewModel.getBrandImg(R.drawable.menshoping)
+                navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
+            }
+            cvWomen.setOnClickListener {
+                homeViewModel.getProductById(Constants.PRODUCT_BY_WOMEN)
+                homeViewModel.getBrandImg(R.drawable.womenshoping)
+                navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
+            }
+            cvKids.setOnClickListener {
+                homeViewModel.getProductById(Constants.PRODUCT_BY_KIDS)
+                homeViewModel.getBrandImg(R.drawable.kidsshoping)
+                navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
+            }
+            cvSale.setOnClickListener {
+                homeViewModel.getProductById(Constants.PRODUCT_BY_SALE)
+                homeViewModel.getBrandImg(R.drawable.saleshoping)
+                navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
+            }
+
         }
         lifecycleScope.launch {
             homeViewModel.brandsStateFlow.collectLatest {

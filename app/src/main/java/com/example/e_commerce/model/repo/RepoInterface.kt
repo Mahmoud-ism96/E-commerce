@@ -11,7 +11,7 @@ import retrofit2.Response
 interface RepoInterface {
     suspend fun getAllProducts(): Flow<Response<ProductsResponse>>
     suspend fun getBrands():Flow<Response<BrandsResponse>>
-    suspend fun getProductsByBrand(brandId:Long) : Flow<Response<ProductsResponse>>
+    suspend fun getProductsById(brandId:Long) : Flow<Response<ProductsResponse>>
     suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>>
     suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>>
 
