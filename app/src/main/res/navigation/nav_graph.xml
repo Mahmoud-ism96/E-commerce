@@ -60,5 +60,18 @@
         android:id="@+id/listOfProductFragment"
         android:name="com.example.e_commerce.listOfProduct.view.ListOfProductFragment"
         android:label="fragment_list_of_product"
-        tools:layout="@layout/fragment_list_of_product" />
+        tools:layout="@layout/fragment_list_of_product" >
+        <action
+            android:id="@+id/action_listOfProductFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.example.e_commerce.product.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" >
+        <argument
+            android:name="product_id"
+            app:argType="long" />
+    </fragment>
 </navigation>

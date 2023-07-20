@@ -49,9 +49,7 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProvider(requireActivity(), homeViewModelFactory)[HomeViewModel::class.java]
 
-        homeViewModel.getBrands()
-
-        brandRecycleAdapter = BrandRecycleAdapter(requireContext()) {
+        brandRecycleAdapter = BrandRecycleAdapter {
             homeViewModel.getProductById(it.id)
             homeViewModel.getBrandImg(it.image.src)
             navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
