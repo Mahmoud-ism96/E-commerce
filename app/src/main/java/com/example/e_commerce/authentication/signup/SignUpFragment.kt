@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 
 class SignUpFragment : Fragment() {
 
@@ -54,7 +55,7 @@ class SignUpFragment : Fragment() {
         binding.btnSignup.setOnClickListener {
             val name = binding.etSignUpName.text.toString()
             val email = binding.etSignUpEmail.text.toString()
-            val password = binding.etSignUpEmail.text.toString()
+            val password = binding.etSignUpPassword.text.toString()
 
             emailSignUp(name, email, password)
         }
@@ -80,16 +81,45 @@ class SignUpFragment : Fragment() {
                 ) { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "createUserWithEmail:success")
-                        val user = mAuth.currentUser
-                        updateUI(user)
+
+                        val profileUpdates =
+                            UserProfileChangeRequest.Builder().setDisplayName(name).build()
+
+                        mAuth.currentUser?.updateProfile(profileUpdates)
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    mAuth.currentUser?.sendEmailVerification()
+                                        ?.addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Registration successful. Please check your email to verify your account.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                                            } else {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Registration failed. Please check your email and password.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }
+                                } else {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Registration failed. Please check your email and password.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
                     } else {
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
                         Toast.makeText(
                             requireContext(),
                             "Registration failed. Please check your data.",
                             Toast.LENGTH_SHORT
-                        ).show();
-                        updateUI(null)
+                        ).show()
                     }
                 }
             } else Toast.makeText(

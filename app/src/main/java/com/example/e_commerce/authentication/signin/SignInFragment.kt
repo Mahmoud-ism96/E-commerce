@@ -17,6 +17,7 @@ import com.example.e_commerce.databinding.FragmentSignInBinding
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -39,6 +40,12 @@ class SignInFragment : Fragment() {
     ): View {
         binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
 
+        //TODO: Extract to External Method with the rest of Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
         mAuth = FirebaseAuth.getInstance()
 
         binding.btnSignInToStartup.setOnClickListener {
@@ -58,6 +65,10 @@ class SignInFragment : Fragment() {
 
         binding.tvSigninToSignup.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+        }
+
+        binding.tvForgetPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_signInFragment_to_passwordResetFragment)
         }
 
         return binding.root
@@ -126,9 +137,17 @@ class SignInFragment : Fragment() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val intent = Intent(requireContext(), HomeActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            if (user.isEmailVerified) {
+                val intent = Intent(requireContext(), HomeActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }else{
+                Toast.makeText(
+                    requireContext(),
+                    "Please check your email to verify your account.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -150,4 +169,5 @@ class SignInFragment : Fragment() {
                 }
             }
         }
+
 }
