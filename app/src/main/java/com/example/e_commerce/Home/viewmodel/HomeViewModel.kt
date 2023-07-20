@@ -16,10 +16,10 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _brandsMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
     val brandsStateFlow: StateFlow<ApiState> get() = _brandsMutableStateFlow
-    private val _productsByBrandMutableStateFlow: MutableStateFlow<ApiState> =
+    private val _productsByIdMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
-    val productsByBrandStateFlow get() = _productsByBrandMutableStateFlow
-    var brandImage:String=""
+    val productsByIdStateFlow get() = _productsByIdMutableStateFlow
+    var brandImage: Any? = null
 
 
     fun getBrands() {
@@ -34,17 +34,17 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
         }
     }
 
-    fun getProductByBrand(brandId: Long) {
+    fun getProductById(id: Long) {
         viewModelScope.launch {
-            repo.getProductsByBrand(brandId)
-                .catch { _productsByBrandMutableStateFlow.value = ApiState.Failure(it) }
+            repo.getProductsById(id)
+                .catch { _productsByIdMutableStateFlow.value = ApiState.Failure(it) }
                 .collectLatest {
-                    _productsByBrandMutableStateFlow.value=ApiState.Success(it.body()!!)
+                    _productsByIdMutableStateFlow.value = ApiState.Success(it.body()!!)
                 }
         }
     }
 
-    fun getBrandImg(imageScr:String){
-        brandImage=imageScr
+    fun getBrandImg(imageScr: Any) {
+        brandImage = imageScr
     }
 }

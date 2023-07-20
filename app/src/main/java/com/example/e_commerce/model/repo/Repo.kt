@@ -4,17 +4,19 @@ import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
+import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.services.network.RemoteSource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-class Repo private constructor(private val remoteSource: RemoteSource): RepoInterface {
+class Repo private constructor(private val remoteSource: RemoteSource) : RepoInterface {
 
-    companion object{
+    companion object {
         private var instance: Repo? = null
 
         fun getInstance(remoteSource: RemoteSource): Repo {
-            return instance ?: synchronized(this){
+            return instance ?: synchronized(this) {
                 instance ?: Repo(remoteSource).also { instance = it }
             }
         }
@@ -28,8 +30,22 @@ class Repo private constructor(private val remoteSource: RemoteSource): RepoInte
         return remoteSource.getBrand()
     }
 
-    override suspend fun getProductsByBrand(brandId: Long): Flow<Response<ProductsResponse>> {
-        return remoteSource.getProductsByBrand(brandId)
+    override suspend fun getProductsById(id: Long): Flow<Response<ProductsResponse>> {
+        return remoteSource.getProductsById(id)
+    }
+
+    override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {
+        return remoteSource.getProductsByTitle(title)
+    }
+
+    override suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>> {
+        return remoteSource.createCustomer(customerData)
+    }
+
+    override suspend fun getCustomerByEmailAndName(
+        email: String, name: String
+    ): Flow<Response<CustomerResponse>> {
+        return remoteSource.getCustomerByEmailAndName(email, name)
     }
 
     override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {
