@@ -2,11 +2,15 @@ package com.example.e_commerce.services.network
 
 import com.example.e_commerce.utility.Constants
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
+    private val interceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
@@ -14,7 +18,7 @@ object ApiClient {
                 .addHeader("Authorization", Constants.API_KEY)
                 .build()
             chain.proceed(request)
-        }
+        }.addInterceptor(interceptor)
         .build()
 
     private val retrofit: Retrofit = Retrofit.Builder()

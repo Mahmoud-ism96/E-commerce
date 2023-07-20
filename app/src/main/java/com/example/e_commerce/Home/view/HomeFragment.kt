@@ -16,6 +16,7 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -43,7 +44,7 @@ class HomeFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
 
-        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource))
+        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())))
         homeViewModel =
             ViewModelProvider(requireActivity(), homeViewModelFactory)[HomeViewModel::class.java]
 
