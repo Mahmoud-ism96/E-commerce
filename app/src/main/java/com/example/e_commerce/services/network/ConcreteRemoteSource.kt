@@ -2,6 +2,8 @@ package com.example.e_commerce.services.network
 
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
+import com.example.e_commerce.model.pojo.coupons.DiscountResponse
+import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +24,14 @@ object ConcreteRemoteSource : RemoteSource {
     override suspend fun getProductsById(id: Long): Flow<Response<ProductsResponse>> {
         val productsResponseByBrand=ApiClient.apiService.getProductsById(id)
         return flowOf(productsResponseByBrand)
+    }
+
+    override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {
+        return flowOf(ApiClient.apiService.getDiscountCodesForPriceRule(priceRuleId))
+    }
+
+    override suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>> {
+        return flowOf(ApiClient.apiService.getAllPricesRules())
     }
 
     override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {
