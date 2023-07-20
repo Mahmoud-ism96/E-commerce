@@ -1,0 +1,33 @@
+package com.example.e_commerce.model.pojo.pricerule
+
+data class PriceRule(
+    val allocation_limit: Int,
+    val allocation_method: String,
+    val created_at: String,
+    val customer_segment_prerequisite_ids: List<Long>,
+    val customer_selection: String,
+    val ends_at: String,
+    val entitled_collection_ids: List<Long>,
+    val entitled_country_ids: List<EntitledCountryIds>,
+    val entitled_product_ids: List<Long>,
+    val entitled_variant_ids: List<Long>,
+    val id: Long,
+    val once_per_customer: Boolean,
+    val prerequisite_collection_ids: List<Long>,
+    val prerequisite_customer_ids: List<Long>,
+    val prerequisite_product_ids: List<Long>,
+    val prerequisite_quantity_range: PrerequisiteQuantityRange,
+    val prerequisite_shipping_price_range: PrerequisiteShippingPriceRange,
+    val prerequisite_subtotal_range: PrerequisiteSubtotalRange,
+    val prerequisite_to_entitlement_purchase: PrerequisiteToEntitlementPurchase,
+    val prerequisite_to_entitlement_quantity_ratio: PrerequisiteToEntitlementQuantityRatio,
+    val prerequisite_variant_ids: List<Long>,
+    val starts_at: String,
+    val target_selection: String,
+    val target_type: String,
+    val title: String,
+    val updated_at: String,
+    val usage_limit: Int,
+    val value: Int,
+    val value_type: String
+)

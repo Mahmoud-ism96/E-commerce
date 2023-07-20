@@ -6,4 +6,7 @@ object Constants {
     private const val HOST_NAME = "itp-sv-and1"
 
     const val BASE_URL = "https://$HOST_NAME.myshopify.com/"
+
+    const val PRICE_RULE_ID_1 = "1453529268523"
+    const val PRICE_RULE_ID_2 = "1453526679851"
 }
