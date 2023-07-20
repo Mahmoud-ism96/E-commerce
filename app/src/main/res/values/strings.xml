@@ -57,4 +57,5 @@
     <string name="wish_list">Wish List</string>
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
+    <string name="recover_password">Recover Password</string>
 </resources>

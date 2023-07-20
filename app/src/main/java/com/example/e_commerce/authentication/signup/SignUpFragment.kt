@@ -86,11 +86,11 @@ class SignUpFragment : Fragment() {
                             UserProfileChangeRequest.Builder().setDisplayName(name).build()
 
                         mAuth.currentUser?.updateProfile(profileUpdates)
-                            ?.addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
+                            ?.addOnCompleteListener { profileTask ->
+                                if (profileTask.isSuccessful) {
                                     mAuth.currentUser?.sendEmailVerification()
-                                        ?.addOnCompleteListener { task ->
-                                            if (task.isSuccessful) {
+                                        ?.addOnCompleteListener { verificationTask ->
+                                            if (verificationTask.isSuccessful) {
                                                 Toast.makeText(
                                                     requireContext(),
                                                     "Registration successful. Please check your email to verify your account.",
