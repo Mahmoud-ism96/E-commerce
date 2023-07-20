@@ -8,9 +8,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private val interceptor = HttpLoggingInterceptor().apply {
+
+    private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
+
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
@@ -18,7 +20,9 @@ object ApiClient {
                 .addHeader("Authorization", Constants.API_KEY)
                 .build()
             chain.proceed(request)
-        }.addInterceptor(interceptor)
+
+        }
+        .addInterceptor(httpLoggingInterceptor)
         .build()
 
     private val retrofit: Retrofit = Retrofit.Builder()
