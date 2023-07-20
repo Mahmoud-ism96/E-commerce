@@ -9,8 +9,8 @@ import retrofit2.Response
 
 interface RepoInterface {
     suspend fun getAllProducts(): Flow<Response<ProductsResponse>>
-    suspend fun getBrands(): Flow<Response<BrandsResponse>>
-    suspend fun getProductsByBrand(brandId: Long): Flow<Response<ProductsResponse>>
+    suspend fun getBrands():Flow<Response<BrandsResponse>>
+    suspend fun getProductsById(id:Long) : Flow<Response<ProductsResponse>>
     suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>>
     suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>>
     suspend fun getCustomerByEmailAndName(

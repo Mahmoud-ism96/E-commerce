@@ -28,8 +28,8 @@ class Repo private constructor(private val remoteSource: RemoteSource) : RepoInt
         return remoteSource.getBrand()
     }
 
-    override suspend fun getProductsByBrand(brandId: Long): Flow<Response<ProductsResponse>> {
-        return remoteSource.getProductsByBrand(brandId)
+    override suspend fun getProductsById(id: Long): Flow<Response<ProductsResponse>> {
+        return remoteSource.getProductsById(id)
     }
 
     override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {

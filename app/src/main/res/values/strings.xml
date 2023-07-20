@@ -53,5 +53,8 @@
     <string name="forget_password">Forget Password</string>
     <string name="reset_password">Reset Password</string>
     <string name="the_recovery_link_will_be_sent_to_your_email_please_enter_your_email">The recovery link will be sent to your email. Please enter your email:</string>
-    <string name="recover_password">Recover Password</string>
+    <string name="home">Home</string>
+    <string name="wish_list">Wish List</string>
+    <string name="cart">Cart</string>
+    <string name="profile">Profile</string>
 </resources>

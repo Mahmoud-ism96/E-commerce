@@ -19,7 +19,7 @@ interface ApiService {
     suspend fun getBrands(): Response<BrandsResponse>
 
     @GET("admin/api/2023-07/products.json")
-    suspend fun getProductsByBrand(@Query("collection_id") collectionId: Long): Response<ProductsResponse>
+    suspend fun getProductsById(@Query("collection_id") collectionId: Long):Response<ProductsResponse>
 
     @GET("admin/api/2023-07/products.json")
     suspend fun getProductsByTitle(@Query("title") title: String): Response<ProductsResponse>

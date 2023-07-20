@@ -18,9 +18,9 @@ object ConcreteRemoteSource : RemoteSource {
         val brandsResponse = ApiClient.apiService.getBrands()
         return flowOf(brandsResponse)
     }
-
-    override suspend fun getProductsByBrand(brandId: Long): Flow<Response<ProductsResponse>> {
-        val productsResponseByBrand = ApiClient.apiService.getProductsByBrand(brandId)
+    
+    override suspend fun getProductsById(id: Long): Flow<Response<ProductsResponse>> {
+        val productsResponseByBrand=ApiClient.apiService.getProductsById(id)
         return flowOf(productsResponseByBrand)
     }
 
