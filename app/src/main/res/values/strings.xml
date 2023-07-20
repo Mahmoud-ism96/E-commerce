@@ -58,4 +58,8 @@
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="recover_password">Recover Password</string>
+    <string name="shoes">SHOES</string>
+    <string name="t_shirts">T-SHIRTS</string>
+    <string name="accessories">ACCESSORIES</string>
+    <string name="remove_filter">Remove Filter</string>
 </resources>
