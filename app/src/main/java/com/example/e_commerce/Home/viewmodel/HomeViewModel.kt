@@ -25,7 +25,7 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     fun getBrands() {
         viewModelScope.launch {
             repo.getBrands()
-                .catch { _brandsMutableStateFlow.value = ApiState.Failure(it.message!!) }
+                .catch { _brandsMutableStateFlow.value = ApiState.Failure(it) }
                 .collect {
                     if (it.isSuccessful) {
                         _brandsMutableStateFlow.value = ApiState.Success(it.body()!!)
@@ -37,7 +37,7 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     fun getProductById(id: Long) {
         viewModelScope.launch {
             repo.getProductsById(id)
-                .catch { _productsByIdMutableStateFlow.value = ApiState.Failure(it.message!!) }
+                .catch { _productsByIdMutableStateFlow.value = ApiState.Failure(it) }
                 .collectLatest {
                     _productsByIdMutableStateFlow.value = ApiState.Success(it.body()!!)
                 }

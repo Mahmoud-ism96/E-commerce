@@ -2,6 +2,8 @@ package com.example.e_commerce.model.repo
 
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
+import com.example.e_commerce.model.pojo.coupons.DiscountResponse
+import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.services.network.RemoteSource
@@ -45,4 +47,13 @@ class Repo private constructor(private val remoteSource: RemoteSource) : RepoInt
     ): Flow<Response<CustomerResponse>> {
         return remoteSource.getCustomerByEmailAndName(email, name)
     }
+
+    override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {
+        return remoteSource.getDiscountCodesForPriceRule(priceRuleId)
+    }
+
+    override suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>> {
+        return remoteSource.getAllPricesRules()
+    }
+
 }
