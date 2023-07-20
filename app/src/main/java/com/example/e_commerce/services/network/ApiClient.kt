@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
+
     private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -19,6 +20,7 @@ object ApiClient {
                 .addHeader("Authorization", Constants.API_KEY)
                 .build()
             chain.proceed(request)
+
         }
         .addInterceptor(httpLoggingInterceptor)
         .build()

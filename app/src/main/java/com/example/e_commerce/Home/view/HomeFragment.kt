@@ -16,6 +16,7 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
@@ -43,7 +44,8 @@ class HomeFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
-        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource))
+
+        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())))
         homeViewModel =
             ViewModelProvider(requireActivity(), homeViewModelFactory)[HomeViewModel::class.java]
 
@@ -56,7 +58,6 @@ class HomeFragment : Fragment() {
             adapter = brandRecycleAdapter
             layoutManager = CarouselLayoutManager()
         }
-
         binding.apply {
 
             cvMen.setOnClickListener {
@@ -81,67 +82,56 @@ class HomeFragment : Fragment() {
             }
 
         }
-
         lifecycleScope.launch {
             homeViewModel.brandsStateFlow.collectLatest {
 
-                when (it) {
-                    is ApiState.Loading -> {
+                when(it){
+                    is ApiState.Loading ->{
                         binding.apply {
-                            btnSearch.visibility = View.GONE
-                            rvOffer.visibility = View.GONE
-                            cvKids.visibility = View.GONE
-                            cvMen.visibility = View.GONE
-                            cvWomen.visibility = View.GONE
-                            cvSale.visibility = View.GONE
-                            textView10.visibility = View.GONE
-                            textView11.visibility = View.GONE
-                            textView12.visibility = View.GONE
-                            textView14.visibility = View.GONE
-                            textView9.visibility = View.GONE
-                            rvBrands.visibility = View.GONE
-                            loading.visibility = View.VISIBLE
+                            btnSearch.visibility=View.GONE
+                            rvOffer.visibility=View.GONE
+                            cvKids.visibility=View.GONE
+                            cvMen.visibility=View.GONE
+                            cvWomen.visibility=View.GONE
+                            cvSale.visibility=View.GONE
+                            textView10.visibility=View.GONE
+                            textView11.visibility=View.GONE
+                            textView12.visibility=View.GONE
+                            textView14.visibility=View.GONE
+                            textView9.visibility=View.GONE
+                            rvBrands.visibility=View.GONE
+                            loading.visibility=View.VISIBLE
                             loading.setAnimation(R.raw.loading)
                         }
                     }
-
-                    is ApiState.Success -> {
+                    is ApiState.Success ->{
                         binding.apply {
-                            loading.visibility = View.GONE
-                            btnSearch.visibility = View.VISIBLE
-                            rvOffer.visibility = View.VISIBLE
-                            cvKids.visibility = View.VISIBLE
-                            cvMen.visibility = View.VISIBLE
-                            cvWomen.visibility = View.VISIBLE
-                            cvSale.visibility = View.VISIBLE
-                            textView10.visibility = View.VISIBLE
-                            textView11.visibility = View.VISIBLE
-                            textView12.visibility = View.VISIBLE
-                            textView14.visibility = View.VISIBLE
-                            textView9.visibility = View.VISIBLE
-                            rvBrands.visibility = View.VISIBLE
+                            loading.visibility=View.GONE
+                            btnSearch.visibility=View.VISIBLE
+                            rvOffer.visibility=View.VISIBLE
+                            cvKids.visibility=View.VISIBLE
+                            cvMen.visibility=View.VISIBLE
+                            cvWomen.visibility=View.VISIBLE
+                            cvSale.visibility=View.VISIBLE
+                            textView10.visibility=View.VISIBLE
+                            textView11.visibility=View.VISIBLE
+                            textView12.visibility=View.VISIBLE
+                            textView14.visibility=View.VISIBLE
+                            textView9.visibility=View.VISIBLE
+                            rvBrands.visibility=View.VISIBLE
 
                         }
-                        val brandsResponse: BrandsResponse = it.data as BrandsResponse
+                        val brandsResponse:BrandsResponse=it.data as BrandsResponse
                         brandRecycleAdapter.submitList(brandsResponse.smart_collections)
                     }
-
                     else -> {
-                        Toast.makeText(requireContext(), "Failed To Get Data", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(requireContext(),"Failed To Get Data", Toast.LENGTH_LONG).show()
                     }
                 }
 
             }
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        lifecycleScope.launch {
-            homeViewModel.productsByIdStateFlow.emit(ApiState.Loading)
-        }
     }
 
 }

@@ -27,6 +27,7 @@ import com.example.e_commerce.databinding.DialogFilterBinding
 import com.example.e_commerce.databinding.FragmentListOfProductBinding
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import kotlinx.coroutines.flow.collectLatest
@@ -56,8 +57,8 @@ class ListOfProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
+        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())))
 
-        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource))
         homeViewModel =
             ViewModelProvider(requireActivity(), homeViewModelFactory)[HomeViewModel::class.java]
 

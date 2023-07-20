@@ -10,6 +10,7 @@ import com.example.e_commerce.Home.viewmodel.HomeViewModel
 import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.databinding.ActivityHomeBinding
 import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -29,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(bottomNavigationBar, navController)
 
-        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource))
+        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(this)))
         homeViewModel =
             ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
 
