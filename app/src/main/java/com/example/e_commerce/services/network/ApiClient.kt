@@ -2,10 +2,15 @@ package com.example.e_commerce.services.network
 
 import com.example.e_commerce.utility.Constants
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
+
+    private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
@@ -15,6 +20,7 @@ object ApiClient {
                 .build()
             chain.proceed(request)
         }
+        .addInterceptor(httpLoggingInterceptor)
         .build()
 
     private val retrofit: Retrofit = Retrofit.Builder()
