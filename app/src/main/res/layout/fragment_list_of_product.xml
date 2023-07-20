@@ -6,15 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".listOfProduct.view.ListOfProductFragment">
 
+
     <ImageView
         android:id="@+id/ivBrandList"
         android:layout_width="match_parent"
         android:layout_height="245dp"
-        android:padding="15dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/dummy_brand"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

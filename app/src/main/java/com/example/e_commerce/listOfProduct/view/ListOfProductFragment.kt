@@ -54,15 +54,16 @@ class ListOfProductFragment : Fragment() {
             }
         }
 
-        (Glide.with(requireContext())
+        Glide.with(requireContext())
             .load(homeViewModel.brandImage)
-            .apply(RequestOptions().override(200, 200))
+            .apply(RequestOptions().override(400, 350))
             .placeholder(R.drawable.loading_svgrepo_com)
             .error(R.drawable.error)
-            .into(binding.ivBrandList))
+            .into(binding.ivBrandList)
+
 
         lifecycleScope.launch {
-            homeViewModel.productsByBrandStateFlow.collectLatest {
+            homeViewModel.productsByIdStateFlow.collectLatest {
                 when(it){
                     is ApiState.Loading ->{
                         binding.rvListOfProduct.visibility=View.GONE
@@ -90,5 +91,10 @@ class ListOfProductFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         (requireActivity() as HomeActivity).bottomNavigationBar.visibility = View.VISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        productRecycleAdapter.submitList(emptyList())
     }
 }

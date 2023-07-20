@@ -1,5 +1,6 @@
 package com.example.e_commerce.listOfProduct.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -30,10 +31,11 @@ class ProductRecycleAdapter(private val context: Context) : ListAdapter<Product,
 
     inner class ProductViewHolder(private val binding: ProductListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun onBind(currentItem: Product) {
             binding.apply {
                 tvItemName.text=currentItem.title
-                tvItemPrice.text=currentItem.variants[0].price
+                tvItemPrice.text="${currentItem.variants[0].price} $"
                 (Glide.with(context)
                     .load(currentItem.image.src)
                     .apply(RequestOptions().override(200, 200))
