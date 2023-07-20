@@ -39,6 +39,14 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            homeViewModel.productsByIdStateFlow.emit(ApiState.Loading)
+        }
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
