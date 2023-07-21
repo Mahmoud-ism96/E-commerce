@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
 import com.example.e_commerce.model.pojo.CartItem
@@ -59,6 +60,9 @@ class CartFragment : Fragment() {
             }else{
                 cartViewModel.deleteItemFromCart(id)
             }
+        }, onItemClick = {
+            val action = CartFragmentDirections.actionCartFragment2ToProductDetailsFragment(it)
+            findNavController().navigate(action)
         })
 
         binding.rvCartItems.adapter = cartAdapter
@@ -75,12 +79,12 @@ class CartFragment : Fragment() {
         lifecycleScope.launch {
             cartViewModel.cartItemsStateFlow.collectLatest {
                 when (it) {
-                    is ApiState.Loading -> {Log.w(TAG, "loading:", )}
+                    is ApiState.Loading -> {Log.w(TAG, "loading:" )}
                     is ApiState.Success -> {
                         cartAdapter.submitList(it.data as List<CartItem>)
                     }
 
-                    is ApiState.Failure -> {Log.w(TAG, "error:", )}
+                    is ApiState.Failure -> {Log.w(TAG, "error:" )}
                 }
             }
         }

@@ -3,14 +3,18 @@ package com.example.e_commerce.model.repo
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.ProductsResponse
+import com.example.e_commerce.model.pojo.address.AddressResponse
+import com.example.e_commerce.model.pojo.address.SendAddress
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import com.example.e_commerce.services.db.LocalSource
+import com.example.e_commerce.services.network.ApiClient
 import com.example.e_commerce.services.network.RemoteSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import retrofit2.Response
 
 class Repo private constructor(
@@ -86,4 +90,14 @@ class Repo private constructor(
         return localSource.getAllCartItems()
     }
 
+    override suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>> {
+        return remoteSource.getAddressesForCustomer(customer_id)
+    }
+
+    override suspend fun createAddressForCustomer(
+        customer_id: String,
+        sendAddress: SendAddress
+    ): Flow<Response<AddressResponse>> {
+        return remoteSource.createAddressForCustomer(customer_id, sendAddress)
+    }
 }

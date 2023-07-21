@@ -99,7 +99,7 @@
             android:clickable="true"
             android:fontFamily="@font/montserrat_semi_bold"
             android:gravity="start"
-            android:text="@string/account_details"
+            android:text="@string/address_book"
             android:textColor="@color/text_color"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"

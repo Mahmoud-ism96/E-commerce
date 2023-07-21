@@ -71,4 +71,12 @@
     <string name="welcome">Welcome</string>
     <string name="login_failed_please_check_your_email_and_password">Login failed. Please check your email and password.</string>
     <string name="please_check_your_email_to_verify_your_account">Please check your email to verify your account.</string>
+    <string name="address_book">Address book</string>
+    <string name="add_new_address">ADD NEW ADDRESS</string>
+    <string name="giza">Giza</string>
+    <string name="default_address">Default Address</string>
+    <string name="set_as_default">SET AS DEFAULT</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="egypt">EGYPT</string>
 </resources>
