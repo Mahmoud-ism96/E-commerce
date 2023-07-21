@@ -10,12 +10,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
+import com.example.e_commerce.authentication.viewmodel.AuthViewModel
+import com.example.e_commerce.authentication.viewmodel.AuthViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignInBinding
 import com.example.e_commerce.model.pojo.customer.Customer
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
+import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,12 +41,23 @@ class SignInFragment : Fragment() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
+    private lateinit var _viewModelFactory: AuthViewModelFactory
+    private lateinit var _viewModel: AuthViewModel
+
     private val TAG = "SignInFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
+
+        _viewModelFactory = AuthViewModelFactory(
+            Repo.getInstance(
+                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireActivity())
+            )
+        )
+        _viewModel =
+            ViewModelProvider(requireActivity(), _viewModelFactory)[AuthViewModel::class.java]
 
         //TODO: Extract to External Method with the rest of Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,6 +94,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun emailSignIn(email: String, password: String) {
+        binding.groupSigninLoading.visibility = View.VISIBLE
         if (checkConnectivity(requireContext())) {
             if (email.isNotBlank() && password.isNotBlank()) {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -124,8 +142,7 @@ class SignInFragment : Fragment() {
                         email = user!!.email!!, first_name = displayName
                     )
                 )
-                //TODO: Add it to the customer using Shared ViewModel
-//                _viewModel.createNewCustomer(customerData)
+                _viewModel.createNewCustomer(customerData)
 
                 updateUI(user)
             } else {
@@ -136,7 +153,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun showToast(message: String) {
-        //TODO: Stop loading when Toast is triggered
+        binding.groupSigninLoading.visibility = View.GONE
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 

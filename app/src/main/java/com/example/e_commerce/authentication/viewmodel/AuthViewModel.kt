@@ -1,4 +1,4 @@
-package com.example.e_commerce.authentication.signup.viewmodel
+package com.example.e_commerce.authentication.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class SignUpViewModel(private val repo: RepoInterface) : ViewModel() {
+class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _customerMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
 

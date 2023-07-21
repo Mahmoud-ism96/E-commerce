@@ -1,118 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".shoppingcart.view.CartFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_cart_desc"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="35dp">
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/add_more_to_cart"
+        android:textColor="@color/text_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv_cart_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_title" />
 
-        <TextView
-            android:id="@+id/tv_cart_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/my_cart"
-            android:textColor="@color/text_color"
-            android:textSize="26sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cart_items"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/et_voucher_code"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@id/tv_cart_desc"
+        app:layout_constraintTop_toBottomOf="@id/tv_cart_desc"
+        tools:listitem="@layout/cart_item" />
 
-        <TextView
-            android:id="@+id/tv_cart_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/add_more_to_cart"
-            android:textColor="@color/text_color"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@id/tv_cart_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_cart_title" />
+    <EditText
+        android:id="@+id/et_voucher_code"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/views_rounded_background"
+        android:hint="@string/enter_code_voucher"
+        android:inputType="text"
+        android:paddingHorizontal="30dp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_in_total"
+        app:layout_constraintEnd_toStartOf="@+id/btn_apply_voucher"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_cart_items"
-            android:layout_width="0dp"
-            android:layout_height="350dp"
-            android:layout_marginTop="30dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_cart_desc"
-            app:layout_constraintTop_toBottomOf="@id/tv_cart_desc"
-            tools:listitem="@layout/cart_item"/>
+    <Button
+        android:id="@+id/btn_apply_voucher"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:text="@string/apply"
+        app:layout_constraintBottom_toBottomOf="@id/et_voucher_code"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/et_voucher_code"
+        app:layout_constraintTop_toTopOf="@id/et_voucher_code" />
 
-        <EditText
-            android:id="@+id/et_voucher_code"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/views_rounded_background"
-            android:hint="@string/enter_code_voucher"
-            android:inputType="text"
-            android:paddingHorizontal="30dp"
-            android:textSize="17sp"
-            app:layout_constraintEnd_toStartOf="@+id/btn_apply_voucher"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_cart_items" />
+    <TextView
+        android:id="@+id/tv_in_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/in_total"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_checkout"
+        app:layout_constraintEnd_toStartOf="@+id/tv_sum_total"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
 
-        <Button
-            android:id="@+id/btn_apply_voucher"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:background="@drawable/views_rounded_background"
-            android:text="@string/apply"
-            app:layout_constraintBottom_toBottomOf="@id/et_voucher_code"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/et_voucher_code"
-            app:layout_constraintTop_toTopOf="@id/et_voucher_code" />
+    <TextView
+        android:id="@+id/tv_cart_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/my_cart"
+        android:textColor="@color/text_color"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
-        <TextView
-            android:id="@+id/tv_in_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/in_total"
-            android:textColor="@color/text_color"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_sum_total"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_voucher_code" />
+    <TextView
+        android:id="@+id/tv_sum_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/_288_00"
+        android:textColor="@color/text_color"
+        app:layout_constraintBottom_toBottomOf="@id/tv_in_total"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_in_total"
+        app:layout_constraintTop_toTopOf="@id/tv_in_total" />
 
-        <TextView
-            android:id="@+id/tv_sum_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/_288_00"
-            android:textColor="@color/text_color"
-            app:layout_constraintBottom_toBottomOf="@id/tv_in_total"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_in_total"
-            app:layout_constraintTop_toTopOf="@id/tv_in_total" />
+    <Button
+        android:id="@+id/btn_checkout"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/checkout"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
 
-        <Button
-            android:id="@+id/btn_checkout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/views_rounded_background"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/checkout"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_in_total" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
 
-</ScrollView>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="32dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
