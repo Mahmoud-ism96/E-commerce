@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.e_commerce.Home.viewmodel.HomeViewModel
-import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
+import com.example.e_commerce.home.viewmodel.HomeViewModel
+import com.example.e_commerce.home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentListOfProductBinding

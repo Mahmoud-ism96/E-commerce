@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.view.HomeFragment">
+    tools:context=".home.view.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -90,12 +90,12 @@
                 android:layout_height="175dp"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="-75dp"
-                android:layout_marginEnd="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView7"
-
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
                 tools:listitem="@layout/offer_list_item" />
 
             <androidx.cardview.widget.CardView

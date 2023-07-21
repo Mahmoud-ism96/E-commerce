@@ -67,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:background="@drawable/views_rounded_background"
-            android:enabled="false"
             android:text="@string/apply"
             app:layout_constraintBottom_toBottomOf="@id/et_voucher_code"
             app:layout_constraintEnd_toEndOf="parent"

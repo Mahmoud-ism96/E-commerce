@@ -1,4 +1,4 @@
-package com.example.e_commerce.Home.viewmodel
+package com.example.e_commerce.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

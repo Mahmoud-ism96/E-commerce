@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -18,6 +19,7 @@ import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.shoppingcart.viewmodel.CartViewModel
 import com.example.e_commerce.shoppingcart.viewmodel.CartViewModelFactory
+import com.example.e_commerce.utility.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -79,6 +81,17 @@ class CartFragment : Fragment() {
                     }
 
                     is ApiState.Failure -> {Log.w(TAG, "error:", )}
+                }
+            }
+        }
+
+        binding.btnApplyVoucher.setOnClickListener {
+            val voucherText = binding.etVoucherCode.text.toString()
+            if(!binding.etVoucherCode.text.isNullOrBlank()){
+                if(voucherText == Constants.CODE_DISCOUNT_100){
+                    Toast.makeText(requireContext(), "congrats 100% off", Toast.LENGTH_SHORT).show()
+                }else if(voucherText == Constants.CODE_DISCOUNT_35){
+                    Toast.makeText(requireContext(), "congrats 35% off", Toast.LENGTH_SHORT).show()
                 }
             }
         }
