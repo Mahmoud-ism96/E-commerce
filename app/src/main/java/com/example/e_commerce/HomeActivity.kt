@@ -35,6 +35,6 @@ class HomeActivity : AppCompatActivity() {
             ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
 
         homeViewModel.getBrands()
-
+        homeViewModel.getPriceRules()
     }
 }

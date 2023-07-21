@@ -21,6 +21,9 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     val productsByIdStateFlow get() = _productsByIdMutableStateFlow
     var brandImage: Any? = null
 
+    private val _pricesRulesMutableStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val pricesRulesStateFlow: StateFlow<ApiState> get() = _pricesRulesMutableStateFlow
 
     fun getBrands() {
         viewModelScope.launch {
@@ -46,5 +49,20 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
 
     fun getBrandImg(imageScr: Any) {
         brandImage = imageScr
+    }
+
+    fun getPriceRules() {
+        viewModelScope.launch {
+            repo.getAllPricesRules().catch {
+                _pricesRulesMutableStateFlow.value = ApiState.Failure(it)
+            }.collect {
+                if (it.isSuccessful) {
+                    _pricesRulesMutableStateFlow.value = ApiState.Success(it.body()!!)
+                } else {
+                    _pricesRulesMutableStateFlow.value =
+                        ApiState.Failure(Throwable(it.code().toString()))
+                }
+            }
+        }
     }
 }

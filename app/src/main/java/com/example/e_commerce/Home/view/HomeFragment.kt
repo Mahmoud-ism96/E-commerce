@@ -14,12 +14,15 @@ import com.example.e_commerce.Home.viewmodel.HomeViewModel
 import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
+import com.example.e_commerce.model.pojo.Ad
 import com.example.e_commerce.model.pojo.BrandsResponse
+import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
+import com.example.e_commerce.utility.Functions
 import com.google.android.material.carousel.CarouselLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,6 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModelFactory: HomeViewModelFactory
     private lateinit var brandRecycleAdapter: BrandRecycleAdapter
     private lateinit var navController: NavController
+    private lateinit var couponsRecyclerAdapter: CouponsRecyclerAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +60,7 @@ class HomeFragment : Fragment() {
         homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())))
         homeViewModel =
             ViewModelProvider(requireActivity(), homeViewModelFactory)[HomeViewModel::class.java]
+
 
         brandRecycleAdapter = BrandRecycleAdapter {
             homeViewModel.getProductById(it.id)
@@ -137,6 +142,37 @@ class HomeFragment : Fragment() {
                     }
                 }
 
+            }
+        }
+
+        //for coupons
+        couponsRecyclerAdapter = CouponsRecyclerAdapter {
+            Functions.copyToClipboard(requireContext(), it)
+            Toast.makeText(requireContext(), "Coupon copied to clipboard", Toast.LENGTH_SHORT)
+                .show()
+        }
+        binding.rvOffer.adapter = couponsRecyclerAdapter
+
+        lifecycleScope.launch {
+            homeViewModel.pricesRulesStateFlow.collectLatest {
+                when (it) {
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        val priceRuleResponse: PriceRuleResponse = it.data as PriceRuleResponse
+                        val ads: MutableList<Ad> = mutableListOf()
+                        for (x in priceRuleResponse.price_rules) {
+                            val ad = Ad(x.title, x.value.toString(), x.id, 1)
+                            ads.add(ad)
+                        }
+                        couponsRecyclerAdapter.submitList(ads)
+                    }
+
+                    is ApiState.Failure -> {
+                        binding.rvOffer.visibility = View.GONE
+                        Toast.makeText(requireContext(), "No Coupons for now", Toast.LENGTH_SHORT)
+                        .show()
+                    }
+                }
             }
         }
 
