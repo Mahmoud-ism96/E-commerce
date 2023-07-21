@@ -69,7 +69,7 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:background="@drawable/views_rounded_background_primary"
-        android:text="Button"
+        android:text="@string/add_to_cart"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"

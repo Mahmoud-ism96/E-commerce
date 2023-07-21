@@ -9,6 +9,6 @@ data class Customer(
     val email: String,
     val first_name: String,
     val last_name: String = "ABC",
-    val phone: String = "+15142546011",
+    val phone: String = "" ,
     val verified_email: Boolean = true
 )
