@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import com.example.e_commerce.home.viewmodel.HomeViewModel
-import com.example.e_commerce.home.viewmodel.HomeViewModelFactory
+import com.example.e_commerce.Home.viewmodel.HomeViewModel
+import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.databinding.ActivityHomeBinding
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource

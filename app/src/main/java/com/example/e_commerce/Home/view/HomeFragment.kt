@@ -1,4 +1,4 @@
-package com.example.e_commerce.home.view
+package com.example.e_commerce.Home.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.example.e_commerce.home.viewmodel.HomeViewModel
-import com.example.e_commerce.home.viewmodel.HomeViewModelFactory
+import com.example.e_commerce.Home.viewmodel.HomeViewModel
+import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.e_commerce.model.pojo.Ad
