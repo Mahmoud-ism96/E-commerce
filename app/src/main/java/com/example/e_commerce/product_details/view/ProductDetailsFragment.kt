@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.databinding.FragmentProductDetailsBinding
 import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
@@ -79,6 +80,10 @@ class ProductDetailsFragment : Fragment() {
 
         binding.btnDetailAddToCart.setOnClickListener {
             if (::cartItem.isInitialized) _viewModel.addToCart(cartItem)
+        }
+
+        binding.btnDetailBack.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         return binding.root

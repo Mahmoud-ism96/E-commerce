@@ -38,9 +38,9 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:text="@string/my_wishlist"
         android:textSize="26sp"
-        android:fontFamily="@font/montserrat_semi_bold"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Saved for later."
+        android:text="@string/saved_for_later"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
@@ -68,7 +68,7 @@
         android:id="@+id/button2"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="@drawable/views_rounded_background_primary"
+        android:background="@drawable/btn_ripple_transparent"
         android:text="@string/add_to_cart"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"

@@ -95,7 +95,8 @@ class SignUpFragment : Fragment() {
     }
 
     private fun emailSignUp(name: String, email: String, password: String) {
-        //TODO: Add loading on click
+        binding.groupSignupLoading.visibility = View.VISIBLE
+
         if (checkConnectivity(requireContext())) {
             if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -156,7 +157,8 @@ class SignUpFragment : Fragment() {
     }
 
     private fun showToast(message: String) {
-        //TODO: Stop loading when Toast is triggered
+        binding.groupSignupLoading.visibility = View.GONE
+
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 

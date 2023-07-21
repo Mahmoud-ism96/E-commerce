@@ -77,6 +77,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun emailSignIn(email: String, password: String) {
+        binding.groupSigninLoading.visibility = View.VISIBLE
         if (checkConnectivity(requireContext())) {
             if (email.isNotBlank() && password.isNotBlank()) {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -136,7 +137,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun showToast(message: String) {
-        //TODO: Stop loading when Toast is triggered
+        binding.groupSigninLoading.visibility = View.GONE
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
