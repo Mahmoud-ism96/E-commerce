@@ -15,7 +15,8 @@ import com.example.e_commerce.model.pojo.CartItem
 
 class CartAdapter(
     private val onPlusClick: (Long, Int) -> Unit,
-    private val onMinusClick: (Long, Int) -> Unit
+    private val onMinusClick: (Long, Int) -> Unit,
+    private val onItemClick: (Long) -> Unit,
 ) : ListAdapter<CartItem, CartAdapter.CartViewHolder>(RecyclerDiffUtilCartItem()) {
 
 
@@ -56,6 +57,10 @@ class CartAdapter(
                     }
                 }
                 btnMinus.setOnClickListener { onMinusClick(currentItem.id, currentItem.quantity) }
+
+                binding.cvItem.setOnClickListener {
+                    onItemClick(currentItem.id)
+                }
             }
         }
     }

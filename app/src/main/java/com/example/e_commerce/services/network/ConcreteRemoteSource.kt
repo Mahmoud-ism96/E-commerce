@@ -2,6 +2,8 @@ package com.example.e_commerce.services.network
 
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
+import com.example.e_commerce.model.pojo.address.AddressResponse
+import com.example.e_commerce.model.pojo.address.SendAddress
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
@@ -55,5 +57,16 @@ object ConcreteRemoteSource : RemoteSource {
     ): Flow<Response<CustomerResponse>> {
         val customerByEmailAndName = ApiClient.apiService.getCustomerByEmailAndName(email, name)
         return flowOf(customerByEmailAndName)
+    }
+
+    override suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>> {
+        return flowOf(ApiClient.apiService.getAddressesForCustomer(customer_id))
+    }
+
+    override suspend fun createAddressForCustomer(
+        customer_id: String,
+        sendAddress: SendAddress
+    ): Flow<Response<AddressResponse>> {
+        return flowOf(ApiClient.apiService.createAddressForCustomer(customer_id, sendAddress))
     }
 }

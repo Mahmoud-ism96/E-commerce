@@ -3,6 +3,8 @@ package com.example.e_commerce.model.repo
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.ProductsResponse
+import com.example.e_commerce.model.pojo.address.AddressResponse
+import com.example.e_commerce.model.pojo.address.SendAddress
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
@@ -28,4 +30,7 @@ interface RepoInterface {
     suspend fun deleteItemById(itemId: Long)
     suspend fun updateQuantity(itemId: Long, newQuantity: Int)
     fun getAllCartItems(): Flow<List<CartItem>>
+    suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>>
+    suspend fun createAddressForCustomer(customer_id: String, sendAddress: SendAddress): Flow<Response<AddressResponse>>
+
 }

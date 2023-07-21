@@ -2,6 +2,8 @@ package com.example.e_commerce.services.network
 
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
+import com.example.e_commerce.model.pojo.address.AddressResponse
+import com.example.e_commerce.model.pojo.address.SendAddress
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
@@ -44,5 +46,11 @@ interface ApiService {
     suspend fun getCustomerByEmailAndName(
         @Query("email") email: String, @Query("first_name") name: String
     ): Response<CustomerResponse>
+
+    @POST("/admin/api/2023-07/customers/{customer_id}/addresses.json")
+    suspend fun createAddressForCustomer(@Path("customer_id") customer_id: String, @Body customer_address: SendAddress): Response<AddressResponse>
+
+    @GET("/admin/api/2023-07/customers/{customer_id}/addresses.json?limit=1")
+    suspend fun getAddressesForCustomer(@Path("customer_id") customer_id: String):Response<AddressResponse>
 }
 

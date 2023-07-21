@@ -30,7 +30,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:contentDescription="@string/item"
-                android:padding="5dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/dummy_shoes" />
         </androidx.cardview.widget.CardView>
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.databinding.FragmentCheckoutBinding
 
@@ -29,14 +30,8 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnBackCheckOut.setOnClickListener {
-            navigateBack()
+            findNavController().popBackStack()
         }
-    }
-
-    private fun navigateBack() {
-        val fragmentManager = parentFragmentManager
-        fragmentManager.beginTransaction().commit()
-        fragmentManager.popBackStack()
     }
 
     override fun onDestroy() {
