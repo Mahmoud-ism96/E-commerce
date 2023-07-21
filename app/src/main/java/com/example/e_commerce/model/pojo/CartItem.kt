@@ -8,7 +8,7 @@ data class CartItem(
     @PrimaryKey
     val id: Long,
     val title: String,
-    val price: Double,
+    val price: String,
     val inventoryQuantity: Int,
     val imageSrc: String,
     val quantity: Int = 1,

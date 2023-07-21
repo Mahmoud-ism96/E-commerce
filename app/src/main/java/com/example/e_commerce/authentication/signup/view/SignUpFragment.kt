@@ -1,4 +1,4 @@
-package com.example.e_commerce.authentication.signup
+package com.example.e_commerce.authentication.signup.view
 
 import android.app.Activity
 import android.content.Intent
@@ -10,10 +10,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
+import com.example.e_commerce.authentication.signup.viewmodel.SignUpViewModel
+import com.example.e_commerce.authentication.signup.viewmodel.SignUpViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignUpBinding
+import com.example.e_commerce.model.pojo.customer.Customer
+import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
+import com.example.e_commerce.services.network.ApiState
+import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -23,6 +33,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SignUpFragment : Fragment() {
 
@@ -35,10 +47,21 @@ class SignUpFragment : Fragment() {
 
     private val TAG = "SignUpFragment"
 
+    private lateinit var _viewModelFactory: SignUpViewModelFactory
+    private lateinit var _viewModel: SignUpViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
+
+        _viewModelFactory = SignUpViewModelFactory(
+            Repo.getInstance(
+                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
+        _viewModel =
+            ViewModelProvider(requireActivity(), _viewModelFactory)[SignUpViewModel::class.java]
 
         //TODO: Extract to External Method with the rest of Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -71,9 +94,8 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
 
-    //TODO: Extract String
-
     private fun emailSignUp(name: String, email: String, password: String) {
+        //TODO: Add loading on click
         if (checkConnectivity(requireContext())) {
             if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -91,45 +113,51 @@ class SignUpFragment : Fragment() {
                                     mAuth.currentUser?.sendEmailVerification()
                                         ?.addOnCompleteListener { verificationTask ->
                                             if (verificationTask.isSuccessful) {
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    "Registration successful. Please check your email to verify your account.",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                                                val customerData = CustomerData(
+                                                    Customer(
+                                                        email = email, first_name = name
+                                                    )
+                                                )
+                                                _viewModel.createNewCustomer(customerData)
+                                                lifecycleScope.launch {
+                                                    _viewModel.customerMutableStateFlow.collectLatest {
+
+                                                        when (it) {
+                                                            is ApiState.Success -> {
+                                                                showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
+                                                                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                                                            }
+
+                                                            else -> {
+                                                                showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             } else {
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    "Registration failed. Please check your email and password.",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
+                                                showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
                                             }
                                         }
                                 } else {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Registration failed. Please check your email and password.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
                                 }
                             }
                     } else {
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            requireContext(),
-                            "Registration failed. Please check your data.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.registration_failed_please_check_your_data))
                     }
                 }
-            } else Toast.makeText(
-                requireContext(), "Invalid data. Please fill in all the fields.", Toast.LENGTH_SHORT
-            ).show()
-        } else Toast.makeText(
-            requireContext(),
-            "No internet connection. Please check your network settings.",
-            Toast.LENGTH_SHORT
-        ).show()
+            } else {
+                showToast(getString(R.string.invalid_data_please_fill_in_all_the_fields))
+            }
+        } else {
+            showToast(getString(R.string.no_internet_connection_please_check_your_network_settings))
+        }
+    }
+
+    private fun showToast(message: String) {
+        //TODO: Stop loading when Toast is triggered
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun googleSignIn() {
@@ -143,15 +171,25 @@ class SignUpFragment : Fragment() {
             requireActivity()
         ) { task ->
             if (task.isSuccessful) {
-                Log.d(TAG, "signInWithCredential:success")
                 val user = mAuth.currentUser
+                var displayName = user?.displayName
+
+                if (!displayName.isNullOrEmpty()) {
+                    showToast(getString(R.string.welcome) + " $displayName")
+                }else {
+                    displayName = "Unknown"
+                }
+
+                val customerData = CustomerData(
+                    Customer(
+                        email = user!!.email!!, first_name = displayName
+                    )
+                )
+                _viewModel.createNewCustomer(customerData)
+
                 updateUI(user)
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Google verification failed. Please try again.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.google_verification_failed_please_try_again))
                 updateUI(null)
             }
         }

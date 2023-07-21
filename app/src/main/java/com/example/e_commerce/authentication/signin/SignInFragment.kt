@@ -14,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentSignInBinding
+import com.example.e_commerce.model.pojo.customer.Customer
+import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -74,8 +76,6 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
-    //TODO: Extract String
-
     private fun emailSignIn(email: String, password: String) {
         if (checkConnectivity(requireContext())) {
             if (email.isNotBlank() && password.isNotBlank()) {
@@ -83,29 +83,20 @@ class SignInFragment : Fragment() {
                     requireActivity()
                 ) { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "signInWithEmail:success")
                         val user = mAuth.currentUser
+                        showToast(getString(R.string.welcome) + " ${user!!.displayName}")
                         updateUI(user)
                     } else {
-                        Log.w(
-                            TAG, "signInWithEmail:failure", task.exception
-                        )
-                        Toast.makeText(
-                            requireContext(),
-                            "Login failed. Please check your email and password.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.login_failed_please_check_your_email_and_password))
                         updateUI(null)
                     }
                 }
-            } else Toast.makeText(
-                requireContext(), "Invalid data. Please fill in all the fields.", Toast.LENGTH_SHORT
-            ).show()
-        } else Toast.makeText(
-            requireContext(),
-            "No internet connection. Please check your network settings.",
-            Toast.LENGTH_SHORT
-        ).show()
+            } else {
+                showToast(getString(R.string.invalid_data_please_fill_in_all_the_fields))
+            }
+        } else {
+            showToast(getString(R.string.no_internet_connection_please_check_your_network_settings))
+        }
     }
 
     private fun googleSignIn() {
@@ -119,20 +110,34 @@ class SignInFragment : Fragment() {
             requireActivity()
         ) { task ->
             if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "signInWithCredential:success")
                 val user = mAuth.currentUser
+                var displayName = user?.displayName
+
+                if (!displayName.isNullOrEmpty()) {
+                    showToast(getString(R.string.welcome) + " $displayName")
+                } else {
+                    displayName = "Unknown"
+                }
+
+                val customerData = CustomerData(
+                    Customer(
+                        email = user!!.email!!, first_name = displayName
+                    )
+                )
+                //TODO: Add it to the customer using Shared ViewModel
+//                _viewModel.createNewCustomer(customerData)
+
                 updateUI(user)
             } else {
-                // If sign in fails, display a message to the user.
-                Toast.makeText(
-                    requireContext(),
-                    "Google verification failed. Please try again.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.google_verification_failed_please_try_again))
                 updateUI(null)
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        //TODO: Stop loading when Toast is triggered
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -141,12 +146,8 @@ class SignInFragment : Fragment() {
                 val intent = Intent(requireContext(), HomeActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
-            }else{
-                Toast.makeText(
-                    requireContext(),
-                    "Please check your email to verify your account.",
-                    Toast.LENGTH_SHORT
-                ).show()
+            } else {
+                showToast(getString(R.string.please_check_your_email_to_verify_your_account))
             }
         }
     }

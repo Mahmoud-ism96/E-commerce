@@ -3,9 +3,10 @@ package com.example.e_commerce.services.network
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
-import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
+import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import retrofit2.Response
@@ -20,10 +21,15 @@ object ConcreteRemoteSource : RemoteSource {
         val brandsResponse = ApiClient.apiService.getBrands()
         return flowOf(brandsResponse)
     }
-    
+
     override suspend fun getProductsById(id: Long): Flow<Response<ProductsResponse>> {
-        val productsResponseByBrand=ApiClient.apiService.getProductsById(id)
+        val productsResponseByBrand = ApiClient.apiService.getProductsById(id)
         return flowOf(productsResponseByBrand)
+    }
+
+    override suspend fun getProductById(productID: Long): Flow<Response<ProductDetailsResponse>> {
+        val productResponseByID = ApiClient.apiService.getProductById(productID)
+        return flowOf(productResponseByID)
     }
 
     override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {

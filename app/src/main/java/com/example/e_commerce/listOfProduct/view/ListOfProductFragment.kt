@@ -4,16 +4,15 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,8 +45,7 @@ class ListOfProductFragment : Fragment() {
     private var toPrice: Double = 10000.0
     private lateinit var navController: NavController
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentListOfProductBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -57,7 +55,11 @@ class ListOfProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
-        homeViewModelFactory = HomeViewModelFactory(Repo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())))
+        homeViewModelFactory = HomeViewModelFactory(
+            Repo.getInstance(
+                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
 
         homeViewModel =
             ViewModelProvider(requireActivity(), homeViewModelFactory)[HomeViewModel::class.java]
@@ -76,12 +78,9 @@ class ListOfProductFragment : Fragment() {
             }
         }
 
-        Glide.with(requireContext())
-            .load(homeViewModel.brandImage)
-            .apply(RequestOptions().override(400, 350))
-            .placeholder(R.drawable.loading_svgrepo_com)
-            .error(R.drawable.error)
-            .into(binding.ivBrandList)
+        Glide.with(requireContext()).load(homeViewModel.brandImage)
+            .apply(RequestOptions().override(400, 350)).placeholder(R.drawable.loading_svgrepo_com)
+            .error(R.drawable.error).into(binding.ivBrandList)
 
         filterDialog = Dialog(requireContext())
         filterDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -152,9 +151,9 @@ class ListOfProductFragment : Fragment() {
                 }
             }
             filterBinding.apply {
-                rbtnShoes.isChecked=false
-                rbtnAccessories.isChecked=false
-                rbtnShirt.isChecked=false
+                rbtnShoes.isChecked = false
+                rbtnAccessories.isChecked = false
+                rbtnShirt.isChecked = false
                 etFromPrice.text.clear()
                 etToPrice.text.clear()
             }
@@ -214,6 +213,6 @@ class ListOfProductFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        productRecycleAdapter.submitList(emptyList())
+        if (::productRecycleAdapter.isInitialized) productRecycleAdapter.submitList(emptyList())
     }
 }

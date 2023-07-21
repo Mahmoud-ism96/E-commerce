@@ -62,4 +62,13 @@
     <string name="t_shirts">T-SHIRTS</string>
     <string name="accessories">ACCESSORIES</string>
     <string name="remove_filter">Remove Filter</string>
+    <string name="registration_successful_please_check_your_email_to_verify_your_account">Registration successful. Please check your email to verify your account.</string>
+    <string name="registration_failed_please_check_your_email_and_password">Registration failed. Please check your email and password.</string>
+    <string name="registration_failed_please_check_your_data">Registration failed. Please check your data.</string>
+    <string name="invalid_data_please_fill_in_all_the_fields">Invalid data. Please fill in all the fields.</string>
+    <string name="no_internet_connection_please_check_your_network_settings">No internet connection. Please check your network settings.</string>
+    <string name="google_verification_failed_please_try_again">Google verification failed. Please try again.</string>
+    <string name="welcome">Welcome</string>
+    <string name="login_failed_please_check_your_email_and_password">Login failed. Please check your email and password.</string>
+    <string name="please_check_your_email_to_verify_your_account">Please check your email to verify your account.</string>
 </resources>

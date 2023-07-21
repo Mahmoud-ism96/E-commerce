@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".product.ProductDetailsFragment">
+    tools:context=".product_details.view.ProductDetailsFragment">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -40,7 +40,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_item_detail_name"
+        android:id="@+id/tv_detail_vendor_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="26sp"
@@ -84,7 +84,7 @@
         tools:text="Men's Shoe" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/tv_detail_product_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -93,7 +93,7 @@
         android:maxLines="3"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/textView20"
+        app:layout_constraintEnd_toStartOf="@+id/tv_detail_price"
         app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/textView17"
         tools:text="Nike Air Max" />
@@ -121,14 +121,14 @@
         app:layout_constraintTop_toTopOf="@+id/textView19" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/tv_detail_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView18"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_detail_product_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/tv_detail_product_name"
         tools:text="2900.00 EGP" />
 
     <TextView
@@ -138,8 +138,8 @@
         android:layout_marginTop="24dp"
         android:text="@string/size"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintStart_toStartOf="@+id/tv_detail_product_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_detail_product_name" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
@@ -154,7 +154,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_detail_add_to_cart"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginHorizontal="24dp"

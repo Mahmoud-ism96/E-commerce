@@ -67,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="com.example.e_commerce.product.ProductDetailsFragment"
+        android:name="com.example.e_commerce.product_details.view.ProductDetailsFragment"
         android:label="fragment_product_details"
         tools:layout="@layout/fragment_product_details" >
         <argument

@@ -1,5 +1,7 @@
 package com.example.e_commerce.model.pojo.product_details
 
+import com.example.e_commerce.model.pojo.Image
+
 data class Product(
     val admin_graphql_api_id: String,
     val body_html: String,
