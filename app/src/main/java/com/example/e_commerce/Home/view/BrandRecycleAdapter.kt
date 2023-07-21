@@ -12,7 +12,7 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.CarouselLayoutBinding
 import com.example.e_commerce.model.pojo.Brand
 
-class BrandRecycleAdapter(private val context: Context,private val onClick: (Brand) -> Unit) : ListAdapter<Brand, BrandRecycleAdapter.BrandViewHolder>(RecyclerDiffUtilBrand()) {
+class BrandRecycleAdapter(private val onClick: (Brand) -> Unit) : ListAdapter<Brand, BrandRecycleAdapter.BrandViewHolder>(RecyclerDiffUtilBrand()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrandViewHolder {
@@ -33,7 +33,7 @@ class BrandRecycleAdapter(private val context: Context,private val onClick: (Bra
         fun onBind(currentItem: Brand) {
             binding.apply {
                 tvBrand.text=currentItem.title
-                (Glide.with(context)
+                (Glide.with(tvBrand.context)
                     .load(currentItem.image.src)
                     .apply(RequestOptions().override(200, 200))
                     .placeholder(R.drawable.loading_svgrepo_com)

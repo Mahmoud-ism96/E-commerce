@@ -13,8 +13,8 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ProductListItemBinding
 import com.example.e_commerce.model.pojo.Product
 
-class ProductRecycleAdapter(private val context: Context) : ListAdapter<Product, ProductRecycleAdapter.ProductViewHolder>(RecyclerDiffUtilProduct()) {
-
+class ProductRecycleAdapter(private val onClick: (Product) -> Unit) :
+    ListAdapter<Product, ProductRecycleAdapter.ProductViewHolder>(RecyclerDiffUtilProduct()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater: LayoutInflater =
@@ -34,14 +34,17 @@ class ProductRecycleAdapter(private val context: Context) : ListAdapter<Product,
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: Product) {
             binding.apply {
-                tvItemName.text=currentItem.title
-                tvItemPrice.text="${currentItem.variants[0].price} $"
-                (Glide.with(context)
+                tvItemName.text = currentItem.title
+                tvItemPrice.text = "${currentItem.variants[0].price} EGP"
+                Glide.with(tvItemName.context)
                     .load(currentItem.image.src)
                     .apply(RequestOptions().override(200, 200))
                     .placeholder(R.drawable.loading_svgrepo_com)
                     .error(R.drawable.error)
-                    .into(ivItemImage))
+                    .into(ivItemImage)
+                item.setOnClickListener {
+                    onClick(currentItem)
+                }
             }
         }
     }

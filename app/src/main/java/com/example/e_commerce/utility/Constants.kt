@@ -17,4 +17,7 @@ object Constants {
     const val PRODUCT_BY_KIDS=452738089259
     const val PRODUCT_BY_SALE=452738122027
 
+    const val TAG="shopy"
+
+
 }
