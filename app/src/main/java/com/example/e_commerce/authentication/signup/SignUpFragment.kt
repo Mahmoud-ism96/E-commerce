@@ -1,4 +1,4 @@
-package com.example.e_commerce.authentication.signup.view
+package com.example.e_commerce.authentication.signup
 
 import android.app.Activity
 import android.content.Intent
@@ -15,8 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
-import com.example.e_commerce.authentication.signup.viewmodel.SignUpViewModel
-import com.example.e_commerce.authentication.signup.viewmodel.SignUpViewModelFactory
+import com.example.e_commerce.authentication.viewmodel.AuthViewModel
+import com.example.e_commerce.authentication.viewmodel.AuthViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignUpBinding
 import com.example.e_commerce.model.pojo.customer.Customer
 import com.example.e_commerce.model.pojo.customer.CustomerData
@@ -47,21 +47,21 @@ class SignUpFragment : Fragment() {
 
     private val TAG = "SignUpFragment"
 
-    private lateinit var _viewModelFactory: SignUpViewModelFactory
-    private lateinit var _viewModel: SignUpViewModel
+    private lateinit var _viewModelFactory: AuthViewModelFactory
+    private lateinit var _viewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
 
-        _viewModelFactory = SignUpViewModelFactory(
+        _viewModelFactory = AuthViewModelFactory(
             Repo.getInstance(
-                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
+                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireActivity())
             )
         )
         _viewModel =
-            ViewModelProvider(requireActivity(), _viewModelFactory)[SignUpViewModel::class.java]
+            ViewModelProvider(requireActivity(), _viewModelFactory)[AuthViewModel::class.java]
 
         //TODO: Extract to External Method with the rest of Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
