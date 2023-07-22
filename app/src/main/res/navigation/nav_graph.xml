@@ -58,7 +58,11 @@
         android:id="@+id/mapFragment"
         android:name="com.example.e_commerce.profile.view.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listOfProductFragment"
         android:name="com.example.e_commerce.listOfProduct.view.ListOfProductFragment"
@@ -85,5 +89,10 @@
         <action
             android:id="@+id/action_addAddressFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <argument
+            android:name="coordinate"
+            app:argType="com.example.e_commerce.model.pojo.address.Coordinate"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

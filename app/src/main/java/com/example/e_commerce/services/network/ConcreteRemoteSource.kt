@@ -4,6 +4,7 @@ import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddress
+import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
@@ -65,8 +66,19 @@ object ConcreteRemoteSource : RemoteSource {
 
     override suspend fun createAddressForCustomer(
         customer_id: String,
-        sendAddress: SendAddress
+        sendAddress: SendAddressDTO
     ): Flow<Response<AddressResponse>> {
         return flowOf(ApiClient.apiService.createAddressForCustomer(customer_id, sendAddress))
+    }
+
+    override suspend fun makeAddressDefault(
+        customer_id: String,
+        address_id: String
+    ): Flow<Response<AddressResponse>> {
+        return flowOf(ApiClient.apiService.makeAddressDefault(customer_id, address_id))
+    }
+
+    override suspend fun deleteAddressForCustomer(customer_id: String, address_id: String) {
+        ApiClient.apiService.deleteAddressForCustomer(customer_id, address_id)
     }
 }
