@@ -80,4 +80,5 @@
     <string name="last_name">Last Name</string>
     <string name="egypt">EGYPT</string>
     <string name="saved_for_later">Saved for later.</string>
+    <string name="zip_code">Zip Code</string>
 </resources>

@@ -5,6 +5,7 @@ import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddress
+import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
@@ -31,6 +32,8 @@ interface RepoInterface {
     suspend fun updateQuantity(itemId: Long, newQuantity: Int)
     fun getAllCartItems(): Flow<List<CartItem>>
     suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>>
-    suspend fun createAddressForCustomer(customer_id: String, sendAddress: SendAddress): Flow<Response<AddressResponse>>
+    suspend fun createAddressForCustomer(customer_id: String, sendAddress: SendAddressDTO): Flow<Response<AddressResponse>>
+    suspend fun makeAddressDefault(customer_id: String, address_id: String): Flow<Response<AddressResponse>>
+    suspend fun deleteAddressForCustomer(customer_id: String, address_id: String)
 
 }
