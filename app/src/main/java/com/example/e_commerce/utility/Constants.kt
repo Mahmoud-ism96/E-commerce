@@ -19,5 +19,12 @@ object Constants {
 
     const val TAG="shopy"
 
+    const val SETTING = "setting"
+    const val LANGUAGE = "language"
+    const val CURRENCY = "currency"
+    const val ENGLISH = "english"
+    const val ARABIC = "arabic"
+    const val USD = "usd"
+    const val EGP = "egp"
 
 }

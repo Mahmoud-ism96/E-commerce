@@ -4,7 +4,6 @@ import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.address.AddressResponse
-import com.example.e_commerce.model.pojo.address.SendAddress
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
@@ -35,5 +34,7 @@ interface RepoInterface {
     suspend fun createAddressForCustomer(customer_id: String, sendAddress: SendAddressDTO): Flow<Response<AddressResponse>>
     suspend fun makeAddressDefault(customer_id: String, address_id: String): Flow<Response<AddressResponse>>
     suspend fun deleteAddressForCustomer(customer_id: String, address_id: String)
+    fun writeStringToSettingSP(key: String, value: String)
+    fun readStringFromSettingSP(key: String): String
 
 }

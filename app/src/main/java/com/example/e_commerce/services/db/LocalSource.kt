@@ -9,4 +9,6 @@ interface LocalSource {
     suspend fun updateQuantity( itemId:Long, newQuantity: Int)
     fun getAllCartItems(): Flow<List<CartItem>>
     suspend fun deleteItemById(itemId: Long)
+    fun writeStringToSettingSP(key: String, value: String)
+    fun readStringFromSettingSP(key: String): String
 }
