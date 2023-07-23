@@ -81,4 +81,8 @@
     <string name="egypt">EGYPT</string>
     <string name="saved_for_later">Saved for later.</string>
     <string name="zip_code">Zip Code</string>
+    <string name="currency">Currency</string>
+    <string name="usd">USD</string>
+    <string name="egp">EGP</string>
+    <string name="setting">Setting</string>
 </resources>

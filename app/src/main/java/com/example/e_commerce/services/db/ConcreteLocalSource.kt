@@ -2,12 +2,17 @@ package com.example.e_commerce.services.db
 
 import android.content.Context
 import com.example.e_commerce.model.pojo.CartItem
+import com.example.e_commerce.services.settingsharedpreference.SettingSharedPref
 import kotlinx.coroutines.flow.Flow
 
 class ConcreteLocalSource private constructor(context: Context): LocalSource {
 
     private val cartDao: CartDao by lazy {
         CartDatabase.getInstance(context).getDao()
+    }
+
+    private val settingSharedPref : SettingSharedPref by lazy {
+        SettingSharedPref.getInstance(context)
     }
 
     companion object{
@@ -38,5 +43,13 @@ class ConcreteLocalSource private constructor(context: Context): LocalSource {
 
     override suspend fun deleteItemById(itemId: Long) {
         cartDao.deleteItemById(itemId)
+    }
+
+    override fun writeStringToSettingSP(key: String, value: String) {
+        settingSharedPref.writeStringToSettingSP(key, value)
+    }
+
+    override fun readStringFromSettingSP(key: String): String {
+        return settingSharedPref.readStringFromSettingSP(key)
     }
 }

@@ -60,6 +60,7 @@ class MapFragment : Fragment() {
         binding.btnSaveLocation.setOnClickListener {
             if (marker != null) {
                 binding.btnSaveLocation.visibility = View.GONE
+                binding.prProgressMap.visibility = View.VISIBLE
                 val action = MapFragmentDirections.actionMapFragmentToAddAddressFragment(coordinate)
                 val navController = findNavController()
                 navController.navigate(action)
@@ -85,10 +86,10 @@ class MapFragment : Fragment() {
             map.setLatLngBoundsForCameraTarget(egyptBounds)
             map.setMinZoomPreference(7F)
 
-            supportMapFragment.getMapAsync { map ->
-                map.setOnMapClickListener {
+            supportMapFragment.getMapAsync { map_here ->
+                map_here.setOnMapClickListener {
                     marker?.remove()
-                    marker = map.addMarker(
+                    marker = map_here.addMarker(
                         MarkerOptions()
                             .position(it)
                     )

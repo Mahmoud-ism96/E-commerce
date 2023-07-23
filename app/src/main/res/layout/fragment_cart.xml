@@ -138,4 +138,40 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_end="32dp" />
+
+    <ImageView
+        android:id="@+id/iv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/plzlogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_signin_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:text="@string/sign_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/iv_login"
+        app:layout_constraintStart_toStartOf="@id/iv_login"
+        app:layout_constraintTop_toBottomOf="@id/iv_login" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_not_signed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iv_login,btn_signin_setting" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_signed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="guideline8,guideline7,guideline6,guideline5,btn_checkout,tv_sum_total,tv_cart_title,tv_in_total,btn_apply_voucher,et_voucher_code,rv_cart_items,tv_cart_desc" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
