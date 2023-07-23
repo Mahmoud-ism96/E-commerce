@@ -7,6 +7,8 @@ import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +28,7 @@ interface RemoteSource {
     suspend fun createAddressForCustomer(customer_id: String, sendAddress: SendAddressDTO): Flow<Response<AddressResponse>>
     suspend fun makeAddressDefault(customer_id: String, address_id: String): Flow<Response<AddressResponse>>
     suspend fun deleteAddressForCustomer(customer_id: String, address_id: String)
-
+    suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
+    suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>>
 }
 

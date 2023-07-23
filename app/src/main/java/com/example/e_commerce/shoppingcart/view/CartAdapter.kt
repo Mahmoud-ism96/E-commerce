@@ -11,13 +11,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.CartItemBinding
-import com.example.e_commerce.model.pojo.CartItem
+import com.example.e_commerce.model.pojo.draftorder.response.LineItem
 
 class CartAdapter(
     private val onPlusClick: (Long, Int) -> Unit,
     private val onMinusClick: (Long, Int) -> Unit,
     private val onItemClick: (Long) -> Unit,
-) : ListAdapter<CartItem, CartAdapter.CartViewHolder>(RecyclerDiffUtilCartItem()) {
+) : ListAdapter<LineItem, CartAdapter.CartViewHolder>(RecyclerDiffUtilCartItem()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -35,20 +35,20 @@ class CartAdapter(
 
     inner class CartViewHolder(private val binding: CartItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(currentItem: CartItem) {
+        fun onBind(currentItem: LineItem) {
             binding.apply {
                 tvItemName.text = currentItem.title
-                tvItemPrice.text = currentItem.price.toString()
+                tvItemPrice.text = currentItem.price
                 tvItemCount.text = currentItem.quantity.toString()
                 Glide.with(ivItemImage.context)
-                    .load(currentItem.imageSrc)
+                    .load(currentItem.properties[0].value)
                     .apply(RequestOptions().override(200, 200))
                     .placeholder(R.drawable.loading_svgrepo_com)
                     .error(R.drawable.error)
                     .into(ivItemImage)
 
                 btnPlus.setOnClickListener {
-                    if (currentItem.inventoryQuantity > currentItem.quantity + 1) {
+                    if (currentItem.properties[1].value.toInt() > currentItem.quantity + 1) {
                         onPlusClick(currentItem.id, currentItem.quantity)
                         val newQuantity = currentItem.quantity + 1
                         tvItemCount.text = newQuantity.toString()
@@ -56,7 +56,11 @@ class CartAdapter(
                         Toast.makeText(tvItemCount.context, "Sorry you can't bay more", Toast.LENGTH_SHORT).show()
                     }
                 }
-                btnMinus.setOnClickListener { onMinusClick(currentItem.id, currentItem.quantity) }
+                btnMinus.setOnClickListener {
+                    val newQuantity = currentItem.quantity - 1
+                    tvItemCount.text = newQuantity.toString()
+                    onMinusClick(currentItem.id, currentItem.quantity)
+                }
 
                 binding.cvItem.setOnClickListener {
                     onItemClick(currentItem.id)
@@ -66,12 +70,12 @@ class CartAdapter(
     }
 }
 
-class RecyclerDiffUtilCartItem : DiffUtil.ItemCallback<CartItem>() {
-    override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+class RecyclerDiffUtilCartItem : DiffUtil.ItemCallback<LineItem>() {
+    override fun areItemsTheSame(oldItem: LineItem, newItem: LineItem): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+    override fun areContentsTheSame(oldItem: LineItem, newItem: LineItem): Boolean {
         return oldItem == newItem
     }
 }
