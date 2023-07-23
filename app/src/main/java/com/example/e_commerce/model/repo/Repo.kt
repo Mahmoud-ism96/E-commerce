@@ -8,6 +8,8 @@ import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import com.example.e_commerce.services.db.LocalSource
@@ -72,22 +74,6 @@ class Repo private constructor(
         localSource.insertItem(item)
     }
 
-    override suspend fun deleteItem(item: CartItem) {
-        localSource.deleteItem(item)
-    }
-
-    override suspend fun deleteItemById(itemId: Long) {
-        localSource.deleteItemById(itemId)
-    }
-
-    override suspend fun updateQuantity(itemId: Long, newQuantity: Int) {
-        localSource.updateQuantity(itemId, newQuantity)
-    }
-
-    override fun getAllCartItems(): Flow<List<CartItem>> {
-        return localSource.getAllCartItems()
-    }
-
     override suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>> {
         return remoteSource.getAddressesForCustomer(customer_id)
     }
@@ -116,5 +102,13 @@ class Repo private constructor(
 
     override fun readStringFromSettingSP(key: String): String {
         return localSource.readStringFromSettingSP(key)
+    }
+
+    override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {
+        return remoteSource.createDraftOrder(draft_order)
+    }
+
+    override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {
+        return remoteSource.getDraftOrderByDraftId(draft_order_id)
     }
 }

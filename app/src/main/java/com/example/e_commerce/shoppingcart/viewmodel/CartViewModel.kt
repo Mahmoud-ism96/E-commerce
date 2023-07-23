@@ -7,7 +7,6 @@ import com.example.e_commerce.services.network.ApiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CartViewModel(private val repo: RepoInterface) : ViewModel() {
@@ -20,9 +19,9 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val pricesRulesStateFlow: StateFlow<ApiState> get() = _pricesRulesMutableStateFlow
 
-    private val _cartItemsMutableStateFlow: MutableStateFlow<ApiState> =
+    private val _cartDraftOrderMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
-    val cartItemsStateFlow: StateFlow<ApiState> get() = _cartItemsMutableStateFlow
+    val cartDraftOrderStateFlow: StateFlow<ApiState> get() = _cartDraftOrderMutableStateFlow
 
     fun getDiscountCodesForPriceRule(priceRuleId: String) {
         viewModelScope.launch {
@@ -54,24 +53,17 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
         }
     }
 
-
-    fun getAllShoppingItem() {
+    fun getDraftOrderByDraftId(draftId: Long) {
         viewModelScope.launch {
-            repo.getAllCartItems().collectLatest {
-                _cartItemsMutableStateFlow.value = ApiState.Success(it)
+            repo.getDraftOrderByDraftId(draftId).catch {
+                _cartDraftOrderMutableStateFlow.value = ApiState.Failure(it)
+            }.collect {
+                if (it.isSuccessful) {
+                    _cartDraftOrderMutableStateFlow.value = ApiState.Success(it.body()!!)
+                }else{
+                    _cartDraftOrderMutableStateFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+                }
             }
-        }
-    }
-
-    fun updateQuantityForItem(id: Long, quantity: Int) {
-        viewModelScope.launch {
-            repo.updateQuantity(id, quantity)
-        }
-    }
-
-    fun deleteItemFromCart(id: Long){
-        viewModelScope.launch {
-            repo.deleteItemById(id)
         }
     }
 

@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.MainActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
-import com.example.e_commerce.model.pojo.CartItem
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
@@ -63,15 +63,15 @@ class CartFragment : Fragment() {
             )
             cartViewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
 
-            cartAdapter = CartAdapter(onPlusClick = { id, quantity ->
-                val newQuantity = quantity + 1
-                cartViewModel.updateQuantityForItem(id, newQuantity)
-            }, onMinusClick = { id, quantity ->
+            cartAdapter = CartAdapter(onPlusClick = { _, quantity ->
+               val newQuantity = quantity + 1
+               // cartViewModel.updateQuantityForItem(id, newQuantity)
+            }, onMinusClick = { _, quantity ->
                 if (quantity > 1) {
                     val newQuantity = quantity - 1
-                    cartViewModel.updateQuantityForItem(id, newQuantity)
+                 //   cartViewModel.updateQuantityForItem(id, newQuantity)
                 } else {
-                    cartViewModel.deleteItemFromCart(id)
+                   // cartViewModel.deleteItemFromCart(id)
                 }
             }, onItemClick = {
                 val action = CartFragmentDirections.actionCartFragment2ToProductDetailsFragment(it)
@@ -79,25 +79,18 @@ class CartFragment : Fragment() {
             })
 
             binding.rvCartItems.adapter = cartAdapter
-            cartViewModel.getAllShoppingItem()
 
-
-            binding.btnCheckout.setOnClickListener {
-                val navController = Navigation.findNavController(view)
-                navController.navigate(R.id.action_cartFragment2_to_checkoutFragment)
-            }
-
-
+            //cartViewModel.getDraftOrderByDraftId(1128717615403)
 
             lifecycleScope.launch {
-                cartViewModel.cartItemsStateFlow.collectLatest {
+                cartViewModel.cartDraftOrderStateFlow.collectLatest {
                     when (it) {
                         is ApiState.Loading -> {
                             Log.w(TAG, "loading:")
                         }
 
                         is ApiState.Success -> {
-                            cartAdapter.submitList(it.data as List<CartItem>)
+                            createListForAdapter(it.data as DraftResponse)
                         }
 
                         is ApiState.Failure -> {
@@ -105,6 +98,11 @@ class CartFragment : Fragment() {
                         }
                     }
                 }
+            }
+
+            binding.btnCheckout.setOnClickListener {
+                val navController = Navigation.findNavController(view)
+                navController.navigate(R.id.action_cartFragment2_to_checkoutFragment)
             }
 
             binding.btnApplyVoucher.setOnClickListener {
@@ -121,5 +119,10 @@ class CartFragment : Fragment() {
             }
 
         }
+    }
+
+    private fun createListForAdapter(draftResponse: DraftResponse) {
+        val lineItems = draftResponse.draft_order.line_items
+        cartAdapter.submitList(lineItems)
     }
 }

@@ -3,11 +3,12 @@ package com.example.e_commerce.services.network
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.address.AddressResponse
-import com.example.e_commerce.model.pojo.address.SendAddress
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import kotlinx.coroutines.flow.Flow
@@ -80,5 +81,13 @@ object ConcreteRemoteSource : RemoteSource {
 
     override suspend fun deleteAddressForCustomer(customer_id: String, address_id: String) {
         ApiClient.apiService.deleteAddressForCustomer(customer_id, address_id)
+    }
+
+    override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {
+        return flowOf(ApiClient.apiService.createDraftOrder(draft_order))
+    }
+
+    override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {
+        return flowOf(ApiClient.apiService.getDraftOrderByDraftId(draft_order_id))
     }
 }
