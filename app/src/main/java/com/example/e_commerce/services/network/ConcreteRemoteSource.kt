@@ -7,6 +7,11 @@ import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.level.InventoryLevelData
+import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
+import com.example.e_commerce.model.pojo.order.OrderData
+import com.example.e_commerce.model.pojo.order_response.Order
+import com.example.e_commerce.model.pojo.order_response.OrderResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
@@ -81,6 +86,26 @@ object ConcreteRemoteSource : RemoteSource {
 
     override suspend fun deleteAddressForCustomer(customer_id: String, address_id: String) {
         ApiClient.apiService.deleteAddressForCustomer(customer_id, address_id)
+    }
+
+    override suspend fun createOrder(order: OrderData): Flow<Response<OrderResponse>> {
+        val orderData = ApiClient.apiService.createOrder(order)
+        return flowOf(orderData)
+    }
+
+    override suspend fun getCustomerOrders(id: Long): Flow<Response<OrderResponse>> {
+        val order = ApiClient.apiService.getCustomerOrders(id)
+        return flowOf(order)
+    }
+
+    override suspend fun getOrderById(id: Long): Flow<Response<Order>> {
+        val order = ApiClient.apiService.getOrderById(id)
+        return flowOf(order)
+    }
+
+    override suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>> {
+        val inventory = ApiClient.apiService.updateInventoryLevel(inventoryLevel)
+        return flowOf(inventory)
     }
 
     override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {

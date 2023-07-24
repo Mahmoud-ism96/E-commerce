@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Shopy</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_cart">My Cart</string>
     <string name="add_more_to_cart">Add more products to your cart!</string>
@@ -87,6 +86,7 @@
     <string name="error_loading_product_data">Error loading product data</string>
     <string name="item_added_to_cart">Item added to cart</string>
     <string name="zip_code">Zip Code</string>
+    <string name="filter">Filter</string>
     <string name="currency">Currency</string>
     <string name="usd">USD</string>
     <string name="egp">EGP</string>
