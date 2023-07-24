@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentOrdersBinding
 import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
@@ -118,4 +119,15 @@ class OrdersFragment : Fragment() {
     private fun navigateBack() {
         findNavController().popBackStack()
     }
+
+    override fun onStart() {
+        super.onStart()
+        (requireActivity() as HomeActivity).bottomNavigationBar.visibility = View.GONE
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (requireActivity() as HomeActivity).bottomNavigationBar.visibility = View.VISIBLE
+    }
+
 }
