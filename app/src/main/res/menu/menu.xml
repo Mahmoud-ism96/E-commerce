@@ -6,6 +6,11 @@
         android:title="@string/home"
         android:icon="@drawable/home"
         />
+    <item android:id="@+id/searchFragment"
+        android:enabled="true"
+        android:title="@string/search"
+        android:icon="@drawable/search_icon"
+        />
     <item
         android:id="@+id/wishListFragment"
         android:enabled="true"
