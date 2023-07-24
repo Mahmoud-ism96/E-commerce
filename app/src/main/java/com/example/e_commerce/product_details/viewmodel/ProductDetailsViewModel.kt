@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
-    private val _productDetailsMutableState: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Loading)
+    private val _productDetailsState: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Loading)
 
-    val productDetailsMutableState: StateFlow<ApiState> get() = _productDetailsMutableState
+    val productDetailsState: StateFlow<ApiState> get() = _productDetailsState
 
     fun addToCart(cartItem : CartItem){
         viewModelScope.launch {
@@ -23,13 +23,17 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
 
     fun getProductDetails(productID: Long) {
         viewModelScope.launch {
-            repo.getProductById(productID).catch { _productDetailsMutableState.value = ApiState.Failure(it) }
+            repo.getProductById(productID).catch { _productDetailsState.value = ApiState.Failure(it) }
                 .collect {
                     if (it.isSuccessful) {
-                        _productDetailsMutableState.value = ApiState.Success(it.body()!!)
+                        _productDetailsState.value = ApiState.Success(it.body()!!)
                     }
                 }
         }
+    }
+
+    fun resetState(){
+        _productDetailsState.value = ApiState.Loading
     }
 
 }

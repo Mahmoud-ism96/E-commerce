@@ -76,6 +76,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.btnSignup.setOnClickListener {
+            binding.groupSignupLoading.visibility = View.VISIBLE
             val name = binding.etSignUpName.text.toString()
             val email = binding.etSignUpEmail.text.toString()
             val password = binding.etSignUpPassword.text.toString()
@@ -84,19 +85,17 @@ class SignUpFragment : Fragment() {
         }
 
         binding.btnGmailSignup.setOnClickListener {
+            binding.groupSignupLoading.visibility = View.VISIBLE
             googleSignIn()
         }
 
         binding.tvSignupToSignin.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
         }
-
         return binding.root
     }
 
     private fun emailSignUp(name: String, email: String, password: String) {
-        binding.groupSignupLoading.visibility = View.VISIBLE
-
         if (checkConnectivity(requireContext())) {
             if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -129,9 +128,11 @@ class SignUpFragment : Fragment() {
                                                                 findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
                                                             }
 
-                                                            else -> {
+                                                            is ApiState.Failure -> {
                                                                 showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
                                                             }
+
+                                                            is ApiState.Loading -> {}
                                                         }
                                                     }
                                                 }
@@ -178,7 +179,7 @@ class SignUpFragment : Fragment() {
 
                 if (!displayName.isNullOrEmpty()) {
                     showToast(getString(R.string.welcome) + " $displayName")
-                }else {
+                } else {
                     displayName = "Unknown"
                 }
 
