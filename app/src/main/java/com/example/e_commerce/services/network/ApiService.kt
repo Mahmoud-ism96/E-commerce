@@ -6,14 +6,16 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
 import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
-import com.example.e_commerce.model.pojo.order_response.Order
+import com.example.e_commerce.model.pojo.customer_order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
+import com.example.e_commerce.model.pojo.order_details_response.OrderDetailsResponse
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import retrofit2.Response
@@ -78,10 +80,10 @@ interface ApiService {
     suspend fun createOrder(@Body order: OrderData): Response<OrderResponse>
 
     @GET("admin/api/2023-07/customers/{customer_id}/orders.json")
-    suspend fun getCustomerOrders(@Path("customer_id") id: Long): Response<OrderResponse>
+    suspend fun getCustomerOrders(@Path("customer_id") id: Long): Response<CustomerOrderResponse>
 
     @GET("admin/api/2023-04/orders/{order_id}.json?")
-    suspend fun getOrderById(@Path("order_id") id: Long): Response<Order>
+    suspend fun getOrderById(@Path("order_id") id: Long): Response<OrderDetailsResponse>
 
     @POST("/admin/api/2023-04/inventory_levels/set.json")
     suspend fun updateInventoryLevel(@Body inventoryLevel: InventoryLevelData): Response<InventoryLevelResponse>

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ProductListItemBinding
-import com.example.e_commerce.model.pojo.order_response.Order
+import com.example.e_commerce.model.pojo.customer_order_response.Order
 
 
 class OrderRecycleAdapter(private val onClick: (Long) -> Unit) :
@@ -33,8 +33,8 @@ class OrderRecycleAdapter(private val onClick: (Long) -> Unit) :
             binding.apply {
                 tvItemName.text = currentItem.created_at
                 tvItemPrice.text = currentItem.total_price
-                ivItemImage.imageAlpha = R.drawable.shop
-                cvItem.setOnClickListener {
+                ivItemImage.setImageResource(R.drawable.shop)
+                item.setOnClickListener {
                     onClick(currentItem.id)
                 }
             }
