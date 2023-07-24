@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".search.view.SearchFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,16 +34,15 @@
         </androidx.core.widget.NestedScrollView>
 
 
-
-            <com.google.android.material.search.SearchBar
-                android:id="@+id/search_bar"
-                style="@style/TextAppearance.Material3.SearchBar"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:backgroundTint="@color/light_grey"
-                android:hint="@string/search_bar_hint"
-                app:strokeColor="@color/grey"
-                app:strokeWidth="1dp" />
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            style="@style/TextAppearance.Material3.SearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/light_grey"
+            android:hint="@string/search_bar_hint"
+            app:strokeColor="@color/grey"
+            app:strokeWidth="1dp" />
 
 
         <com.google.android.material.search.SearchView
@@ -65,9 +64,9 @@
 
     <FrameLayout
         android:id="@+id/fl_loading_search"
-        android:background="#66000000"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#66000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +76,8 @@
             android:id="@+id/pb_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:indeterminate="true" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

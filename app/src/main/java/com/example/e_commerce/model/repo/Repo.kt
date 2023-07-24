@@ -8,13 +8,13 @@ import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
 import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.pojo.order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
-import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
-import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import com.example.e_commerce.services.db.LocalSource
@@ -80,15 +80,13 @@ class Repo private constructor(
     }
 
     override suspend fun createAddressForCustomer(
-        customer_id: String,
-        sendAddress: SendAddressDTO
+        customer_id: String, sendAddress: SendAddressDTO
     ): Flow<Response<AddressResponse>> {
         return remoteSource.createAddressForCustomer(customer_id, sendAddress)
     }
 
     override suspend fun makeAddressDefault(
-        customer_id: String,
-        address_id: String
+        customer_id: String, address_id: String
     ): Flow<Response<AddressResponse>> {
         return remoteSource.makeAddressDefault(customer_id, address_id)
     }
@@ -111,6 +109,8 @@ class Repo private constructor(
 
     override suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>> {
         return remoteSource.updateInventoryLevel(inventoryLevel)
+    }
+
     override fun writeStringToSettingSP(key: String, value: String) {
         localSource.writeStringToSettingSP(key, value)
     }
