@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.databinding.OrderDetailsListItemBinding
-import com.example.e_commerce.model.pojo.order_response.LineItem
+import com.example.e_commerce.model.pojo.order_details_response.LineItem
 
 class OrderDetailsAdapter(private val onClick: (Long) -> Unit) : ListAdapter<LineItem, OrderDetailsAdapter.orderViewHolder>(RecyclerDiffUtilOrder()) {
 

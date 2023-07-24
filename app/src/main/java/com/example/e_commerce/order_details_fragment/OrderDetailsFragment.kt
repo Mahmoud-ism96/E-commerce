@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.HomeActivity
+import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentOrderDetailsBinding
-import com.example.e_commerce.model.pojo.order_response.Order
+import com.example.e_commerce.model.pojo.order_details_response.OrderDetailsResponse
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.orders.viewmodel.OrderViewModel
 import com.example.e_commerce.services.db.ConcreteLocalSource
@@ -28,6 +32,7 @@ class OrderDetailsFragment : Fragment() {
     private lateinit var orderDetailsAdapter: OrderDetailsAdapter
     private lateinit var factory: HomeViewModelFactory
     private lateinit var orderViewModel: OrderViewModel
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +44,9 @@ class OrderDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+
         binding.btnBackToOrder.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -51,8 +59,12 @@ class OrderDetailsFragment : Fragment() {
         )
         orderViewModel = ViewModelProvider(requireActivity(), factory)[OrderViewModel::class.java]
 
-        orderDetailsAdapter = OrderDetailsAdapter(){
-            TODO("navigate to product Details")
+        orderDetailsAdapter = OrderDetailsAdapter {
+            val action =
+                OrderDetailsFragmentDirections.actionOrderDetailsFragmentToProductDetailsFragment(
+                    it
+                )
+            findNavController().navigate(action)
         }
         binding.rvOrdersDetails.apply {
             adapter = orderDetailsAdapter
@@ -64,17 +76,27 @@ class OrderDetailsFragment : Fragment() {
         lifecycleScope.launch {
             orderViewModel.ordersStateFlow.collectLatest {
                 when (it) {
-                    is ApiState.Success -> {
-                        val order = it.data as Order
-                        orderDetailsAdapter.submitList(order.line_items)
-                        binding.apply {
-                            tvOrderId.text = order.id.toString()
-                            tvOrderDate.text = order.created_at
-                            tvOrderPrice.text = order.total_price
+                    is ApiState.Loading -> {
+                        binding.orderDetailsLoading.apply {
+                            visibility = View.VISIBLE
+                            setAnimation(R.raw.loading)
                         }
                     }
 
-                    else -> {}
+                    is ApiState.Success -> {
+                        binding.orderDetailsLoading.visibility = View.GONE
+                        val orderResponse = it.data as OrderDetailsResponse
+                        orderDetailsAdapter.submitList(orderResponse.order.line_items)
+                        binding.apply {
+                            tvOrderId.text = orderResponse.order.id.toString()
+                            tvOrderDate.text = orderResponse.order.created_at
+                            tvOrderPrice.text = orderResponse.order.total_price
+                        }
+                    }
+
+                    else -> {
+                        Toast.makeText(requireContext(), "Failed ..", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
