@@ -9,6 +9,8 @@ import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
 import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
@@ -54,10 +56,6 @@ class Repo private constructor(
         return remoteSource.getProductById(productId)
     }
 
-    override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {
-        return remoteSource.getProductsByTitle(title)
-    }
-
     override suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>> {
         return remoteSource.createCustomer(customerData)
     }
@@ -86,15 +84,13 @@ class Repo private constructor(
     }
 
     override suspend fun createAddressForCustomer(
-        customer_id: String,
-        sendAddress: SendAddressDTO
+        customer_id: String, sendAddress: SendAddressDTO
     ): Flow<Response<AddressResponse>> {
         return remoteSource.createAddressForCustomer(customer_id, sendAddress)
     }
 
     override suspend fun makeAddressDefault(
-        customer_id: String,
-        address_id: String
+        customer_id: String, address_id: String
     ): Flow<Response<AddressResponse>> {
         return remoteSource.makeAddressDefault(customer_id, address_id)
     }
@@ -118,6 +114,7 @@ class Repo private constructor(
     override suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>> {
         return remoteSource.updateInventoryLevel(inventoryLevel)
     }
+
     override fun writeStringToSettingSP(key: String, value: String) {
         localSource.writeStringToSettingSP(key, value)
     }
