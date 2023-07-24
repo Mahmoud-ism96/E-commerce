@@ -8,6 +8,11 @@ import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.level.InventoryLevelData
+import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
+import com.example.e_commerce.model.pojo.order.OrderData
+import com.example.e_commerce.model.pojo.order_response.Order
+import com.example.e_commerce.model.pojo.order_response.OrderResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
@@ -92,6 +97,20 @@ class Repo private constructor(
         remoteSource.deleteAddressForCustomer(customer_id, address_id)
     }
 
+    override suspend fun createOrder(order: OrderData): Flow<Response<OrderResponse>> {
+        return remoteSource.createOrder(order)
+    }
+
+    override suspend fun getCustomerOrders(id: Long): Flow<Response<OrderResponse>> {
+        return remoteSource.getCustomerOrders(id)
+    }
+
+    override suspend fun getOrderById(id: Long): Flow<Response<Order>> {
+        return remoteSource.getOrderById(id)
+    }
+
+    override suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>> {
+        return remoteSource.updateInventoryLevel(inventoryLevel)
     override fun writeStringToSettingSP(key: String, value: String) {
         localSource.writeStringToSettingSP(key, value)
     }
