@@ -123,6 +123,13 @@ class Repo private constructor(
         return remoteSource.createDraftOrder(draft_order)
     }
 
+    override suspend fun modifyDraftOrder(
+        draft_order_id: Long,
+        draft_order: SendDraftRequest
+    ): Flow<Response<DraftResponse>> {
+        return remoteSource.modifyDraftOrder(draft_order_id, draft_order)
+    }
+
     override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {
         return remoteSource.getDraftOrderByDraftId(draft_order_id)
     }

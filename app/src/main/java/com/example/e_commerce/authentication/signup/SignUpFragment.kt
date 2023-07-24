@@ -20,10 +20,16 @@ import com.example.e_commerce.authentication.viewmodel.AuthViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignUpBinding
 import com.example.e_commerce.model.pojo.customer.Customer
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftOrder
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
+import com.example.e_commerce.model.pojo.draftorder.send.SendLineItem
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants.CART_KEY
+import com.example.e_commerce.utility.Constants.WISHLIST_KEY
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -92,70 +98,121 @@ class SignUpFragment : Fragment() {
         binding.tvSignupToSignin.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
         }
+
+        lifecycleScope.launch {
+            _viewModel.createDraftStatusStateFlow.collectLatest {
+                when (it) {
+                    is ApiState.Success -> {
+                        val draftResponse: DraftResponse = it.data as DraftResponse
+                        if (draftResponse.draft_order.note == CART_KEY) {
+                            _viewModel.writeStringToSettingSP(
+                                CART_KEY, draftResponse.draft_order.id.toString()
+                            )
+                            Log.i(TAG, "onCreateView: Accepted")
+                            _viewModel.createDraftOrder(
+                                SendDraftRequest(
+                                    SendDraftOrder(
+                                        listOf(SendLineItem(8459749130539, 1, listOf())),
+                                        it.data.draft_order.email,
+                                        WISHLIST_KEY
+                                    )
+                                )
+                            )
+                        } else if (draftResponse.draft_order.note == WISHLIST_KEY) {
+                            _viewModel.writeStringToSettingSP(
+                                WISHLIST_KEY, draftResponse.draft_order.id.toString()
+                            )
+                            showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
+                            findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                        }
+                    }
+
+                    is ApiState.Failure -> {
+                        showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
+                    }
+
+                    is ApiState.Loading -> {}
+                }
+            }
+        }
+
         return binding.root
     }
 
     private fun emailSignUp(name: String, email: String, password: String) {
-        if (checkConnectivity(requireContext())) {
-            if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
-                    requireActivity()
-                ) { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "createUserWithEmail:success")
+        if (!checkConnectivity(requireContext())) {
+            showToast(getString(R.string.no_internet_connection_please_check_your_network_settings))
+            return
+        }
 
-                        val profileUpdates =
-                            UserProfileChangeRequest.Builder().setDisplayName(name).build()
+        if (name.isBlank() || email.isBlank() || password.isBlank()) {
+            showToast(getString(R.string.invalid_data_please_fill_in_all_the_fields))
+            return
+        }
 
-                        mAuth.currentUser?.updateProfile(profileUpdates)
-                            ?.addOnCompleteListener { profileTask ->
-                                if (profileTask.isSuccessful) {
-                                    mAuth.currentUser?.sendEmailVerification()
-                                        ?.addOnCompleteListener { verificationTask ->
-                                            if (verificationTask.isSuccessful) {
-                                                val customerData = CustomerData(
-                                                    Customer(
-                                                        email = email, first_name = name
-                                                    )
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "createUserWithEmail:success")
+
+                    val profileUpdates =
+                        UserProfileChangeRequest.Builder().setDisplayName(name).build()
+
+                    mAuth.currentUser?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { profileTask ->
+                            if (profileTask.isSuccessful) {
+                                mAuth.currentUser?.sendEmailVerification()
+                                    ?.addOnCompleteListener { verificationTask ->
+                                        if (verificationTask.isSuccessful) {
+                                            val customerData = CustomerData(
+                                                Customer(
+                                                    email = email, first_name = name
                                                 )
-                                                _viewModel.createNewCustomer(customerData)
-                                                lifecycleScope.launch {
-                                                    _viewModel.customerMutableStateFlow.collectLatest {
+                                            )
+                                            _viewModel.createNewCustomer(customerData)
+                                            lifecycleScope.launch {
+                                                _viewModel.customerMutableStateFlow.collectLatest { state ->
+                                                    when (state) {
+                                                        is ApiState.Success -> {
+                                                            _viewModel.createDraftOrder(
+                                                                SendDraftRequest(
+                                                                    SendDraftOrder(
+                                                                        listOf(
+                                                                            SendLineItem(
+                                                                                8459749130539, 1,
+                                                                                listOf()
+                                                                            )
+                                                                        ), email, CART_KEY
+                                                                    )
+                                                                )
+                                                            )
+                                                        }
 
-                                                        when (it) {
-                                                            is ApiState.Success -> {
-                                                                showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
-                                                                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
-                                                            }
+                                                        is ApiState.Failure -> {
+                                                            showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
+                                                        }
 
-                                                            is ApiState.Failure -> {
-                                                                showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
-                                                            }
-
-                                                            is ApiState.Loading -> {}
+                                                        is ApiState.Loading -> {
+                                                            // Handle loading if needed
                                                         }
                                                     }
                                                 }
-                                            } else {
-                                                showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
                                             }
+                                        } else {
+                                            showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
                                         }
-                                } else {
-                                    showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
-                                }
+                                    }
+                            } else {
+                                showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
                             }
-                    } else {
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        showToast(getString(R.string.registration_failed_please_check_your_data))
-                    }
+                        }
+                } else {
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    showToast(getString(R.string.registration_failed_please_check_your_data))
                 }
-            } else {
-                showToast(getString(R.string.invalid_data_please_fill_in_all_the_fields))
             }
-        } else {
-            showToast(getString(R.string.no_internet_connection_please_check_your_network_settings))
-        }
     }
+
 
     private fun showToast(message: String) {
         binding.groupSignupLoading.visibility = View.GONE

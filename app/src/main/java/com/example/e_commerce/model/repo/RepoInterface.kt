@@ -8,13 +8,13 @@ import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
 import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.pojo.order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
-import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
-import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import kotlinx.coroutines.flow.Flow
@@ -52,5 +52,6 @@ interface RepoInterface {
     fun writeStringToSettingSP(key: String, value: String)
     fun readStringFromSettingSP(key: String): String
     suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
+    suspend fun modifyDraftOrder(draft_order_id: Long, draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
     suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>>
 }

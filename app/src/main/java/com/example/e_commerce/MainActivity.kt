@@ -2,17 +2,8 @@ package com.example.e_commerce
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.e_commerce.databinding.ActivityMainBinding
-import com.example.e_commerce.model.pojo.inventory.InventoryItem
-import com.example.e_commerce.model.pojo.level.InventoryLevelData
-import com.example.e_commerce.model.pojo.variant_data.Variant
-import com.example.e_commerce.model.pojo.variant_data.VariantData
-import com.example.e_commerce.model.repo.Repo
-import com.example.e_commerce.services.db.ConcreteLocalSource
-import com.example.e_commerce.services.network.ConcreteRemoteSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

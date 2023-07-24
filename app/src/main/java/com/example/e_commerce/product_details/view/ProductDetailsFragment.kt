@@ -4,7 +4,6 @@ import android.animation.LayoutTransition
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +46,7 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var imageAdapter: ImageAdapter
 
     private lateinit var selectedVariantID: String
+    private lateinit var selectedQuantity: String
 
     val review1 = Review(
         reviewImage = "https://example.com/review1.jpg",
@@ -104,8 +104,8 @@ class ProductDetailsFragment : Fragment() {
         }
 
         sizeAdapter = SizeAdapter() {
-            Log.i("TAG", "onCreateView: $it")
-            selectedVariantID = it.toString()
+            selectedVariantID = it.id.toString()
+            selectedQuantity = it.inventory_quantity.toString()
         }
         binding.rvVariants.apply {
             adapter = sizeAdapter
@@ -185,7 +185,9 @@ class ProductDetailsFragment : Fragment() {
                         binding.groupProductDetailsView.visibility = View.GONE
 
                         Toast.makeText(
-                            requireContext(), getString(R.string.error_loading_product_data), Toast.LENGTH_SHORT
+                            requireContext(),
+                            getString(R.string.error_loading_product_data),
+                            Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -194,10 +196,16 @@ class ProductDetailsFragment : Fragment() {
 
         binding.btnDetailAddToCart.setOnClickListener {
             if (::selectedVariantID.isInitialized) {
-                if (::cartItem.isInitialized) _viewModel.addToCart(cartItem)
-                Toast.makeText(
-                    requireContext(), getString(R.string.item_added_to_cart), Toast.LENGTH_SHORT
-                ).show()
+                if (selectedQuantity.toInt() >= 1) {
+                    Toast.makeText(
+                        requireContext(), getString(R.string.item_added_to_cart), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(), getString(R.string.out_of_stock), Toast.LENGTH_SHORT
+                    ).show()
+
+                }
             } else {
                 Toast.makeText(
                     requireContext(),

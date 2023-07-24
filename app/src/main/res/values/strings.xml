@@ -95,4 +95,5 @@
     <string name="search_bar_hint">Search \"Adidas\"</string>
     <string name="search_product_title_brand">Search product title, brand</string>
     <string name="error_loading_data_please_try_again_later">Error loading data, please try again later</string>
+    <string name="out_of_stock">Product is out of stock</string>
 </resources>

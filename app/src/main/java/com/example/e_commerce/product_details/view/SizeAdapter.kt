@@ -11,7 +11,7 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ItemSizeBinding
 import com.example.e_commerce.model.pojo.product_details.Variant
 
-class SizeAdapter(private val onClick: (Long) -> Unit) :
+class SizeAdapter(private val onClick: (Variant) -> Unit) :
     ListAdapter<Variant, SizeAdapter.SizeViewHolder>(RecyclerDiffUtilSize()) {
 
     private var selectedItemPosition: Int = RecyclerView.NO_POSITION
@@ -53,7 +53,7 @@ class SizeAdapter(private val onClick: (Long) -> Unit) :
                     notifyItemChanged(previousSelectedItemPosition)
                     notifyItemChanged(selectedItemPosition)
 
-                    onClick(currentItem.id)
+                    onClick(currentItem)
                 }
             }
         }
