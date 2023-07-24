@@ -86,4 +86,9 @@
     <string name="please_select_a_size_to_progress">Please select a size to progress</string>
     <string name="error_loading_product_data">Error loading product data</string>
     <string name="item_added_to_cart">Item added to cart</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="currency">Currency</string>
+    <string name="usd">USD</string>
+    <string name="egp">EGP</string>
+    <string name="setting">Setting</string>
 </resources>

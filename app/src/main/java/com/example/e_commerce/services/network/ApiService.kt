@@ -3,16 +3,20 @@ package com.example.e_commerce.services.network
 import com.example.e_commerce.model.pojo.BrandsResponse
 import com.example.e_commerce.model.pojo.ProductsResponse
 import com.example.e_commerce.model.pojo.address.AddressResponse
-import com.example.e_commerce.model.pojo.address.SendAddress
+import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -48,9 +52,21 @@ interface ApiService {
     ): Response<CustomerResponse>
 
     @POST("/admin/api/2023-07/customers/{customer_id}/addresses.json")
-    suspend fun createAddressForCustomer(@Path("customer_id") customer_id: String, @Body customer_address: SendAddress): Response<AddressResponse>
+    suspend fun createAddressForCustomer(@Path("customer_id") customer_id: String, @Body customer_address: SendAddressDTO): Response<AddressResponse>
 
-    @GET("/admin/api/2023-07/customers/{customer_id}/addresses.json?limit=1")
+    @GET("/admin/api/2023-07/customers/{customer_id}/addresses.json")
     suspend fun getAddressesForCustomer(@Path("customer_id") customer_id: String):Response<AddressResponse>
+
+    @PUT("/admin/api/2023-07/customers/{customer_id}/addresses/{address_id}/default.json")
+    suspend fun makeAddressDefault(@Path("customer_id") customer_id: String, @Path("address_id") address_id: String): Response<AddressResponse>
+
+    @DELETE("/admin/api/2023-07/customers/{customer_id}/addresses/{address_id}.json")
+    suspend fun deleteAddressForCustomer(@Path("customer_id") customer_id: String, @Path("address_id") address_id: String)
+
+    @POST("/admin/api/2023-07/draft_orders.json")
+    suspend fun createDraftOrder(@Body draft_order: SendDraftRequest): Response<DraftResponse>
+
+    @GET("/admin/api/2023-07/draft_orders/{draft_order_id}.json")
+    suspend fun getDraftOrderByDraftId(@Path("draft_order_id") draft_order_id: Long): Response<DraftResponse>
 }
 

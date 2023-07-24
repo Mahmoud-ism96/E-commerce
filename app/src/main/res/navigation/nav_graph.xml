@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_profileFragment2_to_accountDetailsFragment"
             app:destination="@id/addressBookFragment" />
+        <action
+            android:id="@+id/action_profileFragment2_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
     </fragment>
     <fragment
         android:id="@+id/wishListFragment"
@@ -58,7 +61,12 @@
         android:id="@+id/mapFragment"
         android:name="com.example.e_commerce.profile.view.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment"
+            app:popUpTo="@id/addressBookFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listOfProductFragment"
         android:name="com.example.e_commerce.listOfProduct.view.ListOfProductFragment"
@@ -85,5 +93,15 @@
         <action
             android:id="@+id/action_addAddressFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <argument
+            android:name="coordinate"
+            app:argType="com.example.e_commerce.model.pojo.address.Coordinate"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.example.e_commerce.orders.view.OrdersFragment"
+        android:label="fragment_orders"
+        tools:layout="@layout/fragment_orders" />
 </navigation>
