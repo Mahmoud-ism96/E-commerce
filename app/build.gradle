@@ -88,6 +88,9 @@ dependencies {
     kapt "androidx.room:room-compiler:2.5.2"
     implementation "androidx.room:room-ktx:2.5.2"
 
+    //Pagination
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.5"
+
     // OkHttp3
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'

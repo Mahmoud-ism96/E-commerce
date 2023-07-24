@@ -13,6 +13,8 @@ import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.pojo.order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import com.example.e_commerce.services.db.LocalSource
@@ -77,22 +79,6 @@ class Repo private constructor(
         localSource.insertItem(item)
     }
 
-    override suspend fun deleteItem(item: CartItem) {
-        localSource.deleteItem(item)
-    }
-
-    override suspend fun deleteItemById(itemId: Long) {
-        localSource.deleteItemById(itemId)
-    }
-
-    override suspend fun updateQuantity(itemId: Long, newQuantity: Int) {
-        localSource.updateQuantity(itemId, newQuantity)
-    }
-
-    override fun getAllCartItems(): Flow<List<CartItem>> {
-        return localSource.getAllCartItems()
-    }
-
     override suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>> {
         return remoteSource.getAddressesForCustomer(customer_id)
     }
@@ -129,5 +115,19 @@ class Repo private constructor(
 
     override suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>> {
         return remoteSource.updateInventoryLevel(inventoryLevel)
+    override fun writeStringToSettingSP(key: String, value: String) {
+        localSource.writeStringToSettingSP(key, value)
+    }
+
+    override fun readStringFromSettingSP(key: String): String {
+        return localSource.readStringFromSettingSP(key)
+    }
+
+    override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {
+        return remoteSource.createDraftOrder(draft_order)
+    }
+
+    override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {
+        return remoteSource.getDraftOrderByDraftId(draft_order_id)
     }
 }

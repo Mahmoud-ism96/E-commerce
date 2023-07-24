@@ -132,7 +132,7 @@ class AddAddressFragment : Fragment() {
     }
 
     private fun isAddressValidate(): String {
-        var validateText = ""
+        val validateText = ""
         if (binding.etFirstName.text.toString().isBlank()) {
             return "First Name field is Required"
         } else if ((binding.etFirstName.text?.length ?: 3) <= 2 || (binding.etFirstName.text?.length
@@ -151,9 +151,7 @@ class AddAddressFragment : Fragment() {
 
         if (binding.etCity.text.toString().isBlank()) {
             return "City field is Required"
-        } else if ((binding.etCity.text?.length ?: 3) <= 2 || (binding.etCity.text?.length
-                ?: 3) >= 15
-        ) {
+        } else if ((binding.etCity.text?.length ?: 3) <= 2 ) {
             return "Enter Valid city Name"
         }
 

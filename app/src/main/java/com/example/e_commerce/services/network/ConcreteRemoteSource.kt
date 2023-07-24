@@ -12,6 +12,8 @@ import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.pojo.order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import kotlinx.coroutines.flow.Flow
@@ -106,5 +108,11 @@ object ConcreteRemoteSource : RemoteSource {
         return flowOf(inventory)
     }
 
+    override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {
+        return flowOf(ApiClient.apiService.createDraftOrder(draft_order))
+    }
 
+    override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {
+        return flowOf(ApiClient.apiService.getDraftOrderByDraftId(draft_order_id))
+    }
 }

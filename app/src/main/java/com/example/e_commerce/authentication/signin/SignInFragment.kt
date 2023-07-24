@@ -72,6 +72,7 @@ class SignInFragment : Fragment() {
         }
 
         binding.btnSignin.setOnClickListener {
+            binding.groupSigninLoading.visibility = View.VISIBLE
             val email = binding.etSignInEmail.text.toString()
             val password = binding.etSignInPassword.text.toString()
 
@@ -79,6 +80,7 @@ class SignInFragment : Fragment() {
         }
 
         binding.btnGmailSignin.setOnClickListener {
+            binding.groupSigninLoading.visibility = View.VISIBLE
             googleSignIn()
         }
 
@@ -94,7 +96,6 @@ class SignInFragment : Fragment() {
     }
 
     private fun emailSignIn(email: String, password: String) {
-        binding.groupSigninLoading.visibility = View.VISIBLE
         if (checkConnectivity(requireContext())) {
             if (email.isNotBlank() && password.isNotBlank()) {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -102,7 +103,6 @@ class SignInFragment : Fragment() {
                 ) { task ->
                     if (task.isSuccessful) {
                         val user = mAuth.currentUser
-                        showToast(getString(R.string.welcome) + " ${user!!.displayName}")
                         updateUI(user)
                     } else {
                         showToast(getString(R.string.login_failed_please_check_your_email_and_password))
@@ -160,6 +160,7 @@ class SignInFragment : Fragment() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             if (user.isEmailVerified) {
+                showToast(getString(R.string.welcome) + " ${user!!.displayName}")
                 val intent = Intent(requireContext(), HomeActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()

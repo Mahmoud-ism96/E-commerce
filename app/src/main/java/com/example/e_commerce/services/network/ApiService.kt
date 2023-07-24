@@ -12,6 +12,8 @@ import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.pojo.order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import retrofit2.Response
@@ -86,5 +88,11 @@ interface ApiService {
 
     @POST("/admin/api/2023-04/inventory_levels/set.json")
     suspend fun updateInventoryLevel(@Body inventoryLevel: InventoryLevelData): Response<InventoryLevelResponse>
+  
+    @POST("/admin/api/2023-07/draft_orders.json")
+    suspend fun createDraftOrder(@Body draft_order: SendDraftRequest): Response<DraftResponse>
+
+    @GET("/admin/api/2023-07/draft_orders/{draft_order_id}.json")
+    suspend fun getDraftOrderByDraftId(@Path("draft_order_id") draft_order_id: Long): Response<DraftResponse>
 }
 
