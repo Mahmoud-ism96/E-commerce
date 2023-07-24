@@ -14,10 +14,7 @@ import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
 import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
-import com.example.e_commerce.model.pojo.customer_order_response.Order
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
-import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
-import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.order_details_response.OrderDetailsResponse
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
