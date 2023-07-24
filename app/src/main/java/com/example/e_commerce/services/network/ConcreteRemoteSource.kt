@@ -44,11 +44,6 @@ object ConcreteRemoteSource : RemoteSource {
         return flowOf(ApiClient.apiService.getAllPricesRules())
     }
 
-    override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {
-        val productsResponseByTitle = ApiClient.apiService.getProductsByTitle(title)
-        return flowOf(productsResponseByTitle)
-    }
-
     override suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>> {
         val createdCustomer = ApiClient.apiService.createCustomer(customerData)
         return flowOf(createdCustomer)

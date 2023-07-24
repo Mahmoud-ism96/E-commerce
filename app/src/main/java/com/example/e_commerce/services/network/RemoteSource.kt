@@ -21,7 +21,6 @@ interface RemoteSource {
     suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>>
     suspend fun getProductsById(id:Long) : Flow<Response<ProductsResponse>>
     suspend fun getProductById(productID:Long): Flow<Response<ProductDetailsResponse>>
-    suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>>
     suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>>
     suspend fun getCustomerByEmailAndName(email: String, name: String): Flow<Response<CustomerResponse>>
     suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>>

@@ -40,9 +40,6 @@ interface ApiService {
     @GET("/admin/api/2023-07/price_rules/{price_rule_id}/discount_codes.json")
     suspend fun getDiscountCodesForPriceRule(@Path("price_rule_id") priceRuleId: String): Response<DiscountResponse>
 
-    @GET("admin/api/2023-07/products.json")
-    suspend fun getProductsByTitle(@Query("title") title: String): Response<ProductsResponse>
-
     @POST("admin/api/2023-07/customers.json")
     suspend fun createCustomer(@Body customer: CustomerData): Response<CustomerResponse>
 

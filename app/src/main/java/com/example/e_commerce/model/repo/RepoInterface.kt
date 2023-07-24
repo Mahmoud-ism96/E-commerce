@@ -20,7 +20,6 @@ interface RepoInterface {
     suspend fun getBrands(): Flow<Response<BrandsResponse>>
     suspend fun getProductsById(brandId: Long): Flow<Response<ProductsResponse>>
     suspend fun getProductById(productId: Long): Flow<Response<ProductDetailsResponse>>
-    suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>>
     suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>>
     suspend fun getCustomerByEmailAndName(
         email: String, name: String

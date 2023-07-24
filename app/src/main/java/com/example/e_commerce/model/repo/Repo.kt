@@ -47,10 +47,6 @@ class Repo private constructor(
         return remoteSource.getProductById(productId)
     }
 
-    override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {
-        return remoteSource.getProductsByTitle(title)
-    }
-
     override suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>> {
         return remoteSource.createCustomer(customerData)
     }
