@@ -20,6 +20,7 @@ import com.example.e_commerce.authentication.viewmodel.AuthViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignUpBinding
 import com.example.e_commerce.model.pojo.customer.Customer
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftOrder
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
@@ -28,6 +29,7 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Constants.CART_KEY
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
 import com.example.e_commerce.utility.Functions.checkConnectivity
@@ -133,6 +135,14 @@ class SignUpFragment : Fragment() {
                             _viewModel.modifyCustomerMutableStateFlow.collectLatest { customerState ->
                                 when (customerState) {
                                     is ApiState.Success -> {
+                                        _viewModel.writeStringToSettingSP(
+                                            CART_KEY,
+                                            cartID
+                                        )
+                                        _viewModel.writeStringToSettingSP(
+                                            WISHLIST_KEY,
+                                            wishlistID
+                                        )
                                         showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
                                         findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
                                     }
@@ -280,7 +290,7 @@ class SignUpFragment : Fragment() {
                                                     SendLineItem(
                                                         45786113737003, 1, listOf()
                                                     )
-                                                ), user.email!!, CART_KEY
+                                                ), user.email!!, Constants.CART_KEY
                                             )
                                         )
                                     )
@@ -288,8 +298,32 @@ class SignUpFragment : Fragment() {
                                 }
 
                                 is ApiState.Failure -> {
-                                    showToast(getString(R.string.welcome) + " $displayName")
-                                    updateUI(user)
+                                    _viewModel.getCustomerData(user.email!!, user.displayName!!)
+
+                                    _viewModel.loggedCustomerStateFlow.collectLatest {customerState ->
+                                        when (customerState) {
+                                            is ApiState.Success -> {
+                                                val customerResponse: CustomerResponse =
+                                                    customerState.data as CustomerResponse
+                                                cartID = customerResponse.customers[0].note
+                                                wishlistID = customerResponse.customers[0].tags
+                                                _viewModel.writeStringToSettingSP(
+                                                    CART_KEY, cartID
+                                                )
+                                                _viewModel.writeStringToSettingSP(
+                                                    WISHLIST_KEY, wishlistID
+                                                )
+                                                showToast(getString(R.string.welcome) + " $displayName")
+                                                updateUI(user)
+                                            }
+
+                                            is ApiState.Failure -> {
+                                                showToast(getString(R.string.google_verification_failed_please_try_again))
+                                            }
+
+                                            is ApiState.Loading -> {}
+                                        }
+                                    }
                                 }
 
                                 is ApiState.Loading -> {
@@ -313,7 +347,7 @@ class SignUpFragment : Fragment() {
                                                         SendLineItem(
                                                             45786113737003, 1, listOf()
                                                         )
-                                                    ), user.email!!, WISHLIST_KEY
+                                                    ), user.email!!, Constants.WISHLIST_KEY
                                                 )
                                             )
                                         )
@@ -333,12 +367,10 @@ class SignUpFragment : Fragment() {
                                             when (customerState) {
                                                 is ApiState.Success -> {
                                                     _viewModel.writeStringToSettingSP(
-                                                        CART_KEY,
-                                                        cartID
+                                                        Constants.CART_KEY, cartID
                                                     )
                                                     _viewModel.writeStringToSettingSP(
-                                                        WISHLIST_KEY,
-                                                        wishlistID
+                                                        Constants.WISHLIST_KEY, wishlistID
                                                     )
                                                     showToast(getString(R.string.welcome) + " $displayName")
                                                     updateUI(user)

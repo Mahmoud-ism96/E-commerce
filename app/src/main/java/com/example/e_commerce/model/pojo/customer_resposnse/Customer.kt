@@ -17,7 +17,7 @@ data class Customer(
     val last_order_name: Any,
     val marketing_opt_in_level: Any,
     val multipass_identifier: Any,
-    val note: Any,
+    val note: String,
     val orders_count: Int,
     val phone: String,
     val sms_marketing_consent: SmsMarketingConsent,

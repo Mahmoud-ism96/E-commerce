@@ -38,6 +38,10 @@ class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val modifyGoogleCustomerMutableStateFlow: StateFlow<ApiState> get() = _modifyGoogleCustomerMutableStateFlow
 
+    private val _loggedCustomerStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val loggedCustomerStateFlow: StateFlow<ApiState> get() = _loggedCustomerStateFlow
+
     fun createNewEmailCustomer(customerData: CustomerData) {
         viewModelScope.launch {
             repo.createCustomer(customerData)
@@ -52,14 +56,15 @@ class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
     fun modifyGoogleCustomer(customerId: Long, customerData: CustomerData) {
         viewModelScope.launch {
             repo.modifyCustomer(customerId, customerData).catch {
-                    _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(it)
-                }.collect {
-                    if (it.isSuccessful) {
-                        _modifyGoogleCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
-                    } else {
-                        _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(Throwable(it.code().toString()))
-                    }
+                _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(it)
+            }.collect {
+                if (it.isSuccessful) {
+                    _modifyGoogleCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                } else {
+                    _modifyGoogleCustomerMutableStateFlow.value =
+                        ApiState.Failure(Throwable(it.code().toString()))
                 }
+            }
         }
     }
 
@@ -70,8 +75,9 @@ class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
                     if (it.isSuccessful) {
                         _modifyCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
                         Log.i("TAG", "firebaseAuthWithGoogle: Success")
-                    }else{
-                        _modifyCustomerMutableStateFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+                    } else {
+                        _modifyCustomerMutableStateFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
         }
@@ -112,6 +118,19 @@ class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
                     _createGoogleDraftStatusMutableStateFlow.value = ApiState.Success(it.body()!!)
                 } else {
                     _createGoogleDraftStatusMutableStateFlow.value =
+                        ApiState.Failure(Throwable(it.code().toString()))
+                }
+            }
+        }
+    }
+
+    fun getCustomerData(customerEmail: String, customerName: String) {
+        viewModelScope.launch {
+            repo.getCustomerByEmailAndName(customerEmail, customerName).collectLatest {
+                if (it.isSuccessful) {
+                    _loggedCustomerStateFlow.value = ApiState.Success(it.body()!!)
+                } else {
+                    _loggedCustomerStateFlow.value =
                         ApiState.Failure(Throwable(it.code().toString()))
                 }
             }
