@@ -7,6 +7,7 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
@@ -61,6 +62,13 @@ class Repo private constructor(
         email: String, name: String
     ): Flow<Response<CustomerResponse>> {
         return remoteSource.getCustomerByEmailAndName(email, name)
+    }
+
+    override suspend fun modifyCustomer(
+        customerId: Long,
+        customer: CustomerData
+    ): Flow<Response<CustomerModifiedResponse>> {
+        return remoteSource.modifyCustomer(customerId, customer)
     }
 
     override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {
@@ -122,6 +130,13 @@ class Repo private constructor(
 
     override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {
         return remoteSource.createDraftOrder(draft_order)
+    }
+
+    override suspend fun modifyDraftOrder(
+        draft_order_id: Long,
+        draft_order: SendDraftRequest
+    ): Flow<Response<DraftResponse>> {
+        return remoteSource.modifyDraftOrder(draft_order_id, draft_order)
     }
 
     override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {

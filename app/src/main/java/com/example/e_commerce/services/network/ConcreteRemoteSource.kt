@@ -6,15 +6,16 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
 import com.example.e_commerce.model.pojo.customer_order_response.Order
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
 import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
 import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.pojo.order_response.OrderResponse
-import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
-import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.pojo.order_details_response.OrderDetailsResponse
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
@@ -63,6 +64,14 @@ object ConcreteRemoteSource : RemoteSource {
         return flowOf(customerByEmailAndName)
     }
 
+    override suspend fun modifyCustomer(
+        customerId: Long,
+        customer: CustomerData
+    ): Flow<Response<CustomerModifiedResponse>> {
+        val modifiedCustomerData = ApiClient.apiService.modifyCustomer(customerId, customer)
+        return flowOf(modifiedCustomerData)
+    }
+
     override suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>> {
         return flowOf(ApiClient.apiService.getAddressesForCustomer(customer_id))
     }
@@ -107,6 +116,13 @@ object ConcreteRemoteSource : RemoteSource {
 
     override suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>> {
         return flowOf(ApiClient.apiService.createDraftOrder(draft_order))
+    }
+
+    override suspend fun modifyDraftOrder(
+        draft_order_id: Long,
+        draft_order: SendDraftRequest
+    ): Flow<Response<DraftResponse>> {
+        return flowOf(ApiClient.apiService.modifyDraftOrder(draft_order_id, draft_order))
     }
 
     override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentSearchBinding
-import com.example.e_commerce.listOfProduct.view.ListOfProductFragmentDirections
 import com.example.e_commerce.listOfProduct.view.ProductRecycleAdapter
 import com.example.e_commerce.model.pojo.Brand
 import com.example.e_commerce.model.pojo.BrandsResponse
@@ -111,11 +110,11 @@ class SearchFragment : Fragment() {
         }
 
         productAdapter = ProductRecycleAdapter {
-            val action =
-                ListOfProductFragmentDirections.actionListOfProductFragmentToProductDetailsFragment(
-                    it.id
-                )
+            val action = SearchFragmentDirections.actionSearchFragmentToProductDetailsFragment(
+                it.id
+            )
             findNavController().navigate(action)
+
         }
 
         binding.rvSearch.apply {
