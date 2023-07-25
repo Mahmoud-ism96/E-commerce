@@ -1,6 +1,7 @@
 package com.example.e_commerce.model.pojo.customer_modified_response
 
 data class CustomerResponseData(
+    val id: Long,
     val email: String,
     val firstName: String,
     val lastName: String,

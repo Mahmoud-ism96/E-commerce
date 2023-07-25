@@ -316,13 +316,13 @@
         android:fontFamily="@font/montserrat_semi_bold"
         android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_detail_back"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+        app:layout_constraintEnd_toStartOf="@+id/cb_favorite"
         app:layout_constraintStart_toEndOf="@+id/btn_detail_back"
         app:layout_constraintTop_toTopOf="@+id/btn_detail_back"
         tools:text="Nike" />
 
     <CheckBox
-        android:id="@+id/imageButton3"
+        android:id="@+id/cb_favorite"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_margin="24dp"
@@ -390,6 +390,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="frameLayout2,tv_detail_vendor_name,btn_detail_add_to_cart,scrollView3,imageButton3" />
+        app:constraint_referenced_ids="frameLayout2,tv_detail_vendor_name,btn_detail_add_to_cart,scrollView3,cb_favorite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

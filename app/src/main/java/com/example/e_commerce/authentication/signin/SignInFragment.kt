@@ -31,6 +31,7 @@ import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Constants.CART_KEY
+import com.example.e_commerce.utility.Constants.CUSTOMER_ID_KEY
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -130,11 +131,12 @@ class SignInFragment : Fragment() {
                                             cartID = customerResponse.customers[0].note
                                             wishlistID = customerResponse.customers[0].tags
                                             _viewModel.writeStringToSettingSP(
-                                                Constants.CART_KEY, cartID
+                                                CART_KEY, cartID
                                             )
                                             _viewModel.writeStringToSettingSP(
-                                                Constants.WISHLIST_KEY, wishlistID
+                                                WISHLIST_KEY, wishlistID
                                             )
+                                            _viewModel.writeStringToSettingSP(CUSTOMER_ID_KEY,customerResponse.customers[0].id.toString())
                                             showToast(getString(R.string.welcome) + " ${user.displayName}")
                                             updateUI(user)
                                         }
@@ -222,6 +224,7 @@ class SignInFragment : Fragment() {
                                                 _viewModel.writeStringToSettingSP(
                                                     WISHLIST_KEY, wishlistID
                                                 )
+                                                _viewModel.writeStringToSettingSP(CUSTOMER_ID_KEY,customerResponse.customers[0].id.toString())
                                                 showToast(getString(R.string.welcome) + " $displayName")
                                                 updateUI(user)
                                             }
@@ -275,12 +278,14 @@ class SignInFragment : Fragment() {
                                         _viewModel.modifyGoogleCustomerMutableStateFlow.collectLatest { customerState ->
                                             when (customerState) {
                                                 is ApiState.Success -> {
+                                                    val customerResponse: CustomerResponse = it.data as CustomerResponse
                                                     _viewModel.writeStringToSettingSP(
                                                         CART_KEY, cartID
                                                     )
                                                     _viewModel.writeStringToSettingSP(
                                                         WISHLIST_KEY, wishlistID
                                                     )
+                                                    _viewModel.writeStringToSettingSP(CUSTOMER_ID_KEY,customerResponse.customers[0].id.toString())
                                                     showToast(getString(R.string.welcome) + " $displayName")
                                                     updateUI(user)
                                                 }

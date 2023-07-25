@@ -20,6 +20,7 @@ import com.example.e_commerce.authentication.viewmodel.AuthViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignUpBinding
 import com.example.e_commerce.model.pojo.customer.Customer
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftOrder
@@ -135,13 +136,17 @@ class SignUpFragment : Fragment() {
                             _viewModel.modifyCustomerMutableStateFlow.collectLatest { customerState ->
                                 when (customerState) {
                                     is ApiState.Success -> {
+                                        val customerResponse: CustomerResponse =
+                                            it.data as CustomerResponse
                                         _viewModel.writeStringToSettingSP(
-                                            CART_KEY,
-                                            cartID
+                                            CART_KEY, cartID
                                         )
                                         _viewModel.writeStringToSettingSP(
-                                            WISHLIST_KEY,
-                                            wishlistID
+                                            WISHLIST_KEY, wishlistID
+                                        )
+                                        _viewModel.writeStringToSettingSP(
+                                            Constants.CUSTOMER_ID_KEY,
+                                            customerResponse.customers[0].id.toString()
                                         )
                                         showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
                                         findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -300,18 +305,35 @@ class SignUpFragment : Fragment() {
                                 is ApiState.Failure -> {
                                     _viewModel.getCustomerData(user.email!!, user.displayName!!)
 
-                                    _viewModel.loggedCustomerStateFlow.collectLatest {customerState ->
+                                    _viewModel.loggedCustomerStateFlow.collectLatest { customerState ->
                                         when (customerState) {
                                             is ApiState.Success -> {
                                                 val customerResponse: CustomerResponse =
                                                     customerState.data as CustomerResponse
                                                 cartID = customerResponse.customers[0].note
                                                 wishlistID = customerResponse.customers[0].tags
+
+                                                Log.i(
+                                                    TAG, "Cart_ID: $cartID"
+                                                )
+
                                                 _viewModel.writeStringToSettingSP(
                                                     CART_KEY, cartID
                                                 )
                                                 _viewModel.writeStringToSettingSP(
                                                     WISHLIST_KEY, wishlistID
+                                                )
+                                                _viewModel.writeStringToSettingSP(
+                                                    Constants.CUSTOMER_ID_KEY,
+                                                    customerResponse.customers[0].id.toString()
+                                                )
+
+                                                Log.i(
+                                                    TAG, "Cart_KEY: ${
+                                                        _viewModel.readStringFromSettingSP(
+                                                            CART_KEY
+                                                        )
+                                                    }"
                                                 )
                                                 showToast(getString(R.string.welcome) + " $displayName")
                                                 updateUI(user)
@@ -347,7 +369,7 @@ class SignUpFragment : Fragment() {
                                                         SendLineItem(
                                                             45786113737003, 1, listOf()
                                                         )
-                                                    ), user.email!!, Constants.WISHLIST_KEY
+                                                    ), user.email!!, WISHLIST_KEY
                                                 )
                                             )
                                         )
@@ -366,11 +388,17 @@ class SignUpFragment : Fragment() {
                                         _viewModel.modifyGoogleCustomerMutableStateFlow.collectLatest { customerState ->
                                             when (customerState) {
                                                 is ApiState.Success -> {
+                                                    val customerResponse: CustomerModifiedResponse =
+                                                        customerState.data as CustomerModifiedResponse
                                                     _viewModel.writeStringToSettingSP(
-                                                        Constants.CART_KEY, cartID
+                                                        CART_KEY, cartID
                                                     )
                                                     _viewModel.writeStringToSettingSP(
-                                                        Constants.WISHLIST_KEY, wishlistID
+                                                        WISHLIST_KEY, wishlistID
+                                                    )
+                                                    _viewModel.writeStringToSettingSP(
+                                                        Constants.CUSTOMER_ID_KEY,
+                                                        customerResponse.customer.id.toString()
                                                     )
                                                     showToast(getString(R.string.welcome) + " $displayName")
                                                     updateUI(user)
@@ -425,7 +453,6 @@ class SignUpFragment : Fragment() {
                     val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                     try {
                         val account = task.getResult(ApiException::class.java)
-                        Log.d(TAG, "firebaseAuthWithGoogle:" + account?.id)
                         account?.idToken?.let { firebaseAuthWithGoogle(it) }
                     } catch (e: ApiException) {
                         Log.w(TAG, "Google sign in failed", e)

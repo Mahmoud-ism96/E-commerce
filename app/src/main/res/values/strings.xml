@@ -96,4 +96,8 @@
     <string name="search_product_title_brand">Search product title, brand</string>
     <string name="error_loading_data_please_try_again_later">Error loading data, please try again later</string>
     <string name="out_of_stock">Product is out of stock</string>
+    <string name="please_log_in_to_add_items_to_your_cart">Please log in to add items to your cart.</string>
+    <string name="please_log_in_to_add_items_to_your_wishlist">Please log in to add items to your wishlist.</string>
+    <string name="failed_to_add_item_to_cart">Failed to add item to cart.</string>
+    <string name="item_already_exist_in_cart">Item already exist in cart</string>
 </resources>
