@@ -21,13 +21,22 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentProductDetailsBinding
 import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.Review
+import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
+import com.example.e_commerce.model.pojo.draftorder.response.LineItem
+import com.example.e_commerce.model.pojo.draftorder.send.Property
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftOrder
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
+import com.example.e_commerce.model.pojo.draftorder.send.SendLineItem
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
+import com.example.e_commerce.model.pojo.product_details.Variant
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.product_details.viewmodel.ProductDetailsViewModel
 import com.example.e_commerce.product_details.viewmodel.ProductDetailsViewModelFactory
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants.CART_KEY
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -45,8 +54,13 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var sizeAdapter: SizeAdapter
     private lateinit var imageAdapter: ImageAdapter
 
-    private lateinit var selectedVariantID: String
-    private lateinit var selectedQuantity: String
+    private lateinit var selectedVariant: Variant
+
+    private lateinit var lastLineItem: List<LineItem>
+    private lateinit var productImage: String
+
+    private lateinit var cartDraftID: String
+    private lateinit var wishlistDraftID: String
 
     val review1 = Review(
         reviewImage = "https://example.com/review1.jpg",
@@ -85,6 +99,48 @@ class ProductDetailsFragment : Fragment() {
 
         _viewModel.getProductDetails(productID)
 
+        cartDraftID = _viewModel.readStringFromSettingSP(CART_KEY)
+        wishlistDraftID = _viewModel.readStringFromSettingSP(CART_KEY)
+        _viewModel.getDraftOrders(cartDraftID.toLong())
+
+        lifecycleScope.launch {
+            _viewModel.allDraftOrdersState.collectLatest {
+                when (it) {
+                    is ApiState.Success -> {
+                        val draftResponse: DraftResponse = it.data as DraftResponse
+                        lastLineItem = draftResponse.draft_order.line_items
+                    }
+
+                    is ApiState.Failure -> {
+                        //TODO:
+                    }
+
+                    is ApiState.Loading -> {
+                        //TODO:
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            _viewModel.draftOrderState.collectLatest {
+                when (it) {
+                    is ApiState.Success -> {
+                        val draftResponse: DraftResponse = it.data as DraftResponse
+                        lastLineItem = draftResponse.draft_order.line_items
+                    }
+
+                    is ApiState.Failure -> {
+                        //TODO:
+                    }
+
+                    is ApiState.Loading -> {
+                        //TODO:
+                    }
+                }
+            }
+        }
+
         binding.layoutDesc.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.cvDesc.setOnClickListener {
             expandCardView(binding.layoutDesc, binding.tvDescDetails, binding.ibDesc)
@@ -104,8 +160,7 @@ class ProductDetailsFragment : Fragment() {
         }
 
         sizeAdapter = SizeAdapter() {
-            selectedVariantID = it.id.toString()
-            selectedQuantity = it.inventory_quantity.toString()
+            selectedVariant = it
         }
         binding.rvVariants.apply {
             adapter = sizeAdapter
@@ -151,6 +206,8 @@ class ProductDetailsFragment : Fragment() {
 
                         val images = productDetails.product.images
 
+                        productImage = productDetails.product.image.src
+
                         imageAdapter.submitList(images)
                         reviewAdapter.submitList(reviewList)
 
@@ -161,11 +218,9 @@ class ProductDetailsFragment : Fragment() {
 
                                 sizeAdapter.submitList(variants)
                             } else {
-                                selectedVariantID = variants[0].id.toString()
+                                selectedVariant = variants[0]
                             }
                         }
-
-
 
                         cartItem = CartItem(productID, title, price, inventoryQuantity, image)
                         binding.apply {
@@ -195,23 +250,28 @@ class ProductDetailsFragment : Fragment() {
         }
 
         binding.btnDetailAddToCart.setOnClickListener {
-            if (::selectedVariantID.isInitialized) {
-                if (selectedQuantity.toInt() >= 1) {
-                    Toast.makeText(
-                        requireContext(), getString(R.string.item_added_to_cart), Toast.LENGTH_SHORT
-                    ).show()
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                if (::selectedVariant.isInitialized) {
+                    if (selectedVariant.inventory_quantity >= 1) {
+                        addToCart()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.item_added_to_cart),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(), getString(R.string.out_of_stock), Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
                 } else {
                     Toast.makeText(
-                        requireContext(), getString(R.string.out_of_stock), Toast.LENGTH_SHORT
+                        requireContext(),
+                        getString(R.string.please_select_a_size_to_progress),
+                        Toast.LENGTH_SHORT
                     ).show()
-
                 }
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.please_select_a_size_to_progress),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
         }
 
@@ -220,6 +280,34 @@ class ProductDetailsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun addToCart() {
+        val newSendLineItems = mutableListOf<SendLineItem>()
+        for (lineItem in lastLineItem) {
+            newSendLineItems.add(
+                SendLineItem(
+                    lineItem.variant_id, lineItem.quantity, lineItem.properties
+                )
+            )
+        }
+        newSendLineItems.add(
+            SendLineItem(
+                selectedVariant.id, selectedVariant.inventory_quantity, listOf(
+                    Property("image", productImage),
+                    Property("inventory_quantity", selectedVariant.inventory_quantity.toString())
+                )
+            )
+        )
+        _viewModel.modifyDraftOrder(
+            cartDraftID.toLong(), SendDraftRequest(
+                SendDraftOrder(
+                    newSendLineItems,
+                    FirebaseAuth.getInstance().currentUser!!.email!!,
+                    CART_KEY
+                )
+            )
+        )
     }
 
     private fun expandCardView(

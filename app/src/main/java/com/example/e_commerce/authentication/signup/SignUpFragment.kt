@@ -56,6 +56,9 @@ class SignUpFragment : Fragment() {
     private lateinit var _viewModelFactory: AuthViewModelFactory
     private lateinit var _viewModel: AuthViewModel
 
+    private lateinit var cartID: String
+    private lateinit var wishlistID: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -105,25 +108,43 @@ class SignUpFragment : Fragment() {
                     is ApiState.Success -> {
                         val draftResponse: DraftResponse = it.data as DraftResponse
                         if (draftResponse.draft_order.note == CART_KEY) {
-                            _viewModel.writeStringToSettingSP(
-                                CART_KEY, draftResponse.draft_order.id.toString()
-                            )
-                            Log.i(TAG, "onCreateView: Accepted")
+                            cartID = draftResponse.draft_order.id.toString()
                             _viewModel.createDraftOrder(
                                 SendDraftRequest(
                                     SendDraftOrder(
-                                        listOf(SendLineItem(8459749130539, 1, listOf())),
+                                        listOf(SendLineItem(45786113737003, 1, listOf())),
                                         it.data.draft_order.email,
                                         WISHLIST_KEY
                                     )
                                 )
                             )
                         } else if (draftResponse.draft_order.note == WISHLIST_KEY) {
-                            _viewModel.writeStringToSettingSP(
-                                WISHLIST_KEY, draftResponse.draft_order.id.toString()
+                            wishlistID = draftResponse.draft_order.id.toString()
+                            _viewModel.modifyCustomer(
+                                draftResponse.draft_order.customer.id, CustomerData(
+                                    Customer(
+                                        email = draftResponse.draft_order.email,
+                                        first_name = draftResponse.draft_order.customer.first_name,
+                                        note = cartID,
+                                        tags = wishlistID
+                                    )
+                                )
                             )
-                            showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
-                            findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                            _viewModel.modifyCustomerMutableStateFlow.collectLatest { customerState ->
+                                when (customerState) {
+                                    is ApiState.Success -> {
+                                        showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
+                                        findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                                    }
+
+                                    is ApiState.Failure -> {
+                                        showToast(getString(R.string.registration_failed_please_check_your_email_and_password))
+                                    }
+
+                                    is ApiState.Loading -> {}
+                                }
+                            }
+
                         }
                     }
 
@@ -169,9 +190,9 @@ class SignUpFragment : Fragment() {
                                                     email = email, first_name = name
                                                 )
                                             )
-                                            _viewModel.createNewCustomer(customerData)
+                                            _viewModel.createNewEmailCustomer(customerData)
                                             lifecycleScope.launch {
-                                                _viewModel.customerMutableStateFlow.collectLatest { state ->
+                                                _viewModel.emailCustomerMutableStateFlow.collectLatest { state ->
                                                     when (state) {
                                                         is ApiState.Success -> {
                                                             _viewModel.createDraftOrder(
@@ -179,7 +200,8 @@ class SignUpFragment : Fragment() {
                                                                     SendDraftOrder(
                                                                         listOf(
                                                                             SendLineItem(
-                                                                                8459749130539, 1,
+                                                                                45786113737003,
+                                                                                1,
                                                                                 listOf()
                                                                             )
                                                                         ), email, CART_KEY
@@ -232,22 +254,120 @@ class SignUpFragment : Fragment() {
         ) { task ->
             if (task.isSuccessful) {
                 val user = mAuth.currentUser
-                var displayName = user?.displayName
+                if (user != null) {
+                    var displayName = user.displayName
 
-                if (!displayName.isNullOrEmpty()) {
-                    showToast(getString(R.string.welcome) + " $displayName")
-                } else {
-                    displayName = "Unknown"
-                }
+                    if (displayName.isNullOrEmpty()) {
+                        displayName = "Unknown"
+                        showToast(getString(R.string.welcome) + " $displayName")
+                    }
 
-                val customerData = CustomerData(
-                    Customer(
-                        email = user!!.email!!, first_name = displayName
+                    val customerData = CustomerData(
+                        Customer(
+                            email = user.email!!, first_name = displayName
+                        )
                     )
-                )
-                _viewModel.createNewCustomer(customerData)
+                    _viewModel.createGmailEmailCustomer(customerData)
 
-                updateUI(user)
+                    lifecycleScope.launch {
+                        _viewModel.gmailCustomerMutableStateFlow.collectLatest {
+                            when (it) {
+                                is ApiState.Success -> {
+                                    _viewModel.createGoogleDraftOrder(
+                                        SendDraftRequest(
+                                            SendDraftOrder(
+                                                listOf(
+                                                    SendLineItem(
+                                                        45786113737003, 1, listOf()
+                                                    )
+                                                ), user.email!!, CART_KEY
+                                            )
+                                        )
+                                    )
+
+                                }
+
+                                is ApiState.Failure -> {
+                                    showToast(getString(R.string.welcome) + " $displayName")
+                                    updateUI(user)
+                                }
+
+                                is ApiState.Loading -> {
+                                    // Handle loading if needed
+                                }
+                            }
+                        }
+                    }
+
+                    lifecycleScope.launch {
+                        _viewModel.createGoogleDraftStatusStateFlow.collectLatest {
+                            when (it) {
+                                is ApiState.Success -> {
+                                    val draftResponse: DraftResponse = it.data as DraftResponse
+                                    if (draftResponse.draft_order.note == CART_KEY) {
+                                        cartID = draftResponse.draft_order.id.toString()
+                                        _viewModel.createGoogleDraftOrder(
+                                            SendDraftRequest(
+                                                SendDraftOrder(
+                                                    listOf(
+                                                        SendLineItem(
+                                                            45786113737003, 1, listOf()
+                                                        )
+                                                    ), user.email!!, WISHLIST_KEY
+                                                )
+                                            )
+                                        )
+                                    } else if (draftResponse.draft_order.note == WISHLIST_KEY) {
+                                        wishlistID = draftResponse.draft_order.id.toString()
+                                        _viewModel.modifyGoogleCustomer(
+                                            draftResponse.draft_order.customer.id, CustomerData(
+                                                Customer(
+                                                    email = draftResponse.draft_order.email,
+                                                    first_name = draftResponse.draft_order.customer.first_name,
+                                                    note = cartID,
+                                                    tags = wishlistID
+                                                )
+                                            )
+                                        )
+                                        _viewModel.modifyGoogleCustomerMutableStateFlow.collectLatest { customerState ->
+                                            when (customerState) {
+                                                is ApiState.Success -> {
+                                                    _viewModel.writeStringToSettingSP(
+                                                        CART_KEY,
+                                                        cartID
+                                                    )
+                                                    _viewModel.writeStringToSettingSP(
+                                                        WISHLIST_KEY,
+                                                        wishlistID
+                                                    )
+                                                    showToast(getString(R.string.welcome) + " $displayName")
+                                                    updateUI(user)
+                                                }
+
+                                                is ApiState.Failure -> {
+                                                    showToast(getString(R.string.google_verification_failed_please_try_again))
+                                                }
+
+                                                is ApiState.Loading -> {}
+                                            }
+                                        }
+                                    }
+                                }
+
+                                is ApiState.Failure -> {
+                                    showToast(getString(R.string.google_verification_failed_please_try_again))
+                                }
+
+                                is ApiState.Loading -> {
+                                    // Handle loading if needed
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+                    showToast(getString(R.string.google_verification_failed_please_try_again))
+                }
             } else {
                 showToast(getString(R.string.google_verification_failed_please_try_again))
                 updateUI(null)

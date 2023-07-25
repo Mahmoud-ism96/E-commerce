@@ -7,6 +7,7 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
@@ -60,6 +61,13 @@ class Repo private constructor(
         email: String, name: String
     ): Flow<Response<CustomerResponse>> {
         return remoteSource.getCustomerByEmailAndName(email, name)
+    }
+
+    override suspend fun modifyCustomer(
+        customerId: Long,
+        customer: CustomerData
+    ): Flow<Response<CustomerModifiedResponse>> {
+        return remoteSource.modifyCustomer(customerId, customer)
     }
 
     override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {

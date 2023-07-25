@@ -19,6 +19,10 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val draftOrderState: StateFlow<ApiState> get() = _draftOrderState
 
+    private val _allDraftOrdersState: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val allDraftOrdersState: StateFlow<ApiState> get() = _allDraftOrdersState
+
     fun getProductDetails(productID: Long) {
         viewModelScope.launch {
             repo.getProductById(productID)
@@ -26,6 +30,18 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
                 .collect {
                     if (it.isSuccessful) {
                         _productDetailsState.value = ApiState.Success(it.body()!!)
+                    }
+                }
+        }
+    }
+
+    fun getDraftOrders(draftOrderId: Long) {
+        viewModelScope.launch {
+            repo.getDraftOrderByDraftId(draftOrderId)
+                .catch { _allDraftOrdersState.value = ApiState.Failure(it) }
+                .collect {
+                    if (it.isSuccessful) {
+                        _allDraftOrdersState.value = ApiState.Success(it.body()!!)
                     }
                 }
         }
@@ -41,6 +57,14 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
                     }
                 }
         }
+    }
+
+    fun writeStringToSettingSP(key: String, value: String) {
+        repo.writeStringToSettingSP(key, value)
+    }
+
+    fun readStringFromSettingSP(key: String): String {
+        return repo.readStringFromSettingSP(key)
     }
 
     fun resetState() {

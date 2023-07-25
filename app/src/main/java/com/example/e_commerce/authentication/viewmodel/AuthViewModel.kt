@@ -1,5 +1,6 @@
 package com.example.e_commerce.authentication.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.model.pojo.customer.CustomerData
@@ -13,22 +14,81 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
-    private val _customerMutableStateFlow: MutableStateFlow<ApiState> =
+    private val _emailCustomerMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
-    val customerMutableStateFlow: StateFlow<ApiState> get() = _customerMutableStateFlow
+    val emailCustomerMutableStateFlow: StateFlow<ApiState> get() = _emailCustomerMutableStateFlow
+
+    private val _gmailCustomerMutableStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val gmailCustomerMutableStateFlow: StateFlow<ApiState> get() = _gmailCustomerMutableStateFlow
 
     private val _createDraftStatusMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
     val createDraftStatusStateFlow: StateFlow<ApiState> get() = _createDraftStatusMutableStateFlow
 
-    fun createNewCustomer(customerData: CustomerData) {
+    private val _createGoogleDraftStatusMutableStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val createGoogleDraftStatusStateFlow: StateFlow<ApiState> get() = _createGoogleDraftStatusMutableStateFlow
+
+    private val _modifyCustomerMutableStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val modifyCustomerMutableStateFlow: StateFlow<ApiState> get() = _modifyCustomerMutableStateFlow
+
+    private val _modifyGoogleCustomerMutableStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val modifyGoogleCustomerMutableStateFlow: StateFlow<ApiState> get() = _modifyGoogleCustomerMutableStateFlow
+
+    fun createNewEmailCustomer(customerData: CustomerData) {
         viewModelScope.launch {
             repo.createCustomer(customerData)
-                .catch { _customerMutableStateFlow.value = ApiState.Failure(it) }.collect {
+                .catch { _emailCustomerMutableStateFlow.value = ApiState.Failure(it) }.collect {
                     if (it.isSuccessful) {
-                        _customerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                        _emailCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
                     }
                 }
+        }
+    }
+
+    fun modifyGoogleCustomer(customerId: Long, customerData: CustomerData) {
+        viewModelScope.launch {
+            repo.modifyCustomer(customerId, customerData).catch {
+                    _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(it)
+                }.collect {
+                    if (it.isSuccessful) {
+                        _modifyGoogleCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+                    }
+                }
+        }
+    }
+
+    fun modifyCustomer(customerId: Long, customerData: CustomerData) {
+        viewModelScope.launch {
+            repo.modifyCustomer(customerId, customerData)
+                .catch { _modifyCustomerMutableStateFlow.value = ApiState.Failure(it) }.collect {
+                    if (it.isSuccessful) {
+                        _modifyCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                        Log.i("TAG", "firebaseAuthWithGoogle: Success")
+                    }else{
+                        _modifyCustomerMutableStateFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+                    }
+                }
+        }
+    }
+
+    fun createGmailEmailCustomer(customerData: CustomerData) {
+        viewModelScope.launch {
+            repo.createCustomer(customerData).catch {
+                _gmailCustomerMutableStateFlow.value = ApiState.Failure(it)
+            }.collect {
+                if (it.isSuccessful) {
+                    _gmailCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                } else {
+                    _gmailCustomerMutableStateFlow.value =
+                        ApiState.Failure(Throwable(it.code().toString()))
+                }
+            }
         }
     }
 
@@ -39,6 +99,19 @@ class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
                     _createDraftStatusMutableStateFlow.value = ApiState.Success(it.body()!!)
                 } else {
                     _createDraftStatusMutableStateFlow.value =
+                        ApiState.Failure(Throwable(it.code().toString()))
+                }
+            }
+        }
+    }
+
+    fun createGoogleDraftOrder(draft_order: SendDraftRequest) {
+        viewModelScope.launch {
+            repo.createDraftOrder(draft_order).collectLatest {
+                if (it.isSuccessful) {
+                    _createGoogleDraftStatusMutableStateFlow.value = ApiState.Success(it.body()!!)
+                } else {
+                    _createGoogleDraftStatusMutableStateFlow.value =
                         ApiState.Failure(Throwable(it.code().toString()))
                 }
             }

@@ -6,6 +6,7 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
@@ -28,19 +29,20 @@ interface RemoteSource {
     suspend fun getProductById(productID: Long): Flow<Response<ProductDetailsResponse>>
     suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>>
     suspend fun getCustomerByEmailAndName(
-        email: String,
-        name: String
+        email: String, name: String
     ): Flow<Response<CustomerResponse>>
+
+    suspend fun modifyCustomer(
+        customerId: Long, customer: CustomerData
+    ): Flow<Response<CustomerModifiedResponse>>
 
     suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>>
     suspend fun createAddressForCustomer(
-        customer_id: String,
-        sendAddress: SendAddressDTO
+        customer_id: String, sendAddress: SendAddressDTO
     ): Flow<Response<AddressResponse>>
 
     suspend fun makeAddressDefault(
-        customer_id: String,
-        address_id: String
+        customer_id: String, address_id: String
     ): Flow<Response<AddressResponse>>
 
     suspend fun deleteAddressForCustomer(customer_id: String, address_id: String)
@@ -49,7 +51,10 @@ interface RemoteSource {
     suspend fun getOrderById(id: Long): Flow<Response<Order>>
     suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>>
     suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
-    suspend fun modifyDraftOrder(draft_order_id: Long, draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
+    suspend fun modifyDraftOrder(
+        draft_order_id: Long, draft_order: SendDraftRequest
+    ): Flow<Response<DraftResponse>>
+
     suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>>
 }
 

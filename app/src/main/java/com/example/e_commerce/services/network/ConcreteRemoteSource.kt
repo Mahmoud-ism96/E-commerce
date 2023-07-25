@@ -6,6 +6,7 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
@@ -59,6 +60,14 @@ object ConcreteRemoteSource : RemoteSource {
     ): Flow<Response<CustomerResponse>> {
         val customerByEmailAndName = ApiClient.apiService.getCustomerByEmailAndName(email, name)
         return flowOf(customerByEmailAndName)
+    }
+
+    override suspend fun modifyCustomer(
+        customerId: Long,
+        customer: CustomerData
+    ): Flow<Response<CustomerModifiedResponse>> {
+        val modifiedCustomerData = ApiClient.apiService.modifyCustomer(customerId, customer)
+        return flowOf(modifiedCustomerData)
     }
 
     override suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>> {
