@@ -14,6 +14,7 @@ import com.example.e_commerce.checkout.viewmodel.CheckOutViewModelFactory
 import com.example.e_commerce.databinding.FragmentCheckoutBinding
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.level.InventoryLevelData
+import com.example.e_commerce.model.pojo.order.DiscountCode
 import com.example.e_commerce.model.pojo.order.LineItem
 import com.example.e_commerce.model.pojo.order.Order
 import com.example.e_commerce.model.pojo.order.OrderData
@@ -32,7 +33,8 @@ class CheckoutFragment : Fragment() {
     private lateinit var factory: CheckOutViewModelFactory
     private lateinit var firebaseAuth: FirebaseAuth
     private var email: String? = null
-    private var name: String? = null
+    private var discountCode:String=""
+    private var discountValue:String=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,10 +68,10 @@ class CheckoutFragment : Fragment() {
                 val lineItem = listOf(
                     LineItem(quantity = 1, variant_id = 45786104529195)
                 )
-                val order = Order(email!!,lineItem)
+                val order = Order(email!!,lineItem, listOf(DiscountCode(discountCode,discountValue)))
                 checkOutViewModel.createOrder(OrderData(order))
 
-//                val inventoryLevelData = InventoryLevelData(87897276715, 47836051570987, 9)
+//                val inventoryLevelData = InventoryLevelData(87897276715, 47836051603755, 20)
 //                checkOutViewModel.updateVariantQuantity(inventoryLevelData)
             }
         }
