@@ -35,5 +35,6 @@ interface RepoInterface {
     fun writeStringToSettingSP(key: String, value: String)
     fun readStringFromSettingSP(key: String): String
     suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
+    suspend fun modifyDraftOrder(draft_order_id: Long, draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
     suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>>
 }

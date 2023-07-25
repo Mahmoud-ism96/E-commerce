@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.databinding.FragmentCheckoutBinding
+import com.example.e_commerce.utility.Constants
 
 class CheckoutFragment : Fragment() {
 
@@ -32,6 +34,21 @@ class CheckoutFragment : Fragment() {
         binding.btnBackCheckOut.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.btnApplyVoucher.setOnClickListener {
+                val voucherText = binding.etVoucherCode.text.toString()
+                if (!binding.etVoucherCode.text.isNullOrBlank()) {
+                    if (voucherText == Constants.CODE_DISCOUNT_100) {
+                        //calculateTotal(0.0)
+                        Toast.makeText(requireContext(), "congrats 100% off", Toast.LENGTH_SHORT)
+                            .show()
+                    } else if (voucherText == Constants.CODE_DISCOUNT_35) {
+                     //   calculateTotal(0.35)
+                        Toast.makeText(requireContext(), "congrats 35% off", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
     }
 
     override fun onDestroy() {

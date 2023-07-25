@@ -87,6 +87,13 @@ object ConcreteRemoteSource : RemoteSource {
         return flowOf(ApiClient.apiService.createDraftOrder(draft_order))
     }
 
+    override suspend fun modifyDraftOrder(
+        draft_order_id: Long,
+        draft_order: SendDraftRequest
+    ): Flow<Response<DraftResponse>> {
+        return flowOf(ApiClient.apiService.modifyDraftOrder(draft_order_id, draft_order))
+    }
+
     override suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>> {
         return flowOf(ApiClient.apiService.getDraftOrderByDraftId(draft_order_id))
     }

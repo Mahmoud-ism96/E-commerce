@@ -65,7 +65,8 @@ interface ApiService {
 
     @POST("/admin/api/2023-07/draft_orders.json")
     suspend fun createDraftOrder(@Body draft_order: SendDraftRequest): Response<DraftResponse>
-
+    @PUT("/admin/api/2023-07/draft_orders/{draft_order_id}.json")
+    suspend fun modifyDraftOrder(@Path("draft_order_id") draft_order_id: Long, @Body draft_order: SendDraftRequest): Response<DraftResponse>
     @GET("/admin/api/2023-07/draft_orders/{draft_order_id}.json")
     suspend fun getDraftOrderByDraftId(@Path("draft_order_id") draft_order_id: Long): Response<DraftResponse>
 }

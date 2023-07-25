@@ -29,6 +29,7 @@ interface RemoteSource {
     suspend fun makeAddressDefault(customer_id: String, address_id: String): Flow<Response<AddressResponse>>
     suspend fun deleteAddressForCustomer(customer_id: String, address_id: String)
     suspend fun createDraftOrder(draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
+    suspend fun modifyDraftOrder(draft_order_id: Long, draft_order: SendDraftRequest): Flow<Response<DraftResponse>>
     suspend fun getDraftOrderByDraftId(draft_order_id: Long): Flow<Response<DraftResponse>>
 }
 
