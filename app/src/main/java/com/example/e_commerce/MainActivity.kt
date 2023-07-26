@@ -19,9 +19,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        lifecycleScope.launch {
-            val usdAmount=Functions.convertCurrency("1", "USD").toString()
-            SettingSharedPref.getInstance(this@MainActivity).writeStringToSettingSP(Constants.USDAMOUNT,usdAmount)
-        }
     }
 }
