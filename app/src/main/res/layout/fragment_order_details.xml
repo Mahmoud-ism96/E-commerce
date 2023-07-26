@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="30dp"
+    android:paddingTop="35dp"
+    tools:context=".orders.view.OrdersFragment">
+
+    <ImageButton
+        android:id="@+id/btnBackToOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:backgroundTintMode="add"
+        android:src="@drawable/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Orders"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBackToOrder"
+        app:layout_constraintStart_toEndOf="@+id/btnBackToOrder"
+        app:layout_constraintTop_toTopOf="@+id/btnBackToOrder" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOrdersDetails"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvOrderDate"
+        tools:listitem="@layout/order_details_list_item" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Order id : "
+        app:layout_constraintStart_toStartOf="@+id/btnBackToOrder"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <TextView
+        android:id="@+id/tvOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="1534541851641"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView18"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Order Date : "
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="25/may/2023 11:15:00"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView32"
+        app:layout_constraintStart_toEndOf="@+id/textView32" />
+
+    <TextView
+        android:id="@+id/textView34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Total Price :"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOrderId"
+        app:layout_constraintStart_toEndOf="@+id/tvOrderId"
+        app:layout_constraintTop_toTopOf="@+id/tvOrderId"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvOrderPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="40 EGP"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView34"
+        app:layout_constraintStart_toEndOf="@+id/textView34"
+        app:layout_constraintTop_toTopOf="@+id/textView34" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/order_details_loading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

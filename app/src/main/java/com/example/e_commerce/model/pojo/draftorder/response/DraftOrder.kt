@@ -6,5 +6,6 @@ data class DraftOrder(
     val customer: Customer,
     val email: String,
     val id: Long,
-    val line_items: List<LineItem>
+    val line_items: List<LineItem>,
+    val note: String
 )

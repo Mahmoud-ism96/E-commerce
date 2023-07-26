@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Shopy</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_cart">My Cart</string>
     <string name="add_more_to_cart">Add more products to your cart!</string>
@@ -80,9 +79,25 @@
     <string name="last_name">Last Name</string>
     <string name="egypt">EGYPT</string>
     <string name="saved_for_later">Saved for later.</string>
+    <string name="description">Description</string>
+    <string name="reviews">Reviews</string>
+    <string name="variants">Variants:</string>
+    <string name="please_select_a_size_to_progress">Please select a size to progress</string>
+    <string name="error_loading_product_data">Error loading product data</string>
+    <string name="item_added_to_cart">Item added to cart</string>
     <string name="zip_code">Zip Code</string>
+    <string name="filter">Filter</string>
     <string name="currency">Currency</string>
     <string name="usd">USD</string>
     <string name="egp">EGP</string>
     <string name="setting">Setting</string>
+    <string name="search">Search</string>
+    <string name="search_bar_hint">Search \"Adidas\"</string>
+    <string name="search_product_title_brand">Search product title, brand</string>
+    <string name="error_loading_data_please_try_again_later">Error loading data, please try again later</string>
+    <string name="out_of_stock">Product is out of stock</string>
+    <string name="please_log_in_to_add_items_to_your_cart">Please log in to add items to your cart.</string>
+    <string name="please_log_in_to_add_items_to_your_wishlist">Please log in to add items to your wishlist.</string>
+    <string name="failed_to_add_item_to_cart">Failed to add item to cart.</string>
+    <string name="item_already_exist_in_cart">Item already exist in cart</string>
 </resources>

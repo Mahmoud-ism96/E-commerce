@@ -82,5 +82,13 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
         }
     }
 
+    fun writeStringToSettingSP(key: String, value: String) {
+        repo.writeStringToSettingSP(key, value)
+    }
+
+    fun readStringFromSettingSP(key: String): String {
+        return repo.readStringFromSettingSP(key)
+    }
+
 
 }

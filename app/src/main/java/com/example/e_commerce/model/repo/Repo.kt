@@ -7,9 +7,16 @@ import com.example.e_commerce.model.pojo.address.AddressResponse
 import com.example.e_commerce.model.pojo.address.SendAddressDTO
 import com.example.e_commerce.model.pojo.coupons.DiscountResponse
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
+import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
+import com.example.e_commerce.model.pojo.level.InventoryLevelData
+import com.example.e_commerce.model.pojo.levelResponse.InventoryLevelResponse
+import com.example.e_commerce.model.pojo.order.OrderData
+import com.example.e_commerce.model.pojo.order_response.OrderResponse
+import com.example.e_commerce.model.pojo.order_details_response.OrderDetailsResponse
 import com.example.e_commerce.model.pojo.pricerule.PriceRuleResponse
 import com.example.e_commerce.model.pojo.product_details.ProductDetailsResponse
 import com.example.e_commerce.services.db.LocalSource
@@ -47,10 +54,6 @@ class Repo private constructor(
         return remoteSource.getProductById(productId)
     }
 
-    override suspend fun getProductsByTitle(title: String): Flow<Response<ProductsResponse>> {
-        return remoteSource.getProductsByTitle(title)
-    }
-
     override suspend fun createCustomer(customerData: CustomerData): Flow<Response<CustomerResponse>> {
         return remoteSource.createCustomer(customerData)
     }
@@ -59,6 +62,13 @@ class Repo private constructor(
         email: String, name: String
     ): Flow<Response<CustomerResponse>> {
         return remoteSource.getCustomerByEmailAndName(email, name)
+    }
+
+    override suspend fun modifyCustomer(
+        customerId: Long,
+        customer: CustomerData
+    ): Flow<Response<CustomerModifiedResponse>> {
+        return remoteSource.modifyCustomer(customerId, customer)
     }
 
     override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {
@@ -79,21 +89,35 @@ class Repo private constructor(
     }
 
     override suspend fun createAddressForCustomer(
-        customer_id: String,
-        sendAddress: SendAddressDTO
+        customer_id: String, sendAddress: SendAddressDTO
     ): Flow<Response<AddressResponse>> {
         return remoteSource.createAddressForCustomer(customer_id, sendAddress)
     }
 
     override suspend fun makeAddressDefault(
-        customer_id: String,
-        address_id: String
+        customer_id: String, address_id: String
     ): Flow<Response<AddressResponse>> {
         return remoteSource.makeAddressDefault(customer_id, address_id)
     }
 
     override suspend fun deleteAddressForCustomer(customer_id: String, address_id: String) {
         remoteSource.deleteAddressForCustomer(customer_id, address_id)
+    }
+
+    override suspend fun createOrder(order: OrderData): Flow<Response<OrderResponse>> {
+        return remoteSource.createOrder(order)
+    }
+
+    override suspend fun getCustomerOrders(id: Long): Flow<Response<CustomerOrderResponse>> {
+        return remoteSource.getCustomerOrders(id)
+    }
+
+    override suspend fun getOrderById(id: Long): Flow<Response<OrderDetailsResponse>> {
+        return remoteSource.getOrderById(id)
+    }
+
+    override suspend fun updateInventoryLevel(inventoryLevel: InventoryLevelData): Flow<Response<InventoryLevelResponse>> {
+        return remoteSource.updateInventoryLevel(inventoryLevel)
     }
 
     override fun writeStringToSettingSP(key: String, value: String) {

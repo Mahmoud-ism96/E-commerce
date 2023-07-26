@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -84,13 +83,12 @@ class CartFragment : Fragment() {
             binding.rvCartItems.adapter = cartAdapter
             deleteWhenSwipe()
 
-            cartViewModel.getDraftOrderByDraftId(1128717615403)
+            cartViewModel.getDraftOrderByDraftId(cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong())
 
             lifecycleScope.launch {
                 cartViewModel.cartDraftOrderStateFlow.collectLatest {
                     when (it) {
                         is ApiState.Loading -> {
-                            Log.w(TAG, "loading:")
                             binding.relodGroub.visibility = View.VISIBLE
                         }
 
@@ -125,7 +123,7 @@ class CartFragment : Fragment() {
             )
         }
         cartViewModel.modifyDraftOrder(
-            1128717615403, SendDraftRequest(
+            cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong(), SendDraftRequest(
                 SendDraftOrder(
                     newSendLineItems, mAuth.currentUser!!.email!!, "cart"
                 )
@@ -135,6 +133,9 @@ class CartFragment : Fragment() {
 
     private fun createListForAdapter(draftResponse: DraftResponse) {
         val lineItems = draftResponse.draft_order.line_items
+        val viewedLineItems = lineItems.filterIndexed { index, _ ->
+            index > 0
+        }
         cartAdapter.submitList(lineItems)
     }
 
@@ -170,7 +171,7 @@ class CartFragment : Fragment() {
         lifecycleScope.launch {
             cartViewModel.modifyDraftStatusStateFlow.collectLatest {
                 if(it is ApiState.Success){
-                    cartViewModel.getDraftOrderByDraftId(1128717615403)
+                    cartViewModel.getDraftOrderByDraftId(cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong())
                 }
             }
         }

@@ -28,8 +28,8 @@ class CartAdapter(
 
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        holder.onBind(currentItem)
+            val currentItem = getItem(position)
+            holder.onBind(currentItem)
     }
 
     inner class CartViewHolder(private val binding: CartItemBinding) :
@@ -50,7 +50,7 @@ class CartAdapter(
                     if (currentItem.properties[1].value.toInt() > currentItem.quantity + 1 && currentItem.quantity < 10) {
                         currentItem.quantity += 1
                         tvItemCount.text = currentItem.quantity.toString()
-                         onOperationClicked(currentList)
+                        onOperationClicked(currentList)
                     } else {
                         Toast.makeText(
                             tvItemCount.context,

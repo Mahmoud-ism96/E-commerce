@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -108,6 +110,20 @@ class ListOfProductFragment : Fragment() {
                         productRecycleAdapter.submitList(productsResponse.products)
                         binding.rvListOfProduct.visibility = View.VISIBLE
                         binding.listOfProductLoading.visibility = View.GONE
+
+                        val prices = productsResponse.products.flatMap { product ->
+                            product.variants.mapNotNull { variant ->
+                                variant.price.toDoubleOrNull()
+                            }
+                        }
+
+                        val minPrice = prices.minOrNull() ?: 0.0
+                        val maxPrice = prices.maxOrNull() ?: 0.0
+
+
+                        filterBinding.etFromPrice.hint=minPrice.toString()
+                        filterBinding.etToPrice.hint=maxPrice.toString()
+
                     }
 
                     else -> {
@@ -176,6 +192,8 @@ class ListOfProductFragment : Fragment() {
                                 }
 
                             }
+
+
                             val filteredProducts = products.filter { product ->
                                 val fromPriceText = filterBinding.etFromPrice.text.toString()
                                 val toPriceText = filterBinding.etToPrice.text.toString()
@@ -197,6 +215,10 @@ class ListOfProductFragment : Fragment() {
 
             }
             filterDialog.dismiss()
+        }
+
+        binding.btnBackHome.setOnClickListener {
+            findNavController().popBackStack()
         }
 
     }

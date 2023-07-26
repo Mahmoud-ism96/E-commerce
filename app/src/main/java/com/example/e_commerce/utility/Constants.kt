@@ -27,4 +27,8 @@ object Constants {
     const val USD = "usd"
     const val EGP = "egp"
 
+    const val CART_KEY = "cart"
+    const val WISHLIST_KEY = "wishlist"
+    const val CUSTOMER_ID_KEY = "customer_id"
+
 }
