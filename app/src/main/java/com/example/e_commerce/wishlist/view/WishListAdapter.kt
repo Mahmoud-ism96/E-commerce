@@ -11,6 +11,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ItemProductSwipeBinding
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
+import com.example.e_commerce.services.settingsharedpreference.SettingSharedPref
+import com.example.e_commerce.utility.Constants
 
 class WishListAdapter(private val onClick: (Long) -> Unit) :
     ListAdapter<LineItem, WishListAdapter.WishlistViewHolder>(RecyclerDiffUtilWishlistItem()) {
@@ -34,7 +36,14 @@ class WishListAdapter(private val onClick: (Long) -> Unit) :
         fun onBind(currentItem: LineItem) {
             binding.apply {
                 tvSwipeItemName.text = currentItem.title
-                tvSwipeItemPrice.text = "${currentItem.price} EGP"
+                val settingSharedPref = SettingSharedPref.getInstance(tvSwipeItemName.context)
+                val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
+                val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
+                if (currency == Constants.USD) {
+                    tvSwipeItemPrice.text= String.format("%.2f $",currentItem.price.toDouble()*usdAmount.toDouble())
+                } else {
+                    tvSwipeItemPrice.text = "${currentItem.price} EGP"
+                }
                 Glide.with(tvSwipeItemName.context).load(currentItem.properties[0].value)
                     .apply(RequestOptions().override(200, 200))
                     .placeholder(R.drawable.loading_svgrepo_com).error(R.drawable.error)
