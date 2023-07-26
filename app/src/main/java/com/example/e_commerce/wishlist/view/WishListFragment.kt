@@ -33,6 +33,53 @@ class WishListFragment : Fragment() {
             requireActivity(), _viewModelFactory
         )[WishListViewModel::class.java]
 
+//        wishlistRecycleAdapter = CartAdapter(onPlusClick = { _, quantity ->
+//            val newQuantity = quantity + 1
+//            // cartViewModel.updateQuantityForItem(id, newQuantity)
+//        }, onMinusClick = { _, quantity ->
+//            if (quantity > 1) {
+//                val newQuantity = quantity - 1
+//                //   cartViewModel.updateQuantityForItem(id, newQuantity)
+//            } else {
+//                // cartViewModel.deleteItemFromCart(id)
+//            }
+//        }, onItemClick = {
+//            val action = CartFragmentDirections.actionCartFragment2ToProductDetailsFragment(it)
+//            findNavController().navigate(action)
+//        })
+//
+//        binding.rvWishlist.apply {
+//            adapter = wishlistRecycleAdapter
+//            layoutManager = LinearLayoutManager(requireContext()).apply {
+//                orientation = RecyclerView.VERTICAL
+//            }
+//        }
+//
+//        if (FirebaseAuth.getInstance().currentUser != null) {
+//
+//            val wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+//
+//            _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+//
+//            lifecycleScope.launch {
+//                _viewModel.wishlistDraftOrderFlow.collectLatest {
+//                    when (it) {
+//                        is ApiState.Loading -> {
+//                            Log.w(TAG, "loading:")
+//                        }
+//
+//                        is ApiState.Success -> {
+//                            val draftResponse: DraftResponse = it.data as DraftResponse
+//                            wishlistRecycleAdapter.submitList(draftResponse.draft_order.line_items)
+//                        }
+//
+//                        is ApiState.Failure -> {
+//                            Log.w(TAG, "error:")
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         return binding.root
     }

@@ -15,13 +15,22 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val productDetailsState: StateFlow<ApiState> get() = _productDetailsState
 
-    private val _draftOrderState: MutableStateFlow<ApiState> =
+    private val _modifyCartDraftOrderState: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
-    val draftOrderState: StateFlow<ApiState> get() = _draftOrderState
+    val modifyCartDraftOrderState: StateFlow<ApiState> get() = _modifyCartDraftOrderState
 
-    private val _allDraftOrdersState: MutableStateFlow<ApiState> =
+    private val _modifyWishlistDraftOrderState: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
-    val allDraftOrdersState: StateFlow<ApiState> get() = _allDraftOrdersState
+    val modifyWishlistDraftOrderState: StateFlow<ApiState> get() = _modifyWishlistDraftOrderState
+
+    private val _cartDraftOrdersState: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val cartDraftOrdersState: StateFlow<ApiState> get() = _cartDraftOrdersState
+
+    private val _wishlistDraftOrdersState: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val wishlistDraftOrdersState: StateFlow<ApiState> get() = _wishlistDraftOrdersState
+
 
     fun getProductDetails(productID: Long) {
         viewModelScope.launch {
@@ -35,25 +44,49 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
         }
     }
 
-    fun getDraftOrders(draftOrderId: Long) {
+    fun getCartDraftOrders(draftOrderId: Long) {
         viewModelScope.launch {
             repo.getDraftOrderByDraftId(draftOrderId)
-                .catch { _allDraftOrdersState.value = ApiState.Failure(it) }
+                .catch { _cartDraftOrdersState.value = ApiState.Failure(it) }
                 .collect {
                     if (it.isSuccessful) {
-                        _allDraftOrdersState.value = ApiState.Success(it.body()!!)
+                        _cartDraftOrdersState.value = ApiState.Success(it.body()!!)
                     }
                 }
         }
     }
 
-    fun modifyDraftOrder(draftOrderId: Long, sendDraftRequest: SendDraftRequest) {
+    fun getWishlistDraftOrders(draftOrderId: Long) {
         viewModelScope.launch {
-            repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
-                .catch { _draftOrderState.value = ApiState.Failure(it) }
+            repo.getDraftOrderByDraftId(draftOrderId)
+                .catch { _wishlistDraftOrdersState.value = ApiState.Failure(it) }
                 .collect {
                     if (it.isSuccessful) {
-                        _draftOrderState.value = ApiState.Success(it.body()!!)
+                        _wishlistDraftOrdersState.value = ApiState.Success(it.body()!!)
+                    }
+                }
+        }
+    }
+
+    fun modifyCartDraftOrder(draftOrderId: Long, sendDraftRequest: SendDraftRequest) {
+        viewModelScope.launch {
+            repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
+                .catch { _modifyCartDraftOrderState.value = ApiState.Failure(it) }
+                .collect {
+                    if (it.isSuccessful) {
+                        _modifyCartDraftOrderState.value = ApiState.Success(it.body()!!)
+                    }
+                }
+        }
+    }
+
+    fun modifyWishlistDraftOrder(draftOrderId: Long, sendDraftRequest: SendDraftRequest) {
+        viewModelScope.launch {
+            repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
+                .catch { _modifyWishlistDraftOrderState.value = ApiState.Failure(it) }
+                .collect {
+                    if (it.isSuccessful) {
+                        _modifyWishlistDraftOrderState.value = ApiState.Success(it.body()!!)
                     }
                 }
         }

@@ -30,8 +30,8 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
-import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Constants.CART_KEY
+import com.example.e_commerce.utility.Constants.CUSTOMER_ID_KEY
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
 import com.example.e_commerce.utility.Functions.checkConnectivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -136,8 +136,8 @@ class SignUpFragment : Fragment() {
                             _viewModel.modifyCustomerMutableStateFlow.collectLatest { customerState ->
                                 when (customerState) {
                                     is ApiState.Success -> {
-                                        val customerResponse: CustomerResponse =
-                                            it.data as CustomerResponse
+                                        val customerResponse: CustomerModifiedResponse =
+                                            customerState.data as CustomerModifiedResponse
                                         _viewModel.writeStringToSettingSP(
                                             CART_KEY, cartID
                                         )
@@ -145,8 +145,8 @@ class SignUpFragment : Fragment() {
                                             WISHLIST_KEY, wishlistID
                                         )
                                         _viewModel.writeStringToSettingSP(
-                                            Constants.CUSTOMER_ID_KEY,
-                                            customerResponse.customers[0].id.toString()
+                                            CUSTOMER_ID_KEY,
+                                            customerResponse.customer.id.toString()
                                         )
                                         showToast(getString(R.string.registration_successful_please_check_your_email_to_verify_your_account))
                                         findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -295,7 +295,7 @@ class SignUpFragment : Fragment() {
                                                     SendLineItem(
                                                         45786113737003, 1, listOf()
                                                     )
-                                                ), user.email!!, Constants.CART_KEY
+                                                ), user.email!!, CART_KEY
                                             )
                                         )
                                     )
@@ -313,10 +313,6 @@ class SignUpFragment : Fragment() {
                                                 cartID = customerResponse.customers[0].note
                                                 wishlistID = customerResponse.customers[0].tags
 
-                                                Log.i(
-                                                    TAG, "Cart_ID: $cartID"
-                                                )
-
                                                 _viewModel.writeStringToSettingSP(
                                                     CART_KEY, cartID
                                                 )
@@ -324,19 +320,16 @@ class SignUpFragment : Fragment() {
                                                     WISHLIST_KEY, wishlistID
                                                 )
                                                 _viewModel.writeStringToSettingSP(
-                                                    Constants.CUSTOMER_ID_KEY,
+                                                    CUSTOMER_ID_KEY,
                                                     customerResponse.customers[0].id.toString()
                                                 )
 
-                                                Log.i(
-                                                    TAG, "Cart_KEY: ${
-                                                        _viewModel.readStringFromSettingSP(
-                                                            CART_KEY
-                                                        )
-                                                    }"
-                                                )
-                                                showToast(getString(R.string.welcome) + " $displayName")
-                                                updateUI(user)
+                                                if (cartID.isNotBlank()) {
+                                                    showToast(getString(R.string.welcome) + " $displayName")
+                                                    updateUI(user)
+                                                }else{
+                                                    showToast(getString(R.string.google_verification_failed_please_try_again))
+                                                }
                                             }
 
                                             is ApiState.Failure -> {
@@ -375,6 +368,10 @@ class SignUpFragment : Fragment() {
                                         )
                                     } else if (draftResponse.draft_order.note == WISHLIST_KEY) {
                                         wishlistID = draftResponse.draft_order.id.toString()
+
+                                        Log.i(TAG, "firebaseAuthWithGoogle: $cartID")
+                                        Log.i(TAG, "firebaseAuthWithGoogle: $wishlistID")
+
                                         _viewModel.modifyGoogleCustomer(
                                             draftResponse.draft_order.customer.id, CustomerData(
                                                 Customer(
@@ -397,7 +394,7 @@ class SignUpFragment : Fragment() {
                                                         WISHLIST_KEY, wishlistID
                                                     )
                                                     _viewModel.writeStringToSettingSP(
-                                                        Constants.CUSTOMER_ID_KEY,
+                                                        CUSTOMER_ID_KEY,
                                                         customerResponse.customer.id.toString()
                                                     )
                                                     showToast(getString(R.string.welcome) + " $displayName")
