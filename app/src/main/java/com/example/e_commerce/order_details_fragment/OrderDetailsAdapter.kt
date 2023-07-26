@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.e_commerce.R
-import com.example.e_commerce.databinding.OrderDetailsListItemBinding
 import com.example.e_commerce.databinding.ProductListItemBinding
 import com.example.e_commerce.model.pojo.order_details_response.LineItem
 import com.example.e_commerce.services.network.ConcreteRemoteSource
