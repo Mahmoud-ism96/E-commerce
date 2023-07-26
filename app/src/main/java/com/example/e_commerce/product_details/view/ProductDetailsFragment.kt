@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentProductDetailsBinding
-import com.example.e_commerce.model.pojo.CartItem
 import com.example.e_commerce.model.pojo.Review
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
@@ -36,6 +35,7 @@ import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants.CART_KEY
+import com.example.e_commerce.utility.Constants.WISHLIST_KEY
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -48,15 +48,15 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var _viewModelFactory: ProductDetailsViewModelFactory
     private lateinit var _viewModel: ProductDetailsViewModel
 
-    private lateinit var cartItem: CartItem
-
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var sizeAdapter: SizeAdapter
     private lateinit var imageAdapter: ImageAdapter
 
     private lateinit var selectedVariant: Variant
 
-    private lateinit var lastLineItem: List<LineItem>
+    private lateinit var lastCartLineItem: List<LineItem>
+    private lateinit var lastWishlistLineItem: List<LineItem>
+
     private lateinit var productImage: String
 
     private lateinit var cartDraftID: String
@@ -103,16 +103,17 @@ class ProductDetailsFragment : Fragment() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             cartDraftID = _viewModel.readStringFromSettingSP(CART_KEY)
-            wishlistDraftID = _viewModel.readStringFromSettingSP(CART_KEY)
-            _viewModel.getDraftOrders(cartDraftID.toLong())
+            wishlistDraftID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+            _viewModel.getCartDraftOrders(cartDraftID.toLong())
+            _viewModel.getWishlistDraftOrders(wishlistDraftID.toLong())
         }
 
         lifecycleScope.launch {
-            _viewModel.allDraftOrdersState.collectLatest {
+            _viewModel.cartDraftOrdersState.collectLatest {
                 when (it) {
                     is ApiState.Success -> {
                         val draftResponse: DraftResponse = it.data as DraftResponse
-                        lastLineItem = draftResponse.draft_order.line_items
+                        lastCartLineItem = draftResponse.draft_order.line_items
                     }
 
                     is ApiState.Failure -> {
@@ -127,17 +128,64 @@ class ProductDetailsFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            _viewModel.draftOrderState.collectLatest {
+            _viewModel.wishlistDraftOrdersState.collectLatest {
                 when (it) {
                     is ApiState.Success -> {
                         val draftResponse: DraftResponse = it.data as DraftResponse
-                        lastLineItem = draftResponse.draft_order.line_items
+                        lastWishlistLineItem = draftResponse.draft_order.line_items
+                    }
+
+                    is ApiState.Failure -> {
+                        //TODO:
+                    }
+
+                    is ApiState.Loading -> {
+                        //TODO:
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            _viewModel.modifyCartDraftOrderState.collectLatest {
+                when (it) {
+                    is ApiState.Success -> {
+                        val draftResponse: DraftResponse = it.data as DraftResponse
+                        lastCartLineItem = draftResponse.draft_order.line_items
                     }
 
                     is ApiState.Failure -> {
                         Toast.makeText(
                             requireContext(),
-                            getString(R.string.failed_to_add_item_to_cart),
+                            getString(R.string.failed_to_add_product_to_cart),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    is ApiState.Loading -> {
+                        //TODO:
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            _viewModel.modifyWishlistDraftOrderState.collectLatest {
+                when (it) {
+                    is ApiState.Success -> {
+                        val draftResponse: DraftResponse = it.data as DraftResponse
+                        lastWishlistLineItem = draftResponse.draft_order.line_items
+
+                        if (::productDetails.isInitialized) {
+                            binding.cbFavorite.isChecked =
+                                lastWishlistLineItem.any { varItem -> varItem.variant_id == productDetails.product.variants[0].id }
+                        }
+                    }
+
+                    is ApiState.Failure -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_add_product_to_wishlist),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -200,9 +248,6 @@ class ProductDetailsFragment : Fragment() {
                         val title = productDetails.product.title
                         val vendor = productDetails.product.vendor
                         val price = productDetails.product.variants[0].price
-                        val inventoryQuantity =
-                            productDetails.product.variants[0].inventory_quantity
-                        val image = productDetails.product.image.src
 
                         val desc = productDetails.product.body_html
 
@@ -212,6 +257,11 @@ class ProductDetailsFragment : Fragment() {
                         val variants = productDetails.product.variants
 
                         val images = productDetails.product.images
+
+                        if (::lastWishlistLineItem.isInitialized) {
+                            binding.cbFavorite.isChecked =
+                                lastWishlistLineItem.any { varItem -> varItem.variant_id == variants[0].id }
+                        }
 
                         productImage = productDetails.product.image.src
 
@@ -229,7 +279,6 @@ class ProductDetailsFragment : Fragment() {
                             }
                         }
 
-                        cartItem = CartItem(productID, title, price, inventoryQuantity, image)
                         binding.apply {
                             tvDetailVendorName.text = vendor
                             tvDetailProductName.text = title
@@ -285,20 +334,23 @@ class ProductDetailsFragment : Fragment() {
 
         binding.cbFavorite.setOnClickListener {
             if (FirebaseAuth.getInstance().currentUser != null) {
-                if (!binding.cbFavorite.isChecked) {
-                    if (::productDetails.isInitialized) {
-                        addToCart()
-                    } else {
-                        binding.cbFavorite.isChecked = false
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.please_log_in_to_add_items_to_your_wishlist),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                if (::productDetails.isInitialized) {
+                    addToFav()
                 } else {
-                    //TODO
+                    binding.cbFavorite.isChecked = false
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_adding_product_to_wishlist),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            } else {
+                binding.cbFavorite.isChecked = false
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.please_log_in_to_add_items_to_your_wishlist),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -311,7 +363,7 @@ class ProductDetailsFragment : Fragment() {
 
     private fun addToCart() {
         val newSendLineItems = mutableListOf<SendLineItem>()
-        for (lineItem in lastLineItem) {
+        for (lineItem in lastCartLineItem) {
             newSendLineItems.add(
                 SendLineItem(
                     lineItem.variant_id, lineItem.quantity, lineItem.properties
@@ -319,7 +371,7 @@ class ProductDetailsFragment : Fragment() {
             )
         }
         val addedSendLineItem = SendLineItem(
-            selectedVariant.id, selectedVariant.inventory_quantity, listOf(
+            selectedVariant.id, 1, listOf(
                 Property("image", productImage), Property(
                     "inventory_quantity", selectedVariant.inventory_quantity.toString()
                 )
@@ -329,22 +381,58 @@ class ProductDetailsFragment : Fragment() {
         if (!newSendLineItems.subList(1, newSendLineItems.size).contains(addedSendLineItem)) {
             newSendLineItems.add(addedSendLineItem)
             Toast.makeText(
-                requireContext(),
-                getString(R.string.item_added_to_cart),
-                Toast.LENGTH_SHORT
+                requireContext(), getString(R.string.item_added_to_cart), Toast.LENGTH_SHORT
             ).show()
         } else {
             Toast.makeText(
+                requireContext(), getString(R.string.item_already_exist_in_cart), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        _viewModel.modifyCartDraftOrder(
+            cartDraftID.toLong(), SendDraftRequest(
+                SendDraftOrder(
+                    newSendLineItems, FirebaseAuth.getInstance().currentUser!!.email!!, CART_KEY
+                )
+            )
+        )
+    }
+
+    private fun addToFav() {
+        val newSendLineItems = mutableListOf<SendLineItem>()
+        for (lineItem in lastWishlistLineItem) {
+            newSendLineItems.add(
+                SendLineItem(
+                    lineItem.variant_id, lineItem.quantity, lineItem.properties
+                )
+            )
+        }
+        val addedSendLineItem = SendLineItem(
+            productDetails.product.variants[0].id, 1, listOf(
+                Property("image", productImage), Property(
+                    "inventory_quantity", 1.toString()
+                )
+            )
+        )
+
+        if (!newSendLineItems.subList(1, newSendLineItems.size).contains(addedSendLineItem)) {
+            newSendLineItems.add(addedSendLineItem)
+            Toast.makeText(
+                requireContext(), getString(R.string.product_added_to_wishlist), Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            newSendLineItems.remove(addedSendLineItem)
+            Toast.makeText(
                 requireContext(),
-                getString(R.string.item_already_exist_in_cart),
+                getString(R.string.product_removed_from_wishlist),
                 Toast.LENGTH_SHORT
             ).show()
         }
 
-        _viewModel.modifyDraftOrder(
-            cartDraftID.toLong(), SendDraftRequest(
+        _viewModel.modifyWishlistDraftOrder(
+            wishlistDraftID.toLong(), SendDraftRequest(
                 SendDraftOrder(
-                    newSendLineItems, FirebaseAuth.getInstance().currentUser!!.email!!, CART_KEY
+                    newSendLineItems, FirebaseAuth.getInstance().currentUser!!.email!!, WISHLIST_KEY
                 )
             )
         )

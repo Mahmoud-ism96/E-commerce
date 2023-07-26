@@ -20,6 +20,7 @@ import com.example.e_commerce.authentication.viewmodel.AuthViewModelFactory
 import com.example.e_commerce.databinding.FragmentSignInBinding
 import com.example.e_commerce.model.pojo.customer.Customer
 import com.example.e_commerce.model.pojo.customer.CustomerData
+import com.example.e_commerce.model.pojo.customer_modified_response.CustomerModifiedResponse
 import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftOrder
@@ -211,22 +212,29 @@ class SignInFragment : Fragment() {
                                 is ApiState.Failure -> {
                                     _viewModel.getCustomerData(user.email!!, user.displayName!!)
 
-                                    _viewModel.loggedCustomerStateFlow.collectLatest {customerState ->
+                                    _viewModel.loggedCustomerStateFlow.collectLatest { customerState ->
                                         when (customerState) {
                                             is ApiState.Success -> {
                                                 val customerResponse: CustomerResponse =
                                                     customerState.data as CustomerResponse
                                                 cartID = customerResponse.customers[0].note
                                                 wishlistID = customerResponse.customers[0].tags
+
                                                 _viewModel.writeStringToSettingSP(
                                                     CART_KEY, cartID
                                                 )
                                                 _viewModel.writeStringToSettingSP(
                                                     WISHLIST_KEY, wishlistID
                                                 )
-                                                _viewModel.writeStringToSettingSP(CUSTOMER_ID_KEY,customerResponse.customers[0].id.toString())
-                                                showToast(getString(R.string.welcome) + " $displayName")
-                                                updateUI(user)
+                                                _viewModel.writeStringToSettingSP(
+                                                    Constants.CUSTOMER_ID_KEY,
+                                                    customerResponse.customers[0].id.toString()
+                                                )
+
+                                                if (cartID.isNotBlank()) {
+                                                    showToast(getString(R.string.welcome) + " $displayName")
+                                                    updateUI(user)
+                                                }
                                             }
 
                                             is ApiState.Failure -> {
@@ -278,14 +286,18 @@ class SignInFragment : Fragment() {
                                         _viewModel.modifyGoogleCustomerMutableStateFlow.collectLatest { customerState ->
                                             when (customerState) {
                                                 is ApiState.Success -> {
-                                                    val customerResponse: CustomerResponse = it.data as CustomerResponse
+                                                    val customerResponse: CustomerModifiedResponse =
+                                                        customerState.data as CustomerModifiedResponse
                                                     _viewModel.writeStringToSettingSP(
                                                         CART_KEY, cartID
                                                     )
                                                     _viewModel.writeStringToSettingSP(
                                                         WISHLIST_KEY, wishlistID
                                                     )
-                                                    _viewModel.writeStringToSettingSP(CUSTOMER_ID_KEY,customerResponse.customers[0].id.toString())
+                                                    _viewModel.writeStringToSettingSP(
+                                                        CUSTOMER_ID_KEY,
+                                                        customerResponse.customer.id.toString()
+                                                    )
                                                     showToast(getString(R.string.welcome) + " $displayName")
                                                     updateUI(user)
                                                 }

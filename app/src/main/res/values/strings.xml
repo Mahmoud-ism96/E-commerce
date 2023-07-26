@@ -98,6 +98,10 @@
     <string name="out_of_stock">Product is out of stock</string>
     <string name="please_log_in_to_add_items_to_your_cart">Please log in to add items to your cart.</string>
     <string name="please_log_in_to_add_items_to_your_wishlist">Please log in to add items to your wishlist.</string>
-    <string name="failed_to_add_item_to_cart">Failed to add item to cart.</string>
+    <string name="failed_to_add_product_to_cart">Failed to add product to cart.</string>
     <string name="item_already_exist_in_cart">Item already exist in cart</string>
+    <string name="product_added_to_wishlist">Product added to wishlist.</string>
+    <string name="product_removed_from_wishlist">Product removed from wishlist.</string>
+    <string name="failed_to_add_product_to_wishlist">Failed to add product to wishlist.</string>
+    <string name="error_adding_product_to_wishlist">Error adding product to wishlist</string>
 </resources>
