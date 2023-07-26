@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,7 +55,12 @@ class WishListFragment : Fragment() {
             requireActivity(), _viewModelFactory
         )[WishListViewModel::class.java]
 
-        wishlistAdapter = WishListAdapter()
+        wishlistAdapter = WishListAdapter {
+            val action = WishListFragmentDirections.actionWishListFragmentToProductDetailsFragment(
+                it
+            )
+            findNavController().navigate(action)
+        }
         deleteWhenSwipe()
 
         binding.rvWishlist.apply {
@@ -128,9 +134,7 @@ class WishListFragment : Fragment() {
 
     private fun deleteItemFromCart(lineItem: LineItem) {
         Toast.makeText(
-            requireContext(),
-            "Product removed from wishlist.",
-            Toast.LENGTH_SHORT
+            requireContext(), "Product removed from wishlist.", Toast.LENGTH_SHORT
         ).show()
 
         val updatedItems = lastLineItems.filter { it.id != lineItem.id }
