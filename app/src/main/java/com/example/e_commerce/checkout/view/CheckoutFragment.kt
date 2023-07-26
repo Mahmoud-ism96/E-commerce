@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -73,6 +75,22 @@ class CheckoutFragment : Fragment() {
 
 //                val inventoryLevelData = InventoryLevelData(87897276715, 47836051603755, 20)
 //                checkOutViewModel.updateVariantQuantity(inventoryLevelData)
+            }
+        }
+
+
+        binding.btnApplyVoucher.setOnClickListener {
+            val voucherText = binding.etVoucherCode.text.toString()
+            if (!binding.etVoucherCode.text.isNullOrBlank()) {
+                if (voucherText == Constants.CODE_DISCOUNT_100) {
+                    //calculateTotal(0.0)
+                    Toast.makeText(requireContext(), "congrats 100% off", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (voucherText == Constants.CODE_DISCOUNT_35) {
+                    //   calculateTotal(0.35)
+                    Toast.makeText(requireContext(), "congrats 35% off", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }

@@ -26,39 +26,11 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/et_voucher_code"
+        app:layout_constraintBottom_toTopOf="@+id/tv_in_total"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@id/tv_cart_desc"
         app:layout_constraintTop_toBottomOf="@id/tv_cart_desc"
         tools:listitem="@layout/cart_item" />
-
-    <EditText
-        android:id="@+id/et_voucher_code"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/views_rounded_background"
-        android:hint="@string/enter_code_voucher"
-        android:inputType="text"
-        android:paddingHorizontal="30dp"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_in_total"
-        app:layout_constraintEnd_toStartOf="@+id/btn_apply_voucher"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@+id/guideline5" />
-
-    <Button
-        android:id="@+id/btn_apply_voucher"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:background="@drawable/btn_ripple_transparent"
-        android:text="@string/apply"
-        app:layout_constraintBottom_toBottomOf="@id/et_voucher_code"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/et_voucher_code"
-        app:layout_constraintTop_toTopOf="@id/et_voucher_code" />
 
     <TextView
         android:id="@+id/tv_in_total"
@@ -172,6 +144,28 @@
         android:id="@+id/group_signed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="guideline8,guideline7,guideline6,guideline5,btn_checkout,tv_sum_total,tv_cart_title,tv_in_total,btn_apply_voucher,et_voucher_code,rv_cart_items,tv_cart_desc" />
+        app:constraint_referenced_ids="guideline8,guideline7,guideline6,guideline5,btn_checkout,tv_sum_total,tv_cart_title,tv_in_total,rv_cart_items,tv_cart_desc" />
 
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B4040000"/>
+
+    <ProgressBar
+        android:id="@+id/pb_address_book"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="#F6F0F0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/relod_groub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="pb_address_book,view4"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

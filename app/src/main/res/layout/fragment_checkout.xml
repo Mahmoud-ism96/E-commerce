@@ -143,11 +143,39 @@
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_in_total_payment"
+        app:layout_constraintBottom_toTopOf="@+id/et_voucher_code"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@id/line3"
         tools:listitem="@layout/cart_item" />
+
+    <EditText
+        android:id="@+id/et_voucher_code"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/views_rounded_background"
+        android:hint="@string/enter_code_voucher"
+        android:inputType="text"
+        android:paddingHorizontal="30dp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_in_total_payment"
+        app:layout_constraintEnd_toStartOf="@+id/btn_apply_voucher"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline9" />
+
+    <Button
+        android:id="@+id/btn_apply_voucher"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:text="@string/apply"
+        app:layout_constraintBottom_toBottomOf="@id/et_voucher_code"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/et_voucher_code"
+        app:layout_constraintTop_toTopOf="@id/et_voucher_code" />
 
     <TextView
         android:id="@+id/tv_in_total_payment"

@@ -319,7 +319,7 @@ class ProductDetailsFragment : Fragment() {
             )
         }
         val addedSendLineItem = SendLineItem(
-            selectedVariant.id, selectedVariant.inventory_quantity, listOf(
+            selectedVariant.id, 1, listOf(
                 Property("image", productImage), Property(
                     "inventory_quantity", selectedVariant.inventory_quantity.toString()
                 )

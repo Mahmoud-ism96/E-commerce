@@ -2,6 +2,7 @@ package com.example.e_commerce.shoppingcart.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
 import com.example.e_commerce.model.repo.RepoInterface
 import com.example.e_commerce.services.network.ApiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,10 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _cartDraftOrderMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
     val cartDraftOrderStateFlow: StateFlow<ApiState> get() = _cartDraftOrderMutableStateFlow
+
+    private val _modifyDraftStatusMutableStateFlow: MutableStateFlow<ApiState> =
+        MutableStateFlow(ApiState.Loading)
+    val modifyDraftStatusStateFlow: StateFlow<ApiState> get() = _modifyDraftStatusMutableStateFlow
 
     fun getDiscountCodesForPriceRule(priceRuleId: String) {
         viewModelScope.launch {
@@ -65,6 +70,24 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
                 }
             }
         }
+    }
+
+    fun modifyDraftOrder(draft_order_id: Long, draft_order: SendDraftRequest){
+        viewModelScope.launch {
+            repo.modifyDraftOrder(draft_order_id, draft_order).collect{
+                if (it.isSuccessful){
+                    _modifyDraftStatusMutableStateFlow.value = ApiState.Success("")
+                }
+            }
+        }
+    }
+
+    fun writeStringToSettingSP(key: String, value: String) {
+        repo.writeStringToSettingSP(key, value)
+    }
+
+    fun readStringFromSettingSP(key: String): String {
+        return repo.readStringFromSettingSP(key)
     }
 
 

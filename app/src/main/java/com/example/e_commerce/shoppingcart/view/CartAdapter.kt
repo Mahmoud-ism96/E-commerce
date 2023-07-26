@@ -14,8 +14,7 @@ import com.example.e_commerce.databinding.CartItemBinding
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
 
 class CartAdapter(
-    private val onPlusClick: (Long, Int) -> Unit,
-    private val onMinusClick: (Long, Int) -> Unit,
+    private val onOperationClicked: (lineItems: List<LineItem>) -> Unit,
     private val onItemClick: (Long) -> Unit,
 ) : ListAdapter<LineItem, CartAdapter.CartViewHolder>(RecyclerDiffUtilCartItem()) {
 
@@ -29,8 +28,8 @@ class CartAdapter(
 
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        holder.onBind(currentItem)
+            val currentItem = getItem(position)
+            holder.onBind(currentItem)
     }
 
     inner class CartViewHolder(private val binding: CartItemBinding) :
@@ -48,18 +47,24 @@ class CartAdapter(
                     .into(ivItemImage)
 
                 btnPlus.setOnClickListener {
-                    if (currentItem.properties[1].value.toInt() > currentItem.quantity + 1) {
-                        onPlusClick(currentItem.id, currentItem.quantity)
-                        val newQuantity = currentItem.quantity + 1
-                        tvItemCount.text = newQuantity.toString()
-                    }else{
-                        Toast.makeText(tvItemCount.context, "Sorry you can't bay more", Toast.LENGTH_SHORT).show()
+                    if (currentItem.properties[1].value.toInt() > currentItem.quantity + 1 && currentItem.quantity < 10) {
+                        currentItem.quantity += 1
+                        tvItemCount.text = currentItem.quantity.toString()
+                        onOperationClicked(currentList)
+                    } else {
+                        Toast.makeText(
+                            tvItemCount.context,
+                            "Sorry you can't bay more",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
                 btnMinus.setOnClickListener {
-                    val newQuantity = currentItem.quantity - 1
-                    tvItemCount.text = newQuantity.toString()
-                    onMinusClick(currentItem.id, currentItem.quantity)
+                    if (currentItem.quantity > 1) {
+                        currentItem.quantity -= 1
+                        tvItemCount.text = currentItem.quantity.toString()
+                        onOperationClicked(currentList)
+                    }
                 }
 
                 binding.cvItem.setOnClickListener {
