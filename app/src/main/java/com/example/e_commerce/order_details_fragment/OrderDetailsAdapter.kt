@@ -47,13 +47,13 @@ class OrderDetailsAdapter(private val onClick: (Long) -> Unit) :
                 val settingSharedPref = SettingSharedPref.getInstance(tvItemName.context)
                 val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
                 val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
-                if (currency == Constants.EGP) {
-                    tvItemPrice.text = "${currentItem.price} EGP"
-                } else {
+                if (currency == Constants.USD) {
                     tvItemPrice.text = String.format(
                         "%.2f $",
                         currentItem.price.toDouble() * usdAmount.toDouble()
                     )
+                } else {
+                    tvItemPrice.text = "${currentItem.price} EGP"
                 }
                 tvItemName.text = currentItem.title
                 try {

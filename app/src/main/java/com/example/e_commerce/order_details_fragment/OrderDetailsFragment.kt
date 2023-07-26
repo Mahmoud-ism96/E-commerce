@@ -94,10 +94,14 @@ class OrderDetailsFragment : Fragment() {
                         binding.apply {
                             tvOrderId.text = orderResponse.order.id.toString()
                             tvOrderDate.text = orderResponse.order.created_at
-                            if (currency == Constants.EGP) {
+                            if (currency == Constants.USD) {
+                                tvOrderPrice.text = String.format(
+                                    "%.2f $",
+                                    orderResponse.order.total_price.toDouble() * usdAmount.toDouble()
+                                )
+
+                            } else {
                                 tvOrderPrice.text = orderResponse.order.total_price
-                            }else{
-                                tvOrderPrice.text = String.format("%.2f $",orderResponse.order.total_price.toDouble()*usdAmount.toDouble())
                             }
                         }
                     }
