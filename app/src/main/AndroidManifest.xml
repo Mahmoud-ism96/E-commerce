@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +13,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecommerce"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
         <meta-data
             android:name="com.google.android.geo.API_KEY"

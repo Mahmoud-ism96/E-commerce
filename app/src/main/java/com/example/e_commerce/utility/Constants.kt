@@ -1,6 +1,7 @@
 package com.example.e_commerce.utility
 
 object Constants {
+
     const val API_KEY = "bc59aa138e64d816bb2a1b2169fe3d85"
     const val ACCESS_TOKEN = "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"
     private const val HOST_NAME = "itp-sv-and1"
@@ -24,7 +25,8 @@ object Constants {
     const val CURRENCY = "currency"
     const val ENGLISH = "english"
     const val ARABIC = "arabic"
-    const val USD = "usd"
-    const val EGP = "egp"
+    const val USD = "USD"
+    const val EGP = "EGP"
+    const val USDAMOUNT = "USDAMOUNT"
 
 }

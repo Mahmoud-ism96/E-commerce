@@ -1,6 +1,5 @@
 package com.example.e_commerce.orders.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.model.repo.RepoInterface
@@ -19,7 +18,7 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
 
     private val _listOfOrdersMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
-    val listOfOrdersStateFlow:StateFlow<ApiState> get() = _listOfOrdersMutableStateFlow
+    val listOfOrdersStateFlow: StateFlow<ApiState> get() = _listOfOrdersMutableStateFlow
 
     private val _orderMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
@@ -41,12 +40,10 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
         viewModelScope.launch {
             repo.getCustomerOrders(id)
                 .catch {
-                    Log.w("shopy", "onViewCreated: catch", )
                     _listOfOrdersMutableStateFlow.value = ApiState.Failure(it)
                 }
                 .collectLatest {
                     if (it.isSuccessful) {
-                        Log.w("shopy", "onViewCreated: success", )
                         _listOfOrdersMutableStateFlow.value = ApiState.Success(it.body()!!)
                     }
                 }
@@ -68,5 +65,8 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
         }
     }
 
+    fun readFromSP(key: String): String {
+        return repo.readStringFromSettingSP(key)
+    }
 
 }

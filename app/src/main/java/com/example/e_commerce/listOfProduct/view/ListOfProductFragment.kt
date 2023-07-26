@@ -93,8 +93,8 @@ class ListOfProductFragment : Fragment() {
             filterDialog.show()
         }
 
-
-
+        val currency = homeViewModel.readFromSP(Constants.CURRENCY)
+        val usdAmount = homeViewModel.readFromSP(Constants.USDAMOUNT)
 
         lifecycleScope.launch {
             homeViewModel.productsByIdStateFlow.collectLatest {
@@ -120,10 +120,15 @@ class ListOfProductFragment : Fragment() {
                         val minPrice = prices.minOrNull() ?: 0.0
                         val maxPrice = prices.maxOrNull() ?: 0.0
 
-
-                        filterBinding.etFromPrice.hint=minPrice.toString()
-                        filterBinding.etToPrice.hint=maxPrice.toString()
-
+                        if (currency == Constants.EGP) {
+                            filterBinding.etFromPrice.hint = minPrice.toString()
+                            filterBinding.etToPrice.hint = maxPrice.toString()
+                        } else {
+                            filterBinding.etFromPrice.hint =
+                                String.format("%.2f", minPrice * usdAmount.toDouble())
+                            filterBinding.etToPrice.hint =
+                                String.format("%.2f", maxPrice * usdAmount.toDouble())
+                        }
                     }
 
                     else -> {
@@ -190,16 +195,21 @@ class ListOfProductFragment : Fragment() {
                                 } else {
                                     true
                                 }
-
                             }
-
 
                             val filteredProducts = products.filter { product ->
                                 val fromPriceText = filterBinding.etFromPrice.text.toString()
                                 val toPriceText = filterBinding.etToPrice.text.toString()
                                 if (fromPriceText.isNotEmpty() && toPriceText.isNotEmpty()) {
-                                    fromPrice = fromPriceText.toDouble()
-                                    toPrice = toPriceText.toDouble()
+                                    if (currency == Constants.EGP) {
+                                        fromPrice = fromPriceText.toDouble()
+                                        toPrice = toPriceText.toDouble()
+                                    } else {
+                                        fromPrice =
+                                            (fromPriceText.toDouble() / usdAmount.toDouble())
+                                        toPrice = (toPriceText.toDouble() / usdAmount.toDouble())
+                                    }
+
                                     product.variants[0].price.toDouble() in fromPrice..toPrice
                                 } else {
                                     true
@@ -211,8 +221,6 @@ class ListOfProductFragment : Fragment() {
                         else -> {}
                     }
                 }
-
-
             }
             filterDialog.dismiss()
         }

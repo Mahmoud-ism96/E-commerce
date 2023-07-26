@@ -1,5 +1,6 @@
 package com.example.e_commerce.orders.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ProductListItemBinding
 import com.example.e_commerce.model.pojo.customer_order_response.Order
+import com.example.e_commerce.services.settingsharedpreference.SettingSharedPref
+import com.example.e_commerce.utility.Constants
 
 
 class OrderRecycleAdapter(private val onClick: (Long) -> Unit) :
@@ -29,10 +32,21 @@ class OrderRecycleAdapter(private val onClick: (Long) -> Unit) :
 
     inner class OrderViewHolder(private val binding: ProductListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun onBind(currentItem: Order) {
             binding.apply {
+                val settingSharedPref = SettingSharedPref.getInstance(tvItemName.context)
+                val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
+                val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
+                if (currency == Constants.EGP) {
+                    tvItemPrice.text = "${currentItem.total_price} EGP"
+                } else {
+                    tvItemPrice.text = String.format(
+                        "%.2f $",
+                        currentItem.total_price.toDouble() * usdAmount.toDouble()
+                    )
+                }
                 tvItemName.text = currentItem.created_at
-                tvItemPrice.text = currentItem.total_price
                 ivItemImage.setImageResource(R.drawable.shop)
                 item.setOnClickListener {
                     onClick(currentItem.id)
