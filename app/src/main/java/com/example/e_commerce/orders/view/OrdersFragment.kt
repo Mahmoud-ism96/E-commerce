@@ -35,7 +35,7 @@ class OrdersFragment : Fragment() {
     private lateinit var factory: OrderViewModelFactory
     private lateinit var orderViewModel: OrderViewModel
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var orderAdapter:OrderRecycleAdapter
+    private lateinit var orderAdapter: OrderRecycleAdapter
     private lateinit var navController: NavController
     private var email: String? = null
     private var name: String? = null
@@ -50,7 +50,7 @@ class OrdersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController=Navigation.findNavController(view)
+        navController = Navigation.findNavController(view)
 
         binding.btnBackToProfile.setOnClickListener {
             navigateBack()
@@ -65,12 +65,12 @@ class OrdersFragment : Fragment() {
 
         orderViewModel = ViewModelProvider(requireActivity(), factory)[OrderViewModel::class.java]
 
-        orderAdapter= OrderRecycleAdapter(){
+        orderAdapter = OrderRecycleAdapter() {
             orderViewModel.getOrderById(it)
             navController.navigate(R.id.action_ordersFragment_to_orderDetailsFragment)
         }
         binding.rvCurrentOreders.apply {
-            adapter=orderAdapter
+            adapter = orderAdapter
             layoutManager = LinearLayoutManager(view.context).apply {
                 orientation = RecyclerView.VERTICAL
             }
@@ -80,34 +80,37 @@ class OrdersFragment : Fragment() {
         email = firebaseAuth.currentUser?.email
         name = firebaseAuth.currentUser?.displayName
 
-        orderViewModel.getCustomerId(email!!,name!!)
+        orderViewModel.getCustomerId(email!!, name!!)
 
         lifecycleScope.launch {
             orderViewModel.customerStateFlow.collectLatest {
-                when (it){
-                    is ApiState.Success ->{
+                when (it) {
+                    is ApiState.Success -> {
                         val customer = it.data as CustomerResponse
-                        val customerId=customer.customers[0].id
+                        val customerId = customer.customers[0].id
                         orderViewModel.getCustomerOrders(customerId)
                     }
+
                     else -> {}
                 }
             }
         }
         lifecycleScope.launch {
             orderViewModel.listOfOrdersStateFlow.collectLatest {
-                when(it){
-                    is ApiState.Success ->{
-                        binding.orderLoading.visibility=View.GONE
+                when (it) {
+                    is ApiState.Success -> {
+                        binding.orderLoading.visibility = View.GONE
                         val orders = it.data as CustomerOrderResponse
                         orderAdapter.submitList(orders.orders)
                     }
-                    is ApiState.Failure ->{
-                        Toast.makeText(requireContext(),"Failed ..",Toast.LENGTH_SHORT).show()
+
+                    is ApiState.Failure -> {
+                        Toast.makeText(requireContext(), "Failed ..", Toast.LENGTH_SHORT).show()
                     }
-                    else ->{
+
+                    else -> {
                         binding.orderLoading.apply {
-                            visibility=View.VISIBLE
+                            visibility = View.VISIBLE
                             setAnimation(R.raw.loading)
                         }
                     }

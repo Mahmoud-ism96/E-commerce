@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.core.content.ContextCompat
+import com.example.e_commerce.services.currency.ApiCurrencyClient
 
 object Functions {
     fun checkConnectivity(context: Context): Boolean {
@@ -26,5 +27,13 @@ object Functions {
         val clipData = ClipData.newPlainText("keyword", text)
 
         clipboardManager.setPrimaryClip(clipData)
+    }
+
+    suspend fun convertCurrency(amount: String, currency: String): Double {
+        if (currency!=Constants.EGP){
+        return ApiCurrencyClient.convertCurrency(amount, currency)
+        }else{
+            return amount.toDouble()
+        }
     }
 }

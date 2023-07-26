@@ -18,7 +18,7 @@ data class Variant(
     val option2: String,
     val option3: Any,
     val position: Int,
-    val price: String,
+    var price: String,
     val product_id: Long,
     val requires_shipping: Boolean,
     val sku: String,

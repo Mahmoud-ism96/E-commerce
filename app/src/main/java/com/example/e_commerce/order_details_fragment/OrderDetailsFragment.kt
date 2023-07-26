@@ -23,6 +23,7 @@ import com.example.e_commerce.orders.viewmodel.OrderViewModel
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -73,6 +74,9 @@ class OrderDetailsFragment : Fragment() {
             }
         }
 
+        val currency = orderViewModel.readFromSP(Constants.CURRENCY)
+        val usdAmount = orderViewModel.readFromSP(Constants.USDAMOUNT)
+
         lifecycleScope.launch {
             orderViewModel.ordersStateFlow.collectLatest {
                 when (it) {
@@ -90,7 +94,11 @@ class OrderDetailsFragment : Fragment() {
                         binding.apply {
                             tvOrderId.text = orderResponse.order.id.toString()
                             tvOrderDate.text = orderResponse.order.created_at
-                            tvOrderPrice.text = orderResponse.order.total_price
+                            if (currency == Constants.EGP) {
+                                tvOrderPrice.text = orderResponse.order.total_price
+                            }else{
+                                tvOrderPrice.text = String.format("%.2f",orderResponse.order.total_price.toDouble()*usdAmount.toDouble())
+                            }
                         }
                     }
 

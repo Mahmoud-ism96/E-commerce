@@ -4,17 +4,33 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.e_commerce.Home.viewmodel.HomeViewModel
+import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ProductListItemBinding
 import com.example.e_commerce.model.pojo.Product
+import com.example.e_commerce.model.repo.Repo
+import com.example.e_commerce.services.db.ConcreteLocalSource
+import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.services.settingsharedpreference.SettingSharedPref
+import com.example.e_commerce.utility.Constants
+import com.example.e_commerce.utility.Functions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProductRecycleAdapter(private val onClick: (Product) -> Unit) :
     ListAdapter<Product, ProductRecycleAdapter.ProductViewHolder>(RecyclerDiffUtilProduct()) {
+
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModelFactory: HomeViewModelFactory
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater: LayoutInflater =
@@ -33,9 +49,21 @@ class ProductRecycleAdapter(private val onClick: (Product) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: Product) {
+
             binding.apply {
                 tvItemName.text = currentItem.title
-                tvItemPrice.text = "${currentItem.variants[0].price} EGP"
+                val settingSharedPref = SettingSharedPref.getInstance(tvItemName.context)
+                val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
+                val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
+                if (currency == Constants.EGP) {
+                    tvItemPrice.text = "${currentItem.variants[0].price} EGP"
+                } else {
+                    tvItemPrice.text = String.format(
+                        "%.2f $",
+                        currentItem.variants[0].price.toDouble() * usdAmount.toDouble()
+                    )
+                }
+                tvItemName.text = currentItem.title
                 Glide.with(tvItemName.context)
                     .load(currentItem.image.src)
                     .apply(RequestOptions().override(200, 200))
