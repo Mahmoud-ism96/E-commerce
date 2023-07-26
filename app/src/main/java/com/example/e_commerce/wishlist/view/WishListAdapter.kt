@@ -12,7 +12,7 @@ import com.example.e_commerce.R
 import com.example.e_commerce.databinding.ItemProductSwipeBinding
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
 
-class WishListAdapter :
+class WishListAdapter(private val onClick: (Long) -> Unit) :
     ListAdapter<LineItem, WishListAdapter.WishlistViewHolder>(RecyclerDiffUtilWishlistItem()) {
 
 
@@ -39,6 +39,9 @@ class WishListAdapter :
                     .apply(RequestOptions().override(200, 200))
                     .placeholder(R.drawable.loading_svgrepo_com).error(R.drawable.error)
                     .into(ivSwipeItemImage)
+                swipeItem.setOnClickListener {
+                    onClick(currentItem.product_id)
+                }
             }
         }
     }

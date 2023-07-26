@@ -30,7 +30,6 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
-import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Constants.CART_KEY
 import com.example.e_commerce.utility.Constants.CUSTOMER_ID_KEY
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
@@ -202,7 +201,7 @@ class SignInFragment : Fragment() {
                                                     SendLineItem(
                                                         45786113737003, 1, listOf()
                                                     )
-                                                ), user.email!!, Constants.CART_KEY
+                                                ), user.email!!, CART_KEY
                                             )
                                         )
                                     )
@@ -227,13 +226,15 @@ class SignInFragment : Fragment() {
                                                     WISHLIST_KEY, wishlistID
                                                 )
                                                 _viewModel.writeStringToSettingSP(
-                                                    Constants.CUSTOMER_ID_KEY,
+                                                    CUSTOMER_ID_KEY,
                                                     customerResponse.customers[0].id.toString()
                                                 )
 
                                                 if (cartID.isNotBlank()) {
                                                     showToast(getString(R.string.welcome) + " $displayName")
                                                     updateUI(user)
+                                                }else{
+                                                    showToast(getString(R.string.google_verification_failed_please_try_again))
                                                 }
                                             }
 
@@ -273,6 +274,10 @@ class SignInFragment : Fragment() {
                                         )
                                     } else if (draftResponse.draft_order.note == WISHLIST_KEY) {
                                         wishlistID = draftResponse.draft_order.id.toString()
+
+                                        Log.i(TAG, "firebaseAuthWithGoogle: $cartID")
+                                        Log.i(TAG, "firebaseAuthWithGoogle: $wishlistID")
+
                                         _viewModel.modifyGoogleCustomer(
                                             draftResponse.draft_order.customer.id, CustomerData(
                                                 Customer(

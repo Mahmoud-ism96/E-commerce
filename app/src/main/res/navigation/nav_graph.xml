@@ -15,6 +15,10 @@
             app:destination="@id/listOfProductFragment" />
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/searchFragment" />
     </fragment>
     <fragment
@@ -27,6 +31,10 @@
             app:destination="@id/checkoutFragment" />
         <action
             android:id="@+id/action_cartFragment2_to_productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/productDetailsFragment" />
     </fragment>
     <fragment
@@ -45,7 +53,15 @@
         android:id="@+id/wishListFragment"
         android:name="com.example.e_commerce.wishlist.view.WishListFragment"
         android:label="fragment_wish_list"
-        tools:layout="@layout/fragment_wish_list" />
+        tools:layout="@layout/fragment_wish_list" >
+        <action
+            android:id="@+id/action_wishListFragment_to_productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.example.e_commerce.checkout.view.CheckoutFragment"
@@ -58,6 +74,10 @@
         tools:layout="@layout/fragment_address_book" >
         <action
             android:id="@+id/action_accountDetailsFragment_to_addAddressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/addAddressFragment" />
     </fragment>
     <fragment
@@ -77,6 +97,10 @@
         tools:layout="@layout/fragment_list_of_product" >
         <action
             android:id="@+id/action_listOfProductFragment_to_productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/productDetailsFragment" />
     </fragment>
     <fragment
@@ -95,6 +119,10 @@
         tools:layout="@layout/fragment_add_address" >
         <action
             android:id="@+id/action_addAddressFragment_to_mapFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/mapFragment" />
         <argument
             android:name="coordinate"
@@ -109,6 +137,10 @@
         tools:layout="@layout/fragment_orders" >
         <action
             android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/orderDetailsFragment" />
     </fragment>
     <fragment
@@ -117,6 +149,10 @@
         android:label="OrderDetailsFragment" >
         <action
             android:id="@+id/action_orderDetailsFragment_to_productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/productDetailsFragment" />
     </fragment>
     <fragment
@@ -126,6 +162,10 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/productDetailsFragment" />
     </fragment>
 </navigation>
