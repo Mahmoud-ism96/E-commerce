@@ -55,13 +55,13 @@ class ProductRecycleAdapter(private val onClick: (Product) -> Unit) :
                 val settingSharedPref = SettingSharedPref.getInstance(tvItemName.context)
                 val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
                 val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
-                if (currency == Constants.EGP) {
-                    tvItemPrice.text = "${currentItem.variants[0].price} EGP"
-                } else {
+                if (currency == Constants.USD) {
                     tvItemPrice.text = String.format(
                         "%.2f $",
                         currentItem.variants[0].price.toDouble() * usdAmount.toDouble()
                     )
+                } else {
+                    tvItemPrice.text = "${currentItem.variants[0].price} EGP"
                 }
                 tvItemName.text = currentItem.title
                 Glide.with(tvItemName.context)

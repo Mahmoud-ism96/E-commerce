@@ -46,14 +46,14 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.getBrands()
         homeViewModel.getPriceRules()
 
-        val curreny = homeViewModel.readFromSP(Constants.CURRENCY)
+        val currency = homeViewModel.readFromSP(Constants.CURRENCY)
 
         lifecycleScope.launch {
             val usdAmount = Functions.convertCurrency("1", "USD")
             homeViewModel.writeToSP(Constants.USDAMOUNT, usdAmount.toString())
         }
 
-        if (curreny.isNullOrBlank()){
+        if (currency.isNullOrBlank()){
             homeViewModel.writeToSP(Constants.CURRENCY,Constants.EGP)
         }
     }
