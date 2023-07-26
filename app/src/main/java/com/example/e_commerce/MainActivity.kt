@@ -19,5 +19,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val settingSharedPref=SettingSharedPref.getInstance(this)
+        if (settingSharedPref.readStringFromSettingSP(Constants.CURRENCY).isNullOrBlank()){
+            settingSharedPref.writeStringToSettingSP(Constants.CURRENCY,Constants.EGP)
+        }
     }
 }

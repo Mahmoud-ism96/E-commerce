@@ -121,14 +121,14 @@ class ListOfProductFragment : Fragment() {
                         val minPrice = prices.minOrNull() ?: 0.0
                         val maxPrice = prices.maxOrNull() ?: 0.0
 
-                        if (currency == Constants.EGP) {
-                            filterBinding.etFromPrice.hint = minPrice.toString()
-                            filterBinding.etToPrice.hint = maxPrice.toString()
-                        } else {
+                        if (currency == Constants.USD) {
                             filterBinding.etFromPrice.hint =
                                 String.format("%.2f", minPrice * usdAmount.toDouble())
                             filterBinding.etToPrice.hint =
                                 String.format("%.2f", maxPrice * usdAmount.toDouble())
+                        } else {
+                            filterBinding.etFromPrice.hint = minPrice.toString()
+                            filterBinding.etToPrice.hint = maxPrice.toString()
                         }
                     }
 
@@ -202,13 +202,13 @@ class ListOfProductFragment : Fragment() {
                                 val fromPriceText = filterBinding.etFromPrice.text.toString()
                                 val toPriceText = filterBinding.etToPrice.text.toString()
                                 if (fromPriceText.isNotEmpty() && toPriceText.isNotEmpty()) {
-                                    if (currency == Constants.EGP) {
-                                        fromPrice = fromPriceText.toDouble()
-                                        toPrice = toPriceText.toDouble()
-                                    } else {
+                                    if (currency == Constants.USD) {
                                         fromPrice =
                                             (fromPriceText.toDouble() / usdAmount.toDouble())
                                         toPrice = (toPriceText.toDouble() / usdAmount.toDouble())
+                                    } else {
+                                        fromPrice = fromPriceText.toDouble()
+                                        toPrice = toPriceText.toDouble()
                                     }
                                     product.variants[0].price.toDouble() in fromPrice..toPrice
                                 } else {
