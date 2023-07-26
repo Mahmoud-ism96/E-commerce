@@ -69,4 +69,8 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     fun readFromSP(key:String):String{
         return repo.readStringFromSettingSP(key)
     }
+
+    fun writeToSP(key: String,value:String){
+        repo.writeStringToSettingSP(key,value)
+    }
 }

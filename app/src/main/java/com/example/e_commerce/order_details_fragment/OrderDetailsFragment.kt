@@ -97,7 +97,7 @@ class OrderDetailsFragment : Fragment() {
                             if (currency == Constants.EGP) {
                                 tvOrderPrice.text = orderResponse.order.total_price
                             }else{
-                                tvOrderPrice.text = String.format("%.2f",orderResponse.order.total_price.toDouble()*usdAmount.toDouble())
+                                tvOrderPrice.text = String.format("%.2f $",orderResponse.order.total_price.toDouble()*usdAmount.toDouble())
                             }
                         }
                     }

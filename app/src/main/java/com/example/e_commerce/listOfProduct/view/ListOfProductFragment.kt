@@ -103,6 +103,7 @@ class ListOfProductFragment : Fragment() {
                         binding.rvListOfProduct.visibility = View.GONE
                         binding.listOfProductLoading.visibility = View.VISIBLE
                         binding.listOfProductLoading.setAnimation(R.raw.loading)
+                        binding.listOfProductLoading.playAnimation()
                     }
 
                     is ApiState.Success -> {
@@ -209,13 +210,20 @@ class ListOfProductFragment : Fragment() {
                                             (fromPriceText.toDouble() / usdAmount.toDouble())
                                         toPrice = (toPriceText.toDouble() / usdAmount.toDouble())
                                     }
-
                                     product.variants[0].price.toDouble() in fromPrice..toPrice
                                 } else {
                                     true
                                 }
                             }
-                            productRecycleAdapter.submitList(filteredProducts)
+                            if (fromPrice < toPrice) {
+                                productRecycleAdapter.submitList(filteredProducts)
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "!Unable Price Filter",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
 
                         else -> {}

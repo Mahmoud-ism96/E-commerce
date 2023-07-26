@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOrderDate"
-        tools:listitem="@layout/order_details_list_item" />
+        tools:listitem="@layout/product_list_item" />
 
     <TextView
         android:id="@+id/textView18"
