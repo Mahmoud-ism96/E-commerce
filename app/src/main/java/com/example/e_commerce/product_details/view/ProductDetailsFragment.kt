@@ -1,6 +1,7 @@
 package com.example.e_commerce.product_details.view
 
 import android.animation.LayoutTransition
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
@@ -34,6 +35,7 @@ import com.example.e_commerce.product_details.viewmodel.ProductDetailsViewModelF
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Constants.CART_KEY
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
 import com.google.firebase.auth.FirebaseAuth
@@ -82,6 +84,7 @@ class ProductDetailsFragment : Fragment() {
 
     val reviewList = listOf(review1, review2)
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -279,10 +282,17 @@ class ProductDetailsFragment : Fragment() {
                             }
                         }
 
+                        val currency = _viewModel.readStringFromSettingSP(Constants.CURRENCY)
+                        val usdAmount = _viewModel.readStringFromSettingSP(Constants.USDAMOUNT)
+
                         binding.apply {
                             tvDetailVendorName.text = vendor
                             tvDetailProductName.text = title
-                            tvDetailPrice.text = price
+                            if (currency == Constants.USD) {
+                                tvDetailPrice.text = String.format("%.2f $",price.toDouble()*usdAmount.toDouble())
+                            } else {
+                                tvDetailPrice.text="$price EGP"
+                            }
                             tvDescDetails.text = desc
                             tvProductDetailRating.text = averageRating.toString()
                         }
