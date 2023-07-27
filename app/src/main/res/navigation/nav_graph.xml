@@ -83,7 +83,11 @@
         android:id="@+id/checkoutFragment"
         android:name="com.example.e_commerce.checkout.view.CheckoutFragment"
         android:label="fragment_checkout"
-        tools:layout="@layout/fragment_checkout" />
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addressBookFragment"
         android:name="com.example.e_commerce.profile.view.AddressBookFragment"

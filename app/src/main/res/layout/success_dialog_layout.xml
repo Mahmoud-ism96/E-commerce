@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/views_rounded_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="60dp"
+    >
+
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:id="@+id/iv_success_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/checked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/order_success"
+        app:layout_constraintEnd_toEndOf="@id/iv_success_image"
+        app:layout_constraintStart_toStartOf="@id/iv_success_image"
+        app:layout_constraintTop_toBottomOf="@id/iv_success_image" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#00D355"
+        app:layout_constraintEnd_toEndOf="@+id/tv_success"
+        app:layout_constraintStart_toStartOf="@+id/tv_success"
+        app:layout_constraintTop_toBottomOf="@+id/tv_success" />
+
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_success"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:text="@string/continue_shopping"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

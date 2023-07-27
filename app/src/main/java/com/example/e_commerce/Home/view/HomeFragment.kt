@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.Home.viewmodel.HomeViewModel
 import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.e_commerce.model.pojo.Ad
@@ -183,4 +184,9 @@ class HomeFragment : Fragment() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        val homeActivity = requireActivity() as HomeActivity
+        homeActivity.binding.bottomNavigationBar.visibility = View.VISIBLE
+    }
 }
