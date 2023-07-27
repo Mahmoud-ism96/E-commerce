@@ -3,6 +3,7 @@ package com.example.e_commerce.shoppingcart.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftRequest
+import com.example.e_commerce.model.pojo.order.OrderData
 import com.example.e_commerce.model.repo.RepoInterface
 import com.example.e_commerce.services.network.ApiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,9 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _modifyDraftStatusMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
     val modifyDraftStatusStateFlow: StateFlow<ApiState> get() = _modifyDraftStatusMutableStateFlow
+
+    private val _addressesMutableStateFlow: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Loading)
+    val addressesStateFlow: StateFlow<ApiState> get() = _addressesMutableStateFlow
 
     fun getDiscountCodesForPriceRule(priceRuleId: String) {
         viewModelScope.launch {
@@ -88,6 +92,26 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
 
     fun readStringFromSettingSP(key: String): String {
         return repo.readStringFromSettingSP(key)
+    }
+
+    fun createOrder(order: OrderData) {
+        viewModelScope.launch {
+            repo.createOrder(order)
+        }
+    }
+
+    fun getAddressesForCustomer(customer_id: String){
+        viewModelScope.launch {
+            repo.getAddressesForCustomer(customer_id).catch {
+                _addressesMutableStateFlow.value = ApiState.Failure(it)
+            }.collect{
+                if(it.isSuccessful){
+                    _addressesMutableStateFlow.value = ApiState.Success(it.body()!!)
+                }else{
+                    _addressesMutableStateFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+                }
+            }
+        }
     }
 
 

@@ -104,4 +104,6 @@
     <string name="product_removed_from_wishlist">Product removed from wishlist.</string>
     <string name="failed_to_add_product_to_wishlist">Failed to add product to wishlist.</string>
     <string name="error_adding_product_to_wishlist">Error adding product to wishlist</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="paypal">Paypal</string>
 </resources>

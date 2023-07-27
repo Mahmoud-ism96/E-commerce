@@ -14,7 +14,7 @@ import com.example.e_commerce.databinding.CartItemBinding
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
 
 class CartAdapter(
-    private val onOperationClicked: (lineItems: List<LineItem>) -> Unit,
+    private val onOperationClicked: (index: Int, quantity: Int) -> Unit,
     private val onItemClick: (Long) -> Unit,
 ) : ListAdapter<LineItem, CartAdapter.CartViewHolder>(RecyclerDiffUtilCartItem()) {
 
@@ -50,7 +50,7 @@ class CartAdapter(
                     if (currentItem.properties[1].value.toInt() > currentItem.quantity + 1 && currentItem.quantity < 10) {
                         currentItem.quantity += 1
                         tvItemCount.text = currentItem.quantity.toString()
-                        onOperationClicked(currentList)
+                        onOperationClicked(currentList.indexOf(currentItem), currentItem.quantity)
                     } else {
                         Toast.makeText(
                             tvItemCount.context,
@@ -63,12 +63,12 @@ class CartAdapter(
                     if (currentItem.quantity > 1) {
                         currentItem.quantity -= 1
                         tvItemCount.text = currentItem.quantity.toString()
-                        onOperationClicked(currentList)
+                        onOperationClicked(currentList.indexOf(currentItem), currentItem.quantity)
                     }
                 }
 
                 binding.cvItem.setOnClickListener {
-                    onItemClick(currentItem.id)
+                    onItemClick(currentItem.product_id)
                 }
             }
         }
