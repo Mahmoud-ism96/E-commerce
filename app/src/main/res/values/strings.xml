@@ -106,4 +106,6 @@
     <string name="error_adding_product_to_wishlist">Error adding product to wishlist</string>
     <string name="cash_on_delivery">Cash On Delivery</string>
     <string name="paypal">Paypal</string>
+    <string name="order_success">Order success!</string>
+    <string name="continue_shopping">Continue shopping</string>
 </resources>

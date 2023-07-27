@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -73,7 +74,7 @@ class CartFragment : Fragment() {
                 )
             )
             cartViewModel = ViewModelProvider(requireActivity(), factory)[CartViewModel::class.java]
-
+            cartViewModel.getPriceRules()
             cartAdapter = CartAdapter(onOperationClicked = { index, quantity ->
                 val list = lastLineItems.toMutableList()
                 list[index + 1].quantity = quantity
@@ -112,8 +113,12 @@ class CartFragment : Fragment() {
             }
 
             binding.btnCheckout.setOnClickListener {
-                val navController = Navigation.findNavController(view)
-                navController.navigate(R.id.action_cartFragment2_to_checkoutFragment)
+                if (lastLineItems.size > 1) {
+                    val navController = Navigation.findNavController(view)
+                    navController.navigate(R.id.action_cartFragment2_to_checkoutFragment)
+                }else{
+                    Toast.makeText(requireContext(), "add item first", Toast.LENGTH_SHORT).show()
+                }
             }
 
 
