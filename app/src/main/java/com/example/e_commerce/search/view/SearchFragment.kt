@@ -152,13 +152,9 @@ class SearchFragment : Fragment() {
             productHintAdapter.submitList(filteredList)
         }
 
-        binding.searchview.editText.setOnEditorActionListener { v, actionId, event ->
-            binding.searchBar.text = binding.searchview.text
-            binding.searchview.hide()
-            false
-        }
+//        binding.searchview.isFocusedByDefault = true
+//        binding.searchview.requestFocusAndShowKeyboard()
 
         return binding.root
     }
-
 }
