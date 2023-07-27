@@ -9,58 +9,75 @@
         android:id="@+id/homeFragment"
         android:name="com.example.e_commerce.Home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_listOfProductFragment"
-            app:destination="@id/listOfProductFragment" />
+            app:destination="@id/listOfProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/searchFragment" />
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment2"
         android:name="com.example.e_commerce.shoppingcart.view.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" >
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment2_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
-        <action
-            android:id="@+id/action_cartFragment2_to_productDetailsFragment"
+            app:destination="@id/checkoutFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/productDetailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_cartFragment2_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment2"
         android:name="com.example.e_commerce.profile.view.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment2_to_accountDetailsFragment"
-            app:destination="@id/addressBookFragment" />
+            app:destination="@id/addressBookFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_profileFragment2_to_ordersFragment"
-            app:destination="@id/ordersFragment" />
+            app:destination="@id/ordersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/wishListFragment"
         android:name="com.example.e_commerce.wishlist.view.WishListFragment"
         android:label="fragment_wish_list"
-        tools:layout="@layout/fragment_wish_list" >
+        tools:layout="@layout/fragment_wish_list">
         <action
             android:id="@+id/action_wishListFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/productDetailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
@@ -71,43 +88,47 @@
         android:id="@+id/addressBookFragment"
         android:name="com.example.e_commerce.profile.view.AddressBookFragment"
         android:label="fragment_account_details"
-        tools:layout="@layout/fragment_address_book" >
+        tools:layout="@layout/fragment_address_book">
         <action
             android:id="@+id/action_accountDetailsFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/addAddressFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.e_commerce.profile.view.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" >
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment_to_addAddressFragment"
             app:destination="@id/addAddressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/addressBookFragment" />
     </fragment>
     <fragment
         android:id="@+id/listOfProductFragment"
         android:name="com.example.e_commerce.listOfProduct.view.ListOfProductFragment"
         android:label="fragment_list_of_product"
-        tools:layout="@layout/fragment_list_of_product" >
+        tools:layout="@layout/fragment_list_of_product">
         <action
             android:id="@+id/action_listOfProductFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/productDetailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.example.e_commerce.product_details.view.ProductDetailsFragment"
         android:label="fragment_product_details"
-        tools:layout="@layout/fragment_product_details" >
+        tools:layout="@layout/fragment_product_details">
         <argument
             android:name="product_id"
             app:argType="long" />
@@ -116,56 +137,57 @@
         android:id="@+id/addAddressFragment"
         android:name="com.example.e_commerce.profile.view.AddAddressFragment"
         android:label="fragment_add_address"
-        tools:layout="@layout/fragment_add_address" >
+        tools:layout="@layout/fragment_add_address">
         <action
             android:id="@+id/action_addAddressFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/mapFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="coordinate"
+            android:defaultValue="@null"
             app:argType="com.example.e_commerce.model.pojo.address.Coordinate"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.example.e_commerce.orders.view.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" >
+        tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/orderDetailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.example.e_commerce.order_details_fragment.OrderDetailsFragment"
-        android:label="OrderDetailsFragment" >
+        android:label="OrderDetailsFragment"
+        tools:layout="@layout/fragment_order_details">
         <action
             android:id="@+id/action_orderDetailsFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/productDetailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.e_commerce.search.view.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/productDetailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>
