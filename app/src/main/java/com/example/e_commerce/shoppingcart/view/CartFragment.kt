@@ -42,9 +42,10 @@ class CartFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private var lastLineItems: List<LineItem> = listOf()
         set(value) {
-        calculateTotal()
-        field = value
-    }
+            calculateTotal()
+            field = value
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,10 +72,12 @@ class CartFragment : Fragment() {
                     ConcreteLocalSource.getInstance(requireContext())
                 )
             )
-            cartViewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
+            cartViewModel = ViewModelProvider(requireActivity(), factory)[CartViewModel::class.java]
 
-            cartAdapter = CartAdapter(onOperationClicked = { line_items ->
-                lastLineItems = line_items
+            cartAdapter = CartAdapter(onOperationClicked = { index, quantity ->
+                val list = lastLineItems.toMutableList()
+                list[index + 1].quantity = quantity
+                lastLineItems = list
             }, onItemClick = {
                 val action = CartFragmentDirections.actionCartFragment2ToProductDetailsFragment(it)
                 findNavController().navigate(action)
@@ -83,7 +86,9 @@ class CartFragment : Fragment() {
             binding.rvCartItems.adapter = cartAdapter
             deleteWhenSwipe()
 
-            cartViewModel.getDraftOrderByDraftId(cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong())
+            cartViewModel.getDraftOrderByDraftId(
+                cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
+            )
 
             lifecycleScope.launch {
                 cartViewModel.cartDraftOrderStateFlow.collectLatest {
@@ -136,7 +141,7 @@ class CartFragment : Fragment() {
         val viewedLineItems = lineItems.filterIndexed { index, _ ->
             index > 0
         }
-        cartAdapter.submitList(lineItems)
+        cartAdapter.submitList(viewedLineItems)
     }
 
     private fun deleteWhenSwipe() {
@@ -170,19 +175,24 @@ class CartFragment : Fragment() {
         modifyCartDraftOrder(updatedItems)
         lifecycleScope.launch {
             cartViewModel.modifyDraftStatusStateFlow.collectLatest {
-                if(it is ApiState.Success){
-                    cartViewModel.getDraftOrderByDraftId(cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong())
+                if (it is ApiState.Success) {
+                    cartViewModel.getDraftOrderByDraftId(
+                        cartViewModel.readStringFromSettingSP(
+                            Constants.CART_KEY
+                        ).toLong()
+                    )
                 }
             }
         }
     }
 
-    private fun calculateTotal(discount: Double = 1.0){
+    private fun calculateTotal() {
         var totalPrice = 0.0
-        for(lineItem in lastLineItems){
-            totalPrice += lineItem.price.toDouble() * lineItem.quantity
+        for (lineItem in lastLineItems) {
+            if (lastLineItems.indexOf(lineItem) != 0) {
+                totalPrice += lineItem.price.toDouble() * lineItem.quantity
+            }
         }
-        totalPrice *= discount
 
         binding.tvSumTotal.text = totalPrice.toString()
     }

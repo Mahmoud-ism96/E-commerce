@@ -85,6 +85,7 @@
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_count"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginVertical="1dp"

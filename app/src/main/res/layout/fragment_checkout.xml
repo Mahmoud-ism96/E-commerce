@@ -54,7 +54,6 @@
         android:id="@+id/tv_user_address"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="@string/_221b_baker_st_marylebone_london_united_kingdom"
         android:textColor="@color/grey"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/tv_user_name"
@@ -86,46 +85,35 @@
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@id/tv_user_address" />
 
-    <ImageButton
-        android:id="@+id/iv_payment_image"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/payment_group"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:contentDescription="@string/app_name"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/google_pay"
+        android:checkedButton="@+id/radio_cod"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
-        app:layout_constraintTop_toBottomOf="@id/line2" />
+        app:layout_constraintEnd_toEndOf="@+id/guideline10"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        >
 
-    <TextView
-        android:id="@+id/tv_email_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:fontFamily="@font/montserrat_semi_bold"
-        android:text="@string/malv_gmail_com"
-        android:textColor="@color/text_color"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_payment_image"
-        app:layout_constraintStart_toEndOf="@id/iv_payment_image"
-        app:layout_constraintTop_toTopOf="@id/iv_payment_image" />
+        <RadioButton
+            android:id="@+id/radio_cod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/cash_on_delivery"
+            android:textColor="@color/text_color"
+            android:textSize="16sp" />
 
-    <ImageButton
-        android:id="@+id/btn_edit_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        android:clickable="true"
-        android:contentDescription="@string/edit_address"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/right_arrow"
-        app:layout_constraintBottom_toBottomOf="@id/iv_payment_image"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toTopOf="@id/iv_payment_image"
-        tools:ignore="ImageContrastCheck" />
+        <RadioButton
+            android:id="@+id/radio_paypal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/paypal"
+            android:textColor="@color/text_color"
+            android:textSize="16sp" />
+    </RadioGroup>
+
 
     <View
         android:id="@+id/line3"
@@ -135,7 +123,7 @@
         android:background="@drawable/views_rounded_background"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
-        app:layout_constraintTop_toBottomOf="@id/iv_payment_image" />
+        app:layout_constraintTop_toBottomOf="@id/payment_group" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cart_items_payment"
@@ -147,6 +135,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/cart_item" />
 
     <EditText
