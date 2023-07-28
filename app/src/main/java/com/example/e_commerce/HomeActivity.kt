@@ -1,6 +1,8 @@
 package com.example.e_commerce
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -44,18 +46,37 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel =
             ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
 
+        val currency = homeViewModel.readFromSP(Constants.CURRENCY)
+
+        binding.btnRetryConnection.setOnClickListener {
+            if (Functions.checkConnectivity(this)) {
+                retrieveData(currency)
+                binding.groupNoConnection.visibility = View.GONE
+            }else{
+                Toast.makeText(this,"Couldn't retrieve data",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (Functions.checkConnectivity(this)) {
+            retrieveData(currency)
+
+            binding.groupNoConnection.visibility = View.GONE
+        } else {
+            binding.groupNoConnection.visibility = View.VISIBLE
+        }
+    }
+
+    private fun retrieveData(currency: String) {
         homeViewModel.getBrands()
         homeViewModel.getPriceRules()
-
-        val currency = homeViewModel.readFromSP(Constants.CURRENCY)
 
         lifecycleScope.launch {
             val usdAmount = Functions.convertCurrency("1", "USD")
             homeViewModel.writeToSP(Constants.USDAMOUNT, usdAmount.toString())
         }
 
-        if (currency.isNullOrBlank()){
-            homeViewModel.writeToSP(Constants.CURRENCY,Constants.EGP)
+        if (currency.isNullOrBlank()) {
+            homeViewModel.writeToSP(Constants.CURRENCY, Constants.EGP)
         }
     }
 }
