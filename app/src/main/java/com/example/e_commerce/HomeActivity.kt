@@ -34,6 +34,7 @@ class HomeActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(bottomNavigationBar, navController)
 
+
         homeViewModelFactory = HomeViewModelFactory(
             Repo.getInstance(
                 ConcreteRemoteSource,

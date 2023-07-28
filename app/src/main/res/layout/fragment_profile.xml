@@ -318,7 +318,7 @@
             android:id="@+id/group_when_signed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tv_profile_title,cv_profile,tv_profile_name,tv_email_name_setting,line1,tv_order_details,line5,tv_account_details,line2,tv_language,btn_open_setting,cv_setting,line3,tv_log_out,line4" />
+            app:constraint_referenced_ids="tv_profile_title,cv_profile,tv_profile_name,tv_email_name_setting,line1,tv_order_details,line5,tv_account_details,line2,line3,tv_log_out,line4" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -127,4 +127,9 @@
     <string name="git_your">Git your</string>
     <string name="special_offers">Special Offers</string>
     <string name="every_day">Every Day</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="paypal">Paypal</string>
+    <string name="order_success">Order success!</string>
+    <string name="continue_shopping">Continue shopping</string>
+    <string name="choose_address">Choose Address</string>
 </resources>

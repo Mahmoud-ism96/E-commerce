@@ -9,11 +9,7 @@ import kotlinx.coroutines.launch
 
 class CheckOutViewModel(private val repo: RepoInterface) : ViewModel() {
 
-    fun createOrder(order: OrderData) {
-        viewModelScope.launch {
-            repo.createOrder(order)
-        }
-    }
+
 
     fun updateVariantQuantity(inventoryLevelData: InventoryLevelData){
         viewModelScope.launch {

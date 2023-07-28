@@ -34,4 +34,8 @@ object Constants {
     const val WISHLIST_KEY = "wishlist"
     const val CUSTOMER_ID_KEY = "customer_id"
 
+    const val PAYPAL_CLIENT_ID = "AY3FIr4oBnL4Kje3k7_T4BM9P8GuaQ6SNFpCa5F3MpUJDLyBiiUNghi5_pBaKGuflVhjVbjB2zk80-9z"
+    const val PAYPAL_URL = "com.shopify.paypaltest://paypalpay"
+    const val PAYPAL_EMAIL = "sb-0iiw4726188201@business.example.com"
+    const val PAYPAL_PASSWORD = "kv6d62ke"
 }

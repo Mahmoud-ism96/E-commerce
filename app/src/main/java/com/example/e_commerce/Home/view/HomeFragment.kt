@@ -1,17 +1,19 @@
 package com.example.e_commerce.Home.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.Home.viewmodel.HomeViewModel
 import com.example.e_commerce.Home.viewmodel.HomeViewModelFactory
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentHomeBinding
 import com.example.e_commerce.model.pojo.Ad
@@ -92,6 +94,10 @@ class HomeFragment : Fragment() {
                 homeViewModel.getProductById(Constants.PRODUCT_BY_SALE)
                 homeViewModel.getBrandImg(R.drawable.saleshoping)
                 navController.navigate(R.id.action_homeFragment_to_listOfProductFragment)
+            }
+
+            btnSearch.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
             }
 
         }
@@ -178,4 +184,9 @@ class HomeFragment : Fragment() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        val homeActivity = requireActivity() as HomeActivity
+        homeActivity.binding.bottomNavigationBar.visibility = View.VISIBLE
+    }
 }

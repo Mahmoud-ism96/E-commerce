@@ -1,6 +1,7 @@
 package com.example.e_commerce.model.pojo.draftorder.response
 
 import com.example.e_commerce.model.pojo.draftorder.send.Property
+import java.io.Serializable
 
 data class LineItem(
     val id: Long,
@@ -12,4 +13,4 @@ data class LineItem(
     val variant_title: String,
     val vendor: String,
     val properties: List<Property>
-)
+): Serializable
