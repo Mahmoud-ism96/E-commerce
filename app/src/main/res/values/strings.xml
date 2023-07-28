@@ -104,4 +104,27 @@
     <string name="product_removed_from_wishlist">Product removed from wishlist.</string>
     <string name="failed_to_add_product_to_wishlist">Failed to add product to wishlist.</string>
     <string name="error_adding_product_to_wishlist">Error adding product to wishlist</string>
+    <string name="price">Price</string>
+    <string name="type">Type</string>
+    <string name="from">from</string>
+    <string name="to">to</string>
+    <string name="discover_a_world">Discover a World</string>
+    <string name="of_shopping_amp_lifestyle"><![CDATA[Of Shopping & LifeStyle]]></string>
+    <string name="with_shopy">With Shopy</string>
+    <string name="let_s_start">Let\'s Start</string>
+    <string name="your_journey">Your Journey</string>
+    <string name="women">Women</string>
+    <string name="men">Men</string>
+    <string name="kids">Kids</string>
+    <string name="sale">Sale</string>
+    <string name="brands">Brands</string>
+    <string name="order_id">Order id :</string>
+    <string name="order_date">Order Date :</string>
+    <string name="total_price">Total Price :</string>
+    <string name="shopy_is_the">Shopy Is The</string>
+    <string name="best_shopping_app">Best Shopping App</string>
+    <string name="in_2023">In 2023</string>
+    <string name="git_your">Git your</string>
+    <string name="special_offers">Special Offers</string>
+    <string name="every_day">Every Day</string>
 </resources>

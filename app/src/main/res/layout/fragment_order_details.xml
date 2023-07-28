@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Orders"
+        android:text="@string/orders"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btnBackToOrder"
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Order id : "
+        android:text="@string/order_id"
         app:layout_constraintStart_toStartOf="@+id/btnBackToOrder"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="1534541851641"
+        tools:text="1534541851641"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView18"
         app:layout_constraintStart_toEndOf="@+id/textView18"
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Order Date : "
+        android:text="@string/order_date"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="25/may/2023 11:15:00"
+        tools:text="25/may/2023 11:15:00"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView32"
         app:layout_constraintStart_toEndOf="@+id/textView32" />
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Total Price :"
+        android:text="@string/total_price"
         app:layout_constraintBottom_toBottomOf="@+id/tvOrderId"
         app:layout_constraintStart_toEndOf="@+id/tvOrderId"
         app:layout_constraintTop_toTopOf="@+id/tvOrderId"
@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="40 EGP"
+        tools:text="40 EGP"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView34"
         app:layout_constraintStart_toEndOf="@+id/textView34"

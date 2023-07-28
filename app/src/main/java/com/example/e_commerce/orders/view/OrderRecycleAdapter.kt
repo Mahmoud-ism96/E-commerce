@@ -35,17 +35,7 @@ class OrderRecycleAdapter(private val onClick: (Long) -> Unit) :
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: Order) {
             binding.apply {
-                val settingSharedPref = SettingSharedPref.getInstance(tvItemName.context)
-                val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
-                val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
-                if (currency == Constants.USD) {
-                    tvItemPrice.text = String.format(
-                        "%.2f $",
-                        currentItem.total_price.toDouble() * usdAmount.toDouble()
-                    )
-                } else {
-                    tvItemPrice.text = "${currentItem.total_price} EGP"
-                }
+                tvItemPrice.text = "${currentItem.total_price} EGP"
                 tvItemName.text = currentItem.created_at
                 ivItemImage.setImageResource(R.drawable.shop)
                 item.setOnClickListener {

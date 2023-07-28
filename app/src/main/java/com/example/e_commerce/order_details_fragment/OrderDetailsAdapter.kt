@@ -44,17 +44,7 @@ class OrderDetailsAdapter(private val onClick: (Long) -> Unit) :
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: LineItem) {
             binding.apply {
-                val settingSharedPref = SettingSharedPref.getInstance(tvItemName.context)
-                val usdAmount = settingSharedPref.readStringFromSettingSP(Constants.USDAMOUNT)
-                val currency = settingSharedPref.readStringFromSettingSP(Constants.CURRENCY)
-                if (currency == Constants.USD) {
-                    tvItemPrice.text = String.format(
-                        "%.2f $",
-                        currentItem.price.toDouble() * usdAmount.toDouble()
-                    )
-                } else {
-                    tvItemPrice.text = "${currentItem.price} EGP"
-                }
+                tvItemPrice.text = "${currentItem.price} EGP"
                 tvItemName.text = currentItem.title
                 try {
                     CoroutineScope(Dispatchers.IO).launch {

@@ -65,8 +65,4 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
         }
     }
 
-    fun readFromSP(key: String): String {
-        return repo.readStringFromSettingSP(key)
-    }
-
 }

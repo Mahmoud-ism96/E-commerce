@@ -50,8 +50,7 @@ class StartupFragment : Fragment() {
         }
 
         binding.btnContinueAsGuest.setOnClickListener {
-            //TODO: Check isFirstTime -> Send to MyIntro, else -> Send to HomeActivity
-            val intent = Intent(requireContext(), MyIntro::class.java)
+            val intent = Intent(requireContext(), HomeActivity::class.java)
             startActivity(intent)
         }
 
