@@ -21,13 +21,16 @@
             android:value="AIzaSyAwwpG5-0YkylO4vtt9GwPpS6KC7qQHM_4" />
         <activity
             android:name=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".intro.MyIntro"
-            android:label="My Custom AppIntro" />
+            android:label="My Custom AppIntro"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

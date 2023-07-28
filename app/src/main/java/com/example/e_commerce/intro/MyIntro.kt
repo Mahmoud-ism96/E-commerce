@@ -23,14 +23,12 @@ class MyIntro : AppIntro() {
     override fun onSkipPressed(currentFragment: Fragment?) {
         super.onSkipPressed(currentFragment)
         finish()
-        val intent = Intent(application, HomeActivity::class.java)
-        startActivity(intent)
+
     }
 
     override fun onDonePressed(currentFragment: Fragment?) {
         super.onDonePressed(currentFragment)
         finish()
-        val intent = Intent(application, HomeActivity::class.java)
-        startActivity(intent)
+
     }
 }

@@ -74,9 +74,6 @@ class OrderDetailsFragment : Fragment() {
             }
         }
 
-        val currency = orderViewModel.readFromSP(Constants.CURRENCY)
-        val usdAmount = orderViewModel.readFromSP(Constants.USDAMOUNT)
-
         lifecycleScope.launch {
             orderViewModel.ordersStateFlow.collectLatest {
                 when (it) {
@@ -94,15 +91,7 @@ class OrderDetailsFragment : Fragment() {
                         binding.apply {
                             tvOrderId.text = orderResponse.order.id.toString()
                             tvOrderDate.text = orderResponse.order.created_at
-                            if (currency == Constants.USD) {
-                                tvOrderPrice.text = String.format(
-                                    "%.2f $",
-                                    orderResponse.order.total_price.toDouble() * usdAmount.toDouble()
-                                )
-
-                            } else {
-                                tvOrderPrice.text = orderResponse.order.total_price
-                            }
+                            tvOrderPrice.text = orderResponse.order.total_price
                         }
                     }
 
