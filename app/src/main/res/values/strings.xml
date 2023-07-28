@@ -108,4 +108,5 @@
     <string name="paypal">Paypal</string>
     <string name="order_success">Order success!</string>
     <string name="continue_shopping">Continue shopping</string>
+    <string name="choose_address">Choose Address</string>
 </resources>

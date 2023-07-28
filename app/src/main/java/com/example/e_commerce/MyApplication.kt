@@ -8,7 +8,7 @@ import com.paypal.checkout.config.Environment
 import com.paypal.checkout.config.SettingsConfig
 import com.paypal.checkout.createorder.CurrencyCode
 import com.paypal.checkout.createorder.UserAction
-import com.paypal.pyplcheckout.BuildConfig
+import java.net.SocketTimeoutException
 
 class MyApplication : Application() {
 
@@ -25,6 +25,10 @@ class MyApplication : Application() {
                 loggingEnabled = true
             )
         )
-        PayPalCheckout.setConfig(config)
+        try {
+            PayPalCheckout.setConfig(config)
+        }catch (_: SocketTimeoutException){
+
+        }
     }
 }

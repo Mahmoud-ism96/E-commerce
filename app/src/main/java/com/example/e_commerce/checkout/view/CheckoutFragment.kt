@@ -5,8 +5,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
+import com.example.e_commerce.databinding.BottomsheetchooseaddressBinding
 import com.example.e_commerce.databinding.FragmentCheckoutBinding
 import com.example.e_commerce.databinding.SuccessDialogLayoutBinding
 import com.example.e_commerce.model.pojo.address.AddressResponse
@@ -95,7 +96,7 @@ class CheckoutFragment : Fragment() {
 
         lifecycleScope.launch {
             shareViewModelWithCart.pricesRulesStateFlow.collectLatest {
-                if(it is ApiState.Success){
+                if (it is ApiState.Success) {
                     priceRuleResponse = it.data as PriceRuleResponse
                 }
             }
@@ -135,17 +136,19 @@ class CheckoutFragment : Fragment() {
         )
 
         binding.btnEditAddress.setOnClickListener {
-
+            showAddressesBottomSheet()
         }
         binding.tvUserAddress.setOnClickListener {
-
+            showAddressesBottomSheet()
         }
 
         binding.paymentGroup.setOnCheckedChangeListener { _, checkedId ->
             if (checkedId == R.id.radio_paypal) {
                 binding.btnPlaceOrder.visibility = View.GONE
                 binding.paymentButtonContainer.visibility = View.VISIBLE
-                showPaypalTest()
+                if (!freeOrder()) {
+                    showPaypalTest()
+                }
             } else {
                 binding.btnPlaceOrder.visibility = View.VISIBLE
                 binding.paymentButtonContainer.visibility = View.GONE
@@ -178,10 +181,12 @@ class CheckoutFragment : Fragment() {
 
         binding.btnApplyVoucher.setOnClickListener {
             val voucherText = binding.etVoucherCode.text.toString()
-            for(priceRule in priceRuleResponse.price_rules){
-                when(voucherText){
-                    priceRule.title ->{
+            for (priceRule in priceRuleResponse.price_rules) {
+                when (voucherText) {
+                    priceRule.title -> {
                         calculateTotalWithDiscount(priceRule.value, priceRule.value_type)
+                        discountCode = priceRule.title
+                        discountValue = priceRule.value.absoluteValue.toString()
                     }
                 }
             }
@@ -189,20 +194,64 @@ class CheckoutFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun showAddressesBottomSheet() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        val sheetBinding = BottomsheetchooseaddressBinding.inflate(layoutInflater)
+        dialog.setContentView(sheetBinding.root)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.show()
+        var addresse: Addresse? = null
+
+        val addressAdapter = AddressSheetAdapter {
+            addresse = it
+        }
+        sheetBinding.rvAddresses.adapter = addressAdapter
+        addressAdapter.submitList(currentAddresses)
+        sheetBinding.btnSave.setOnClickListener {
+            if (addresse != null) {
+                binding.tvUserAddress.text =
+                    "${addresse!!.address1}, ${addresse!!.city},\n${addresse!!.country}"
+                dialog.dismiss()
+            } else {
+                Toast.makeText(requireContext(), "please select an Address", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setGravity(Gravity.BOTTOM)
+    }
+
     private fun calculateTotalWithDiscount(discountValue: Int, discountType: String) {
         val totalBeforeDiscount = binding.tvSumTotalPayment.text.toString().toFloat()
-        var totalAfterDiscount : Float = 0.0F
+        var totalAfterDiscount: Float = 0.0F
         if (discountType == "percentage") {
-            totalAfterDiscount = (totalBeforeDiscount - totalBeforeDiscount * (discountValue.absoluteValue/100.0f))
-            Toast.makeText(requireContext(), "congrats ${discountValue.absoluteValue} % off", Toast.LENGTH_SHORT)
+            totalAfterDiscount =
+                (totalBeforeDiscount - totalBeforeDiscount * (discountValue.absoluteValue / 100.0f))
+            Toast.makeText(
+                requireContext(),
+                "congrats ${discountValue.absoluteValue} % off",
+                Toast.LENGTH_SHORT
+            )
                 .show()
         } else {
             totalAfterDiscount = (totalBeforeDiscount - discountValue.absoluteValue).absoluteValue
-            Toast.makeText(requireContext(), "congrats ${discountValue.absoluteValue} EGP off", Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                "congrats ${discountValue.absoluteValue} EGP off",
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
 
         binding.tvSumTotalPayment.text = totalAfterDiscount.toString()
+        freeOrder()
         binding.etVoucherCode.isEnabled = false
         binding.btnApplyVoucher.isEnabled = false
     }
@@ -219,7 +268,10 @@ class CheckoutFragment : Fragment() {
                         listOf(
                             PurchaseUnit(
                                 amount =
-                                Amount(currencyCode = CurrencyCode.USD, value = binding.tvSumTotalPayment.text.toString())
+                                Amount(
+                                    currencyCode = CurrencyCode.USD,
+                                    value = binding.tvSumTotalPayment.text.toString()
+                                )
                             )
                         )
                     )
@@ -283,6 +335,7 @@ class CheckoutFragment : Fragment() {
         }
 
         binding.tvSumTotalPayment.text = totalPrice.toString()
+        freeOrder()
     }
 
 
@@ -313,7 +366,7 @@ class CheckoutFragment : Fragment() {
     private fun showSuccessDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         val bindingSuccessDialog = SuccessDialogLayoutBinding.inflate(layoutInflater)
         dialog.setContentView(bindingSuccessDialog.root)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -353,6 +406,15 @@ class CheckoutFragment : Fragment() {
                 )
             )
         )
+    }
+
+    private fun freeOrder(): Boolean {
+        if (binding.tvSumTotalPayment.text == "0.0") {
+            binding.btnPlaceOrder.visibility = View.VISIBLE
+            binding.paymentButtonContainer.visibility = View.GONE
+            return true
+        }
+        return false
     }
 
 }
