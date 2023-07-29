@@ -1,5 +1,6 @@
 package com.example.e_commerce.wishlist.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.MainActivity
 import com.example.e_commerce.databinding.FragmentWishListBinding
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
@@ -72,6 +74,8 @@ class WishListFragment : Fragment() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
 
+            binding.wishListFragmentSignInFirst.visibility=View.GONE
+
             wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
 
             _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
@@ -93,6 +97,13 @@ class WishListFragment : Fragment() {
                         }
                     }
                 }
+            }
+        }else{
+            binding.wishListFragmentSignInFirst.visibility=View.VISIBLE
+            binding.btnSignInFirst.setOnClickListener {
+                val intent= Intent(requireContext(),MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
             }
         }
 

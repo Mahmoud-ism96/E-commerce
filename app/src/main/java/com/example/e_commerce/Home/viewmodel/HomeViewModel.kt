@@ -32,10 +32,6 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _usdAmountMutableStateFlow : MutableStateFlow<Double> = MutableStateFlow(0.0)
     val usdAmountStateFlow:StateFlow<Double> get() = _usdAmountMutableStateFlow
 
-    init {
-        convertCurrency()
-    }
-
     fun getBrands() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
