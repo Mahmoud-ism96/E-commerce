@@ -34,6 +34,7 @@ class CouponsRecyclerAdapter(private val onImageClick: (String)-> Unit) : ListAd
                 when(currentItem.id){
                     Constants.PRICE_RULE_ID_1.toLong() -> binding.imageView4.setImageResource(R.drawable.ad1)
                     Constants.PRICE_RULE_ID_2.toLong() -> binding.imageView4.setImageResource(R.drawable.ad2)
+                    Constants.PRICE_RULE_ID_3.toLong() -> binding.imageView4.setImageResource(R.drawable.summer_25)
                 }
 
                 binding.cvOffer.setOnClickListener {

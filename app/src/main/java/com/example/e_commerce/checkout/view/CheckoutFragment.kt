@@ -53,6 +53,12 @@ import com.paypal.checkout.order.Amount
 import com.paypal.checkout.order.AppContext
 import com.paypal.checkout.order.OrderRequest
 import com.paypal.checkout.order.PurchaseUnit
+import com.paypal.checkout.paymentbutton.PayPalButtonColor
+import com.paypal.checkout.paymentbutton.PayPalButtonLabel
+import com.paypal.checkout.paymentbutton.PayPalButtonUi
+import com.paypal.checkout.paymentbutton.PaymentButtonAttributes
+import com.paypal.checkout.paymentbutton.PaymentButtonShape
+import com.paypal.checkout.paymentbutton.PaymentButtonSize
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
@@ -84,7 +90,9 @@ class CheckoutFragment : Fragment() {
         binding.btnBackCheckOut.setOnClickListener {
             findNavController().popBackStack()
         }
-
+        val data = CheckoutFragmentArgs.fromBundle(requireArguments()).ItemsData
+        lastLineItems = data.lineItems
+        calculateTotal()
         val factory = CartViewModelFactory(
             Repo.getInstance(
                 ConcreteRemoteSource,
@@ -98,6 +106,10 @@ class CheckoutFragment : Fragment() {
             shareViewModelWithCart.pricesRulesStateFlow.collectLatest {
                 if (it is ApiState.Success) {
                     priceRuleResponse = it.data as PriceRuleResponse
+                }else if(it is ApiState.Failure){
+                    if(it.throwable.message == "Poor Connection"){
+                        Toast.makeText(requireContext(), it.throwable.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -118,22 +130,23 @@ class CheckoutFragment : Fragment() {
                         setAddress(response.addresses)
                     }
 
-                    is ApiState.Failure -> {}
+                    is ApiState.Failure -> {
+                        if(it.throwable.message == "Poor Connection"){
+                            Toast.makeText(requireContext(), it.throwable.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
 
         checkOutAdapter = CheckOutAdapter()
         binding.rvCartItemsPayment.adapter = checkOutAdapter
+        checkOutAdapter.submitList(data.lineItems.filterIndexed { index, _ ->
+            index > 0
+        })
 
         firebaseAuth = FirebaseAuth.getInstance()
         email = firebaseAuth.currentUser?.email
-
-        shareViewModelWithCart.getDraftOrderByDraftId(
-            shareViewModelWithCart.readStringFromSettingSP(
-                Constants.CART_KEY
-            ).toLong()
-        )
 
         binding.btnEditAddress.setOnClickListener {
             showAddressesBottomSheet()
@@ -155,25 +168,6 @@ class CheckoutFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
-            shareViewModelWithCart.cartDraftOrderStateFlow.collectLatest {
-                when (it) {
-                    is ApiState.Loading -> {
-
-                    }
-
-                    is ApiState.Success -> {
-                        createListForAdapter(it.data as DraftResponse)
-                        lastLineItems = it.data.draft_order.line_items
-                        calculateTotal()
-                    }
-
-                    is ApiState.Failure -> {
-
-                    }
-                }
-            }
-        }
         binding.btnPlaceOrder.setOnClickListener {
             confirmOrder()
         }
@@ -230,7 +224,7 @@ class CheckoutFragment : Fragment() {
 
     private fun calculateTotalWithDiscount(discountValue: Int, discountType: String) {
         val totalBeforeDiscount = binding.tvSumTotalPayment.text.toString().toFloat()
-        var totalAfterDiscount: Float = 0.0F
+        var totalAfterDiscount = 0.0F
         if (discountType == "percentage") {
             totalAfterDiscount =
                 (totalBeforeDiscount - totalBeforeDiscount * (discountValue.absoluteValue / 100.0f))
@@ -257,9 +251,22 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun showPaypalTest() {
+        binding.paymentButtonContainer.setPayPalButtonUi(
+            paypalButtonUi = PayPalButtonUi(
+                PayPalButtonColor.GOLD,
+                PayPalButtonLabel.BUY_NOW,
+                PaymentButtonAttributes(
+                    PaymentButtonShape.PILL,
+                    PaymentButtonSize.MEDIUM,
+                    isEnabled =  true
+                )
+            )
+        )
         binding.paymentButtonContainer.setup(
             createOrder =
             CreateOrder { createOrderActions ->
+                binding.paymentProgress.visibility = View.VISIBLE
+                binding.paymentButtonContainer.visibility = View.GONE
                 val order =
                     OrderRequest(
                         intent = OrderIntent.CAPTURE,
@@ -282,15 +289,20 @@ class CheckoutFragment : Fragment() {
                 approval.orderActions.capture { captureOrderResult ->
                     Log.i(TAG, "CaptureOrderResult: $captureOrderResult")
                     Toast.makeText(requireContext(), "Payment Approved", Toast.LENGTH_SHORT).show()
+                    binding.paymentProgress.visibility = View.GONE
                     confirmOrder()
                 }
             },
             onCancel = OnCancel {
                 Log.d(TAG, "Buyer canceled the PayPal experience.")
                 Toast.makeText(requireContext(), "Payment Canceled", Toast.LENGTH_SHORT).show()
+                binding.paymentButtonContainer.visibility = View.VISIBLE
+                binding.paymentProgress.visibility = View.GONE
             },
             onError = OnError { errorInfo ->
                 Log.d(TAG, "Error: $errorInfo")
+                binding.paymentButtonContainer.visibility = View.VISIBLE
+                binding.paymentProgress.visibility = View.GONE
                 Toast.makeText(requireContext(), "Payment Failed", Toast.LENGTH_SHORT).show()
             }
         )
@@ -316,14 +328,6 @@ class CheckoutFragment : Fragment() {
         }
 
         showSuccessDialog()
-    }
-
-    private fun createListForAdapter(draftResponse: DraftResponse) {
-        val lineItems = draftResponse.draft_order.line_items
-        val viewedLineItems = lineItems.filterIndexed { index, _ ->
-            index > 0
-        }
-        checkOutAdapter.submitList(viewedLineItems)
     }
 
     private fun calculateTotal() {
