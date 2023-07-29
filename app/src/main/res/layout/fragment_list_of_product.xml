@@ -6,15 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".listOfProduct.view.ListOfProductFragment">
 
+
     <ImageView
         android:id="@+id/ivBrandList"
         android:layout_width="match_parent"
         android:layout_height="245dp"
-        android:padding="15dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/dummy_brand"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -33,5 +35,47 @@
             android:layout_height="match_parent"
             android:padding="15dp"
             tools:listitem="@layout/product_list_item" />
+
     </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:background="@color/light_blue"
+        android:backgroundTint="@color/light_blue"
+        android:contentDescription="@string/filter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/filter" />
+
+    <ImageButton
+        android:id="@+id/btn_back_home"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="24dp"
+        android:background="@drawable/circle_ripple"
+        android:backgroundTintMode="add"
+        android:src="@drawable/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/list_of_product_loading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

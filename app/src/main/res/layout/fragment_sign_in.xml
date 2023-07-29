@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <EditText
-        android:id="@+id/textField5"
+        android:id="@+id/et_sign_in_email"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="4dp"
@@ -81,11 +81,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/password"
-        app:layout_constraintStart_toStartOf="@+id/textField5"
-        app:layout_constraintTop_toBottomOf="@+id/textField5" />
+        app:layout_constraintStart_toStartOf="@+id/et_sign_in_email"
+        app:layout_constraintTop_toBottomOf="@+id/et_sign_in_email" />
 
     <EditText
-        android:id="@+id/textField3"
+        android:id="@+id/et_sign_in_password"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="4dp"
@@ -108,18 +108,18 @@
         android:minWidth="0dp"
         android:minHeight="0dp"
         app:buttonTint="#00d455"
-        app:layout_constraintBottom_toBottomOf="@+id/textView14"
-        app:layout_constraintStart_toStartOf="@+id/textField3"
-        app:layout_constraintTop_toTopOf="@+id/textView14" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_forget_password"
+        app:layout_constraintStart_toStartOf="@+id/et_sign_in_password"
+        app:layout_constraintTop_toTopOf="@+id/tv_forget_password" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/tv_forget_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/forgot_password"
-        app:layout_constraintEnd_toEndOf="@+id/textField3"
-        app:layout_constraintTop_toBottomOf="@+id/textField3" />
+        app:layout_constraintEnd_toEndOf="@+id/et_sign_in_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_sign_in_password" />
 
     <Button
         android:id="@+id/btn_signin"
@@ -205,5 +205,38 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="textView11,tv_signin_to_signup,imageButton,et_sign_in_email,btn_signin,btn_gmail_signin,view3,tv_forget_password,textView12,textView13,textView8,cb_remember_me,view2,et_sign_in_password,textView4,btn_sign_in_to_startup,textView9" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_signin_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="pb_signin,fl_loading_signin" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/pb_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/fl_loading_signin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

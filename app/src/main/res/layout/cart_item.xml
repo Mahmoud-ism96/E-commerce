@@ -30,7 +30,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:contentDescription="@string/item"
-                android:padding="5dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/dummy_shoes" />
         </androidx.cardview.widget.CardView>
 
@@ -64,6 +64,18 @@
             app:layout_constraintStart_toStartOf="@id/tv_item_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/tv_item_price"
+            android:layout_margin="5dp"
+            app:layout_constraintTop_toTopOf="@id/tv_item_price"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_price"
+            android:text="@string/egp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textSize="16sp"
+            />
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
@@ -85,6 +97,7 @@
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_count"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginVertical="1dp"

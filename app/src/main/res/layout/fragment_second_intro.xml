@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Shopy Is The"
+        android:text="@string/shopy_is_the"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Best Shopping App"
+        android:text="@string/best_shopping_app"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold" />
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="In 2023"
+        android:text="@string/in_2023"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold" />

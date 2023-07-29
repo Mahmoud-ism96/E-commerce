@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id("com.google.gms.google-services")
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -34,6 +37,7 @@ android {
     buildFeatures{
         viewBinding true
     }
+
 }
 
 dependencies {
@@ -51,6 +55,46 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.0-beta01"
     implementation "androidx.navigation:navigation-ui-ktx:2.7.0-beta01"
 
+    // Import the Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
+
     //google maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    
+    //GSON
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    //coroutines
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    //Lottie
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    // Room dependencies
+    implementation "androidx.room:room-runtime:2.5.2"
+    kapt "androidx.room:room-compiler:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
+
+    //Pagination
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.5"
+
+    // OkHttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
+    //paypal
+    implementation('com.paypal.checkout:android-sdk:0.112.2')
 }

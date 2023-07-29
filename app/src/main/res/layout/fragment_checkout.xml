@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,189 +6,258 @@
     android:contentDescription="@string/_1"
     tools:context=".checkout.view.CheckoutFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/btn_back_check_out"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="35dp">
+        android:background="@android:color/transparent"
+        android:src="@drawable/back"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_checkout_title"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/tv_checkout_title" />
 
-        <ImageButton
-            android:id="@+id/btn_back_check_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_checkout_title"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="5dp"
-            />
+    <TextView
+        android:id="@+id/tv_checkout_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/checkout"
+        android:textColor="@color/text_color"
+        android:textSize="26sp"
+        app:layout_constraintStart_toEndOf="@id/btn_back_check_out"
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-        <TextView
-            android:id="@+id/tv_checkout_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/checkout"
-            android:textColor="@color/text_color"
-            android:textSize="26sp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintStart_toEndOf="@id/btn_back_check_out"
-            app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/views_rounded_background"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@id/tv_checkout_title" />
 
-        <View
-            android:id="@+id/line1"
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/luka_marjanovic"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <TextView
+        android:id="@+id/tv_user_address"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv_user_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+        tools:ignore="TextSizeCheck" />
+
+    <ImageButton
+        android:id="@+id/btn_edit_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:clickable="true"
+        android:contentDescription="@string/edit_address"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/right_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/tv_user_address"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@id/tv_user_name"
+        tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/views_rounded_background"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_address" />
+
+    <RadioGroup
+        android:id="@+id/payment_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/radio_cod"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintEnd_toEndOf="@+id/guideline10"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        >
+
+        <RadioButton
+            android:id="@+id/radio_cod"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_checkout_title" />
-
-        <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/luka_marjanovic"
+            android:text="@string/cash_on_delivery"
             android:textColor="@color/text_color"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/tv_checkout_title"
-            app:layout_constraintTop_toBottomOf="@id/line1" />
+            android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tv_user_address"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="@string/_221b_baker_st_marylebone_london_united_kingdom"
-            android:textColor="@color/grey"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/tv_user_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_name"
-            tools:ignore="TextSizeCheck" />
-
-        <ImageButton
-            android:id="@+id/btn_edit_address"
+        <RadioButton
+            android:id="@+id/radio_paypal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00FFFFFF"
-            android:clickable="true"
-            android:contentDescription="@string/edit_address"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:src="@drawable/right_arrow"
-            app:layout_constraintBottom_toBottomOf="@id/tv_user_address"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_user_name"
-            tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
-
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_address" />
-
-        <ImageButton
-            android:id="@+id/iv_payment_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:contentDescription="@string/app_name"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:src="@drawable/google_pay"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line2" />
-
-        <TextView
-            android:id="@+id/tv_email_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="@string/malv_gmail_com"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/paypal"
             android:textColor="@color/text_color"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_payment_image"
-            app:layout_constraintStart_toEndOf="@id/iv_payment_image"
-            app:layout_constraintTop_toTopOf="@id/iv_payment_image" />
+            android:textSize="16sp" />
+    </RadioGroup>
 
-        <ImageButton
-            android:id="@+id/btn_edit_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#00FFFFFF"
-            android:clickable="true"
-            android:contentDescription="@string/edit_address"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:src="@drawable/right_arrow"
-            app:layout_constraintBottom_toBottomOf="@id/iv_payment_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_payment_image"
-            tools:ignore="ImageContrastCheck" />
 
-        <View
-            android:id="@+id/line3"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_payment_image" />
+    <View
+        android:id="@+id/line3"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/views_rounded_background"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@id/payment_group" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_cart_items_payment"
-            android:layout_width="0dp"
-            android:layout_height="350dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line3"
-            tools:listitem="@layout/cart_item" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cart_items_payment"
+        android:layout_width="0dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/cart_item" />
 
-        <TextView
-            android:id="@+id/tv_in_total_payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/in_total"
-            android:textColor="@color/text_color"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_cart_items_payment" />
+    <EditText
+        android:id="@+id/et_voucher_code"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/views_rounded_background"
+        android:hint="@string/enter_code_voucher"
+        android:inputType="text"
+        android:paddingHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/rv_cart_items_payment"
+        app:layout_constraintEnd_toStartOf="@+id/btn_apply_voucher"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline9" />
 
-        <TextView
-            android:id="@+id/tv_sum_total_payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/_288_00"
-            android:textColor="@color/text_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_in_total_payment" />
+    <Button
+        android:id="@+id/btn_apply_voucher"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:text="@string/apply"
+        app:layout_constraintBottom_toBottomOf="@id/et_voucher_code"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/et_voucher_code"
+        app:layout_constraintTop_toTopOf="@id/et_voucher_code" />
 
-        <Button
-            android:id="@+id/btn_place_order"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/views_rounded_background"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/place_order"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_sum_total_payment"
-            tools:ignore="VisualLintButtonSize" />
+    <TextView
+        android:id="@+id/tv_in_total_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/in_total"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintTop_toBottomOf="@id/et_voucher_code"
+        app:layout_constraintStart_toStartOf="@+id/guideline9" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_sum_total_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/_288_00"
+        android:textColor="@color/text_color"
+        android:textSize="22sp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_currency"
+        app:layout_constraintTop_toTopOf="@id/tv_in_total_payment" />
 
-</ScrollView>
+    <TextView
+        android:id="@+id/tv_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/guideline10"
+        android:layout_margin="5dp"
+        app:layout_constraintTop_toTopOf="@id/tv_sum_total_payment"
+        app:layout_constraintBottom_toBottomOf="@id/tv_sum_total_payment"
+        android:text="@string/egp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:textSize="16sp"
+        />
+
+    <Button
+        android:id="@+id/btn_place_order"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/place_order"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        tools:ignore="VisualLintButtonSize" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="32dp" />
+
+    <com.paypal.checkout.paymentbutton.PaymentButtonContainer
+        android:id="@+id/payment_button_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:paypal_button_color="silver"
+        app:paypal_button_label="pay"
+        app:paypal_button_shape="rectangle"
+        app:paypal_button_size="large"
+        app:paypal_button_enabled="true"
+        app:pay_later_button_shape="rounded"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
