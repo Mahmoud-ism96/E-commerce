@@ -289,9 +289,10 @@ class ProductDetailsFragment : Fragment() {
                             tvDetailVendorName.text = vendor
                             tvDetailProductName.text = title
                             if (currency == Constants.USD) {
-                                tvDetailPrice.text = String.format("%.2f $",price.toDouble()*usdAmount.toDouble())
+                                tvDetailPrice.text =
+                                    String.format("%.2f $", price.toDouble() * usdAmount.toDouble())
                             } else {
-                                tvDetailPrice.text="$price EGP"
+                                tvDetailPrice.text = "$price EGP"
                             }
                             tvDescDetails.text = desc
                             tvProductDetailRating.text = averageRating.toString()
@@ -466,7 +467,8 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _viewModel.resetState()
+        if (::_viewModel.isInitialized)
+            _viewModel.resetState()
     }
 
     override fun onStart() {
