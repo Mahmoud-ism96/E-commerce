@@ -38,9 +38,7 @@ interface RepoInterface {
         customer: CustomerData
     ): Flow<Response<CustomerModifiedResponse>>
 
-    suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>>
     suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>>
-    suspend fun insertItem(item: CartItem)
     suspend fun getAddressesForCustomer(customer_id: String): Flow<Response<AddressResponse>>
     suspend fun createAddressForCustomer(
         customer_id: String,

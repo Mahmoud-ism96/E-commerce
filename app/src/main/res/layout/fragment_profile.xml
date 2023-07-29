@@ -153,17 +153,20 @@
             app:layout_constraintTop_toBottomOf="@id/line2"
             tools:ignore="ImageContrastCheck" />
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cv_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:cardElevation="0dp"
+            android:backgroundTint="@android:color/transparent"
             app:layout_constraintStart_toStartOf="@id/tv_language"
             app:layout_constraintTop_toBottomOf="@id/tv_language"
-            app:strokeWidth="0dp">
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:animateLayoutChanges="true"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -249,7 +252,7 @@
                 </RadioGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <View
             android:id="@+id/line3"
