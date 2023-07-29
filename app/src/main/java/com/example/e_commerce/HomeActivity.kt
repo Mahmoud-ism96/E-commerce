@@ -16,6 +16,7 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
+import com.example.e_commerce.utility.Functions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -50,15 +51,15 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btnRetryConnection.setOnClickListener {
             if (Functions.checkConnectivity(this)) {
-                retrieveData(currency)
+                retrieveData()
                 binding.groupNoConnection.visibility = View.GONE
-            }else{
-                Toast.makeText(this,"Couldn't retrieve data",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Couldn't retrieve data", Toast.LENGTH_SHORT).show()
             }
         }
 
         if (Functions.checkConnectivity(this)) {
-            retrieveData(currency)
+            retrieveData()
 
             binding.groupNoConnection.visibility = View.GONE
         } else {
@@ -66,8 +67,8 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun retrieveData(currency: String) {
-       lifecycleScope.launch(Dispatchers.IO) {
+    private fun retrieveData() {
+        lifecycleScope.launch(Dispatchers.IO) {
             homeViewModel.getBrands()
             homeViewModel.getPriceRules()
         }
@@ -76,5 +77,6 @@ class HomeActivity : AppCompatActivity() {
             homeViewModel.usdAmountStateFlow.collectLatest {
                 homeViewModel.writeToSP(Constants.USDAMOUNT, it.toString())
             }
+        }
     }
 }

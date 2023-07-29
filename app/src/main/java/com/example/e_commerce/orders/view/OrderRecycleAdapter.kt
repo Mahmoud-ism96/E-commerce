@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.webkit.WebSettings.TextSize
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +38,7 @@ class OrderRecycleAdapter(private val onClick: (Long) -> Unit) :
             binding.apply {
                 tvItemPrice.text = "${currentItem.total_price} EGP"
                 tvItemName.text = currentItem.created_at
-                ivItemImage.setImageResource(R.drawable.shop)
+                ivItemImage.setImageResource(R.drawable.shopping_cart)
                 item.setOnClickListener {
                     onClick(currentItem.id)
                 }
