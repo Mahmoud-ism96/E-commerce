@@ -132,4 +132,7 @@
     <string name="order_success">Order success!</string>
     <string name="continue_shopping">Continue shopping</string>
     <string name="choose_address">Choose Address</string>
+    <string name="changing_the_language">Changing The Language</string>
+    <string name="may_cause_app_restart">May Cause App Restart</string>
+    <string name="ok">OK</string>
 </resources>

@@ -9,12 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
 class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
-
-    private val _customerMutableStateFlow: MutableStateFlow<ApiState> =
-        MutableStateFlow(ApiState.Loading)
-    val customerStateFlow get() = _customerMutableStateFlow
 
     private val _listOfOrdersMutableStateFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
@@ -24,45 +21,53 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val ordersStateFlow get() = _orderMutableStateFlow
 
-    fun getCustomerId(email: String, name: String) {
-        viewModelScope.launch {
-            repo.getCustomerByEmailAndName(email, name)
-                .catch { _customerMutableStateFlow.value = ApiState.Failure(it) }
-                .collectLatest {
-                    if (it.isSuccessful) {
-                        _customerMutableStateFlow.value = ApiState.Success(it.body()!!)
-                    }
-                }
-        }
-    }
 
     fun getCustomerOrders(id: Long) {
-        viewModelScope.launch {
-            repo.getCustomerOrders(id)
-                .catch {
-                    _listOfOrdersMutableStateFlow.value = ApiState.Failure(it)
-                }
-                .collectLatest {
-                    if (it.isSuccessful) {
-                        _listOfOrdersMutableStateFlow.value = ApiState.Success(it.body()!!)
+        try {
+            viewModelScope.launch {
+                repo.getCustomerOrders(id)
+                    .catch {
+                        _listOfOrdersMutableStateFlow.value = ApiState.Failure(it)
                     }
-                }
-
+                    .collectLatest {
+                        if (it.isSuccessful) {
+                            _listOfOrdersMutableStateFlow.value = ApiState.Success(it.body()!!)
+                        }
+                    }
+            }
+        } catch (e: SocketTimeoutException) {
+            _listOfOrdersMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
     }
 
     fun getOrderById(id: Long) {
-        viewModelScope.launch {
-            repo.getOrderById(id)
-                .catch {
-                    _orderMutableStateFlow.value = ApiState.Failure(it)
-                }
-                .collectLatest {
-                    if (it.isSuccessful) {
-                        _orderMutableStateFlow.value = ApiState.Success(it.body()!!)
+        try {
+            viewModelScope.launch {
+                repo.getOrderById(id)
+                    .catch {
+                        _orderMutableStateFlow.value = ApiState.Failure(it)
                     }
-                }
+                    .collectLatest {
+                        if (it.isSuccessful) {
+                            _orderMutableStateFlow.value = ApiState.Success(it.body()!!)
+                        }
+                    }
+            }
+        } catch (e: SocketTimeoutException) {
+            _orderMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
+    }
+
+    fun readFromSp(key:String):String{
+        return repo.readStringFromSettingSP(key)
+    }
+
+    fun refreshOrderList(){
+        _listOfOrdersMutableStateFlow.value=ApiState.Loading
+    }
+
+    fun refreshOrderDetailsList() {
+        _orderMutableStateFlow.value=ApiState.Loading
     }
 
 }

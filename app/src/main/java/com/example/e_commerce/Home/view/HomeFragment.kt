@@ -143,8 +143,8 @@ class HomeFragment : Fragment() {
                         val brandsResponse:BrandsResponse=it.data as BrandsResponse
                         brandRecycleAdapter.submitList(brandsResponse.smart_collections)
                     }
-                    else -> {
-                        Toast.makeText(requireContext(),"Failed To Get Data", Toast.LENGTH_LONG).show()
+                    is ApiState.Failure -> {
+                        Toast.makeText(requireContext(),it.throwable.message, Toast.LENGTH_LONG).show()
                     }
                 }
 
@@ -175,7 +175,7 @@ class HomeFragment : Fragment() {
 
                     is ApiState.Failure -> {
                         binding.rvOffer.visibility = View.GONE
-                        Toast.makeText(requireContext(), "No Coupons for now", Toast.LENGTH_SHORT)
+                        Toast.makeText(requireContext(), it.throwable.message, Toast.LENGTH_SHORT)
                         .show()
                     }
                 }
