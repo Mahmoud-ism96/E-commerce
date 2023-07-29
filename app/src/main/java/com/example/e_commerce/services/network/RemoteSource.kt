@@ -25,7 +25,6 @@ import retrofit2.Response
 interface RemoteSource {
     suspend fun getAllProducts(): Flow<Response<ProductsResponse>>
     suspend fun getBrand(): Flow<Response<BrandsResponse>>
-    suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>>
     suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>>
     suspend fun getProductsById(id: Long): Flow<Response<ProductsResponse>>
     suspend fun getProductById(productID: Long): Flow<Response<ProductDetailsResponse>>

@@ -44,10 +44,6 @@ object ConcreteRemoteSource : RemoteSource {
         return flowOf(productResponseByID)
     }
 
-    override suspend fun getDiscountCodesForPriceRule(priceRuleId: String): Flow<Response<DiscountResponse>> {
-        return flowOf(ApiClient.apiService.getDiscountCodesForPriceRule(priceRuleId))
-    }
-
     override suspend fun getAllPricesRules(): Flow<Response<PriceRuleResponse>> {
         return flowOf(ApiClient.apiService.getAllPricesRules())
     }
