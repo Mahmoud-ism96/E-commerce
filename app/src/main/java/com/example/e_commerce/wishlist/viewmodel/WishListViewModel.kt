@@ -54,4 +54,8 @@ class WishListViewModel (private val repo: RepoInterface) : ViewModel() {
     fun readStringFromSettingSP(key: String): String {
         return repo.readStringFromSettingSP(key)
     }
+
+    fun resetState() {
+        _wishlistDraftOrderFlow.value = ApiState.Loading
+    }
 }

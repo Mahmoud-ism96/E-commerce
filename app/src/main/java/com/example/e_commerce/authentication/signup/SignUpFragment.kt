@@ -452,7 +452,7 @@ class SignUpFragment : Fragment() {
                         val account = task.getResult(ApiException::class.java)
                         account?.idToken?.let { firebaseAuthWithGoogle(it) }
                     } catch (e: ApiException) {
-                        Log.w(TAG, "Google sign in failed", e)
+                        showToast(getString(R.string.google_verification_failed_please_try_again))
                     }
                 }
             }

@@ -1,6 +1,8 @@
 package com.example.e_commerce
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -45,7 +47,27 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel =
             ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
 
-        lifecycleScope.launch(Dispatchers.IO) {
+
+        binding.btnRetryConnection.setOnClickListener {
+            if (Functions.checkConnectivity(this)) {
+                retrieveData(currency)
+                binding.groupNoConnection.visibility = View.GONE
+            }else{
+                Toast.makeText(this,"Couldn't retrieve data",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (Functions.checkConnectivity(this)) {
+            retrieveData(currency)
+
+            binding.groupNoConnection.visibility = View.GONE
+        } else {
+            binding.groupNoConnection.visibility = View.VISIBLE
+        }
+    }
+
+    private fun retrieveData(currency: String) {
+       lifecycleScope.launch(Dispatchers.IO) {
             homeViewModel.getBrands()
             homeViewModel.getPriceRules()
         }
@@ -54,6 +76,5 @@ class HomeActivity : AppCompatActivity() {
             homeViewModel.usdAmountStateFlow.collectLatest {
                 homeViewModel.writeToSP(Constants.USDAMOUNT, it.toString())
             }
-        }
     }
 }
