@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="32dp"
     app:cardCornerRadius="18dp"
-    android:layout_marginBottom="16dp"
+    app:cardElevation="2dp"
     app:strokeColor="@color/grey"
     app:strokeWidth="1dp">
 
@@ -31,7 +33,8 @@
                 android:layout_height="100dp"
                 android:contentDescription="@string/item"
                 android:scaleType="fitXY"
-                android:src="@drawable/dummy_shoes" />
+                android:padding="5dp"
+                tools:src="@drawable/dummy_shoes" />
         </androidx.cardview.widget.CardView>
 
 
@@ -43,7 +46,7 @@
             android:layout_marginEnd="14dp"
             android:fontFamily="@font/montserrat_semi_bold"
             android:singleLine="true"
-            android:text="Nike Air"
+            tools:text="Nike Air"
             android:textColor="@color/text_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_item_price"
@@ -58,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@string/_288_00"
+            tools:text="@string/_288_00"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="@id/tv_item_name"
@@ -71,7 +74,7 @@
             android:layout_margin="5dp"
             app:layout_constraintTop_toTopOf="@id/tv_item_price"
             app:layout_constraintBottom_toBottomOf="@id/tv_item_price"
-            android:text="@string/egp"
+            tools:text="@string/egp"
             android:fontFamily="@font/montserrat_semi_bold"
             android:textSize="16sp"
             />
@@ -129,4 +132,4 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>
