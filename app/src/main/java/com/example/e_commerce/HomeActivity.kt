@@ -71,6 +71,7 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             homeViewModel.getBrands()
             homeViewModel.getPriceRules()
+            homeViewModel.convertCurrency()
         }
 
         lifecycleScope.launch {
