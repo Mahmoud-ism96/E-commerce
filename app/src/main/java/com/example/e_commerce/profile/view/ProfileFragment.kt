@@ -44,6 +44,14 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mAuth = FirebaseAuth.getInstance()
+        val factory = SettingViewModelFactory(
+            Repo.getInstance(
+                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
+
+        settingViewModel =
+            ViewModelProvider(requireActivity(), factory)[SettingViewModel::class.java]
 
         if (mAuth.currentUser == null) {
             binding.groupWhenSigned.visibility = View.GONE
@@ -55,15 +63,6 @@ class ProfileFragment : Fragment() {
             }
         } else {
             setUserData()
-
-            val factory = SettingViewModelFactory(
-                Repo.getInstance(
-                    ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
-                )
-            )
-
-            settingViewModel =
-                ViewModelProvider(requireActivity(), factory)[SettingViewModel::class.java]
 
             setDefaultRadioButton()
 
