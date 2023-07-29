@@ -23,7 +23,6 @@ import com.example.e_commerce.orders.viewmodel.OrderViewModel
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
-import com.example.e_commerce.utility.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -95,8 +94,9 @@ class OrderDetailsFragment : Fragment() {
                         }
                     }
 
-                    else -> {
-                        Toast.makeText(requireContext(), "Failed ..", Toast.LENGTH_SHORT).show()
+                    is ApiState.Failure -> {
+                        Toast.makeText(requireContext(), it.throwable.message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -111,5 +111,11 @@ class OrderDetailsFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         (requireActivity() as HomeActivity).bottomNavigationBar.visibility = View.VISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        orderViewModel.refreshOrderDetailsList()
+        orderDetailsAdapter.submitList(emptyList())
     }
 }

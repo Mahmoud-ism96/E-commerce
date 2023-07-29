@@ -14,8 +14,9 @@ import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
-import com.example.e_commerce.utility.Functions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -44,18 +45,15 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel =
             ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
 
-        homeViewModel.getBrands()
-        homeViewModel.getPriceRules()
-
-        val currency = homeViewModel.readFromSP(Constants.CURRENCY)
-
-        lifecycleScope.launch {
-            val usdAmount = Functions.convertCurrency("1", "USD")
-            homeViewModel.writeToSP(Constants.USDAMOUNT, usdAmount.toString())
+        lifecycleScope.launch(Dispatchers.IO) {
+            homeViewModel.getBrands()
+            homeViewModel.getPriceRules()
         }
 
-        if (currency.isNullOrBlank()){
-            homeViewModel.writeToSP(Constants.CURRENCY,Constants.EGP)
+        lifecycleScope.launch {
+            homeViewModel.usdAmountStateFlow.collectLatest {
+                homeViewModel.writeToSP(Constants.USDAMOUNT, it.toString())
+            }
         }
     }
 }
