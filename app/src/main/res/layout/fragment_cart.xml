@@ -130,7 +130,7 @@
         android:id="@+id/iv_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/plzlogin"
+        android:src="@drawable/sign_in_first"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,14 +139,13 @@
     <Button
         android:id="@+id/btn_signin_setting"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:background="@drawable/btn_ripple_transparent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:text="@string/sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/iv_login"
-        app:layout_constraintStart_toStartOf="@id/iv_login"
-        app:layout_constraintTop_toBottomOf="@id/iv_login" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_not_signed"
@@ -159,7 +158,7 @@
         android:id="@+id/group_signed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="guideline8,guideline7,guideline6,guideline5,btn_checkout,tv_sum_total,tv_cart_title,tv_in_total,rv_cart_items,tv_cart_desc" />
+        app:constraint_referenced_ids="guideline8,guideline7,guideline6,guideline5,btn_checkout,tv_sum_total,tv_cart_title,tv_in_total,rv_cart_items,tv_cart_desc,tv_currency" />
 
     <View
         android:id="@+id/view4"
