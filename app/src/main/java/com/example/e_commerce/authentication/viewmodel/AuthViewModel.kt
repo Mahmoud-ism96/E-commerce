@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
 class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _emailCustomerMutableStateFlow: MutableStateFlow<ApiState> =
@@ -44,95 +45,139 @@ class AuthViewModel(private val repo: RepoInterface) : ViewModel() {
 
     fun createNewEmailCustomer(customerData: CustomerData) {
         viewModelScope.launch {
-            repo.createCustomer(customerData)
-                .catch { _emailCustomerMutableStateFlow.value = ApiState.Failure(it) }.collect {
-                    if (it.isSuccessful) {
-                        _emailCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+            try {
+                repo.createCustomer(customerData)
+                    .catch { _emailCustomerMutableStateFlow.value = ApiState.Failure(it) }.collect {
+                        if (it.isSuccessful) {
+                            _emailCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                        }
                     }
-                }
+            } catch (_: SocketTimeoutException) {
+                _emailCustomerMutableStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                createNewEmailCustomer(customerData)
+            }
         }
     }
 
     fun modifyGoogleCustomer(customerId: Long, customerData: CustomerData) {
         viewModelScope.launch {
-            repo.modifyCustomer(customerId, customerData).catch {
-                _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(it)
-            }.collect {
-                if (it.isSuccessful) {
-                    _modifyGoogleCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
-                } else {
-                    _modifyGoogleCustomerMutableStateFlow.value =
-                        ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.modifyCustomer(customerId, customerData).catch {
+                    _modifyGoogleCustomerMutableStateFlow.value = ApiState.Failure(it)
+                }.collect {
+                    if (it.isSuccessful) {
+                        _modifyGoogleCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _modifyGoogleCustomerMutableStateFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            } catch (_: SocketTimeoutException) {
+                _modifyGoogleCustomerMutableStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                modifyGoogleCustomer(customerId, customerData)
             }
         }
     }
 
     fun modifyCustomer(customerId: Long, customerData: CustomerData) {
         viewModelScope.launch {
-            repo.modifyCustomer(customerId, customerData)
-                .catch { _modifyCustomerMutableStateFlow.value = ApiState.Failure(it) }.collect {
-                    if (it.isSuccessful) {
-                        _modifyCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
-                        Log.i("TAG", "firebaseAuthWithGoogle: Success")
-                    } else {
-                        _modifyCustomerMutableStateFlow.value =
-                            ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.modifyCustomer(customerId, customerData)
+                    .catch { _modifyCustomerMutableStateFlow.value = ApiState.Failure(it) }
+                    .collect {
+                        if (it.isSuccessful) {
+                            _modifyCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                            Log.i("TAG", "firebaseAuthWithGoogle: Success")
+                        } else {
+                            _modifyCustomerMutableStateFlow.value =
+                                ApiState.Failure(Throwable(it.code().toString()))
+                        }
                     }
-                }
+            } catch (_: SocketTimeoutException) {
+                _modifyCustomerMutableStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                modifyCustomer(customerId, customerData)
+            }
         }
     }
 
     fun createGmailEmailCustomer(customerData: CustomerData) {
         viewModelScope.launch {
-            repo.createCustomer(customerData).catch {
-                _gmailCustomerMutableStateFlow.value = ApiState.Failure(it)
-            }.collect {
-                if (it.isSuccessful) {
-                    _gmailCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
-                } else {
-                    _gmailCustomerMutableStateFlow.value =
-                        ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.createCustomer(customerData).catch {
+                    _gmailCustomerMutableStateFlow.value = ApiState.Failure(it)
+                }.collect {
+                    if (it.isSuccessful) {
+                        _gmailCustomerMutableStateFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _gmailCustomerMutableStateFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            } catch (_: SocketTimeoutException) {
+                _gmailCustomerMutableStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                createGmailEmailCustomer(customerData)
             }
         }
     }
 
     fun createDraftOrder(draft_order: SendDraftRequest) {
         viewModelScope.launch {
-            repo.createDraftOrder(draft_order).collectLatest {
-                if (it.isSuccessful) {
-                    _createDraftStatusMutableStateFlow.value = ApiState.Success(it.body()!!)
-                } else {
-                    _createDraftStatusMutableStateFlow.value =
-                        ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.createDraftOrder(draft_order).collectLatest {
+                    if (it.isSuccessful) {
+                        _createDraftStatusMutableStateFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _createDraftStatusMutableStateFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            } catch (_: SocketTimeoutException) {
+                _createDraftStatusMutableStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                createDraftOrder(draft_order)
             }
         }
     }
 
     fun createGoogleDraftOrder(draft_order: SendDraftRequest) {
         viewModelScope.launch {
-            repo.createDraftOrder(draft_order).collectLatest {
-                if (it.isSuccessful) {
-                    _createGoogleDraftStatusMutableStateFlow.value = ApiState.Success(it.body()!!)
-                } else {
-                    _createGoogleDraftStatusMutableStateFlow.value =
-                        ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.createDraftOrder(draft_order).collectLatest {
+                    if (it.isSuccessful) {
+                        _createGoogleDraftStatusMutableStateFlow.value =
+                            ApiState.Success(it.body()!!)
+                    } else {
+                        _createGoogleDraftStatusMutableStateFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            } catch (_: SocketTimeoutException) {
+                _createGoogleDraftStatusMutableStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                createGoogleDraftOrder(draft_order)
             }
         }
     }
 
     fun getCustomerData(customerEmail: String, customerName: String) {
         viewModelScope.launch {
-            repo.getCustomerByEmailAndName(customerEmail, customerName).collectLatest {
-                if (it.isSuccessful) {
-                    _loggedCustomerStateFlow.value = ApiState.Success(it.body()!!)
-                } else {
-                    _loggedCustomerStateFlow.value =
-                        ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.getCustomerByEmailAndName(customerEmail, customerName).collectLatest {
+                    if (it.isSuccessful) {
+                        _loggedCustomerStateFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _loggedCustomerStateFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            }catch (_:SocketTimeoutException){
+                _loggedCustomerStateFlow.value =
+                    ApiState.Failure(Throwable("poor connection"))
+                getCustomerData(customerEmail, customerName)
             }
         }
     }

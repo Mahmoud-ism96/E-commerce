@@ -29,8 +29,8 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val pricesRulesStateFlow: StateFlow<ApiState> get() = _pricesRulesMutableStateFlow
 
-    private val _usdAmountMutableStateFlow : MutableStateFlow<Double> = MutableStateFlow(0.0)
-    val usdAmountStateFlow:StateFlow<Double> get() = _usdAmountMutableStateFlow
+    private val _usdAmountMutableStateFlow: MutableStateFlow<Double> = MutableStateFlow(0.0)
+    val usdAmountStateFlow: StateFlow<Double> get() = _usdAmountMutableStateFlow
 
     fun getBrands() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -44,17 +44,23 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
                     }
             } catch (e: SocketTimeoutException) {
                 _brandsMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
+                getBrands()
             }
         }
     }
 
     fun getProductById(id: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.getProductsById(id)
-                .catch { _productsByIdMutableStateFlow.value = ApiState.Failure(it) }
-                .collectLatest {
-                    _productsByIdMutableStateFlow.value = ApiState.Success(it.body()!!)
-                }
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                repo.getProductsById(id)
+                    .catch { _productsByIdMutableStateFlow.value = ApiState.Failure(it) }
+                    .collectLatest {
+                        _productsByIdMutableStateFlow.value = ApiState.Success(it.body()!!)
+                    }
+            }
+        } catch (_: SocketTimeoutException) {
+            _productsByIdMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
+            getProductById(id)
         }
     }
 
@@ -63,8 +69,8 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
     }
 
     fun getPriceRules() {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getAllPricesRules().catch {
                     _pricesRulesMutableStateFlow.value = ApiState.Failure(it)
                 }.collect {
@@ -75,10 +81,13 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
                             ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
+            } catch (e: SocketTimeoutException) {
+                _brandsMutableStateFlow.value =
+                    ApiState.Failure(Throwable("Poor Connection"))
+                getPriceRules()
             }
-        } catch (e: SocketTimeoutException) {
-            _brandsMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
+
     }
 
     fun readFromSP(key: String): String {
@@ -91,7 +100,12 @@ class HomeViewModel(private val repo: RepoInterface) : ViewModel() {
 
     fun convertCurrency() {
         viewModelScope.launch {
-             _usdAmountMutableStateFlow.value=ApiCurrencyClient.convertCurrency("1", "USD")
+            try {
+                _usdAmountMutableStateFlow.value = ApiCurrencyClient.convertCurrency("1", "USD")
+            } catch (_: SocketTimeoutException) {
+                convertCurrency()
+            }
         }
+
     }
 }

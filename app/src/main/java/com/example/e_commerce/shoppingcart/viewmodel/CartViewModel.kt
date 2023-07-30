@@ -34,8 +34,8 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
 
 
     fun getPriceRules() {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getAllPricesRules().catch {
                     _pricesRulesMutableStateFlow.value = ApiState.Failure(it)
                 }.collect {
@@ -46,16 +46,18 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
                             ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
+            } catch (_: SocketTimeoutException) {
+                _pricesRulesMutableStateFlow.value =
+                    ApiState.Failure(Throwable("Poor Connection"))
+                getPriceRules()
             }
-        } catch (_: SocketTimeoutException) {
-            _pricesRulesMutableStateFlow.value =
-                ApiState.Failure(Throwable("Poor Connection"))
         }
+
     }
 
     fun getDraftOrderByDraftId(draftId: Long) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getDraftOrderByDraftId(draftId).catch {
                     _cartDraftOrderMutableStateFlow.value = ApiState.Failure(it)
                 }.collect {
@@ -66,26 +68,30 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
                             ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
+            } catch (_: SocketTimeoutException) {
+                _cartDraftOrderMutableStateFlow.value =
+                    ApiState.Failure(Throwable("Poor Connection"))
+                getDraftOrderByDraftId(draftId)
             }
-        } catch (_: SocketTimeoutException) {
-            _cartDraftOrderMutableStateFlow.value =
-                ApiState.Failure(Throwable("Poor Connection"))
         }
+
     }
 
     fun modifyDraftOrder(draft_order_id: Long, draft_order: SendDraftRequest) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.modifyDraftOrder(draft_order_id, draft_order).collect {
                     if (it.isSuccessful) {
                         _modifyDraftStatusMutableStateFlow.value = ApiState.Success("")
                     }
                 }
+            } catch (_: SocketTimeoutException) {
+                _modifyDraftStatusMutableStateFlow.value =
+                    ApiState.Failure(Throwable("Poor Connection"))
+                modifyDraftOrder(draft_order_id, draft_order)
             }
-        } catch (_: SocketTimeoutException) {
-            _modifyDraftStatusMutableStateFlow.value =
-                ApiState.Failure(Throwable("Poor Connection"))
         }
+
     }
 
     fun writeStringToSettingSP(key: String, value: String) {
@@ -97,16 +103,19 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
     }
 
     fun createOrder(order: OrderData) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.createOrder(order)
+            } catch (_: SocketTimeoutException) {
+                createOrder(order)
             }
-        }catch (_: SocketTimeoutException){}
+        }
+
     }
 
     fun getAddressesForCustomer(customer_id: String) {
-        try {
             viewModelScope.launch {
+                try {
                 repo.getAddressesForCustomer(customer_id).catch {
                     _addressesMutableStateFlow.value = ApiState.Failure(it)
                 }.collect {
@@ -117,11 +126,12 @@ class CartViewModel(private val repo: RepoInterface) : ViewModel() {
                             ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
+                } catch (_: SocketTimeoutException) {
+                    _addressesMutableStateFlow.value =
+                        ApiState.Failure(Throwable("Poor Connection"))
+                    getAddressesForCustomer(customer_id)
+                }
             }
-        } catch (_: SocketTimeoutException) {
-            _addressesMutableStateFlow.value =
-                ApiState.Failure(Throwable("Poor Connection"))
-        }
     }
 
     fun resetState() {

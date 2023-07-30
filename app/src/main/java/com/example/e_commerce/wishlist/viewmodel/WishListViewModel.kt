@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
-class WishListViewModel (private val repo: RepoInterface) : ViewModel() {
+class WishListViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _wishlistDraftOrderFlow: MutableStateFlow<ApiState> =
         MutableStateFlow(ApiState.Loading)
     val wishlistDraftOrderFlow: StateFlow<ApiState> get() = _wishlistDraftOrderFlow
@@ -21,28 +22,38 @@ class WishListViewModel (private val repo: RepoInterface) : ViewModel() {
 
     fun getDraftOrderByDraftId(draftId: Long) {
         viewModelScope.launch {
-            repo.getDraftOrderByDraftId(draftId).catch {
-                _wishlistDraftOrderFlow.value = ApiState.Failure(it)
-            }.collect {
-                if (it.isSuccessful) {
-                    _wishlistDraftOrderFlow.value = ApiState.Success(it.body()!!)
-                }else{
-                    _wishlistDraftOrderFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.getDraftOrderByDraftId(draftId).catch {
+                    _wishlistDraftOrderFlow.value = ApiState.Failure(it)
+                }.collect {
+                    if (it.isSuccessful) {
+                        _wishlistDraftOrderFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _wishlistDraftOrderFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            } catch (_: SocketTimeoutException) {
+                getDraftOrderByDraftId(draftId)
             }
         }
     }
 
-    fun removeLineItem(draftOrderID : Long, sendDraftRequest: SendDraftRequest){
+    fun removeLineItem(draftOrderID: Long, sendDraftRequest: SendDraftRequest) {
         viewModelScope.launch {
-            repo.modifyDraftOrder(draftOrderID,sendDraftRequest).catch {
-                _wishlistDraftOrderFlow.value = ApiState.Failure(it)
-            }.collect {
-                if (it.isSuccessful) {
-                    _modifyDraftOrderFlow.value = ApiState.Success(it.body()!!)
-                }else{
-                    _modifyDraftOrderFlow.value = ApiState.Failure(Throwable(it.code().toString()))
+            try {
+                repo.modifyDraftOrder(draftOrderID, sendDraftRequest).catch {
+                    _wishlistDraftOrderFlow.value = ApiState.Failure(it)
+                }.collect {
+                    if (it.isSuccessful) {
+                        _modifyDraftOrderFlow.value = ApiState.Success(it.body()!!)
+                    } else {
+                        _modifyDraftOrderFlow.value =
+                            ApiState.Failure(Throwable(it.code().toString()))
+                    }
                 }
+            }catch (_: SocketTimeoutException){
+                removeLineItem(draftOrderID, sendDraftRequest)
             }
         }
     }
