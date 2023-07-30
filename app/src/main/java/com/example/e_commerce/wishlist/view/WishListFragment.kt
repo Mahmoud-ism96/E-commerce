@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.MainActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentWishListBinding
@@ -26,6 +28,7 @@ import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
+import com.example.e_commerce.utility.Functions
 import com.example.e_commerce.wishlist.viewmodel.WishListViewModel
 import com.example.e_commerce.wishlist.viewmodel.WishListViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -79,9 +82,25 @@ class WishListFragment : Fragment() {
 
             binding.wishListFragmentSignInFirst.visibility = View.GONE
 
-            wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
-
-            _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+            if (Functions.checkConnectivity(requireContext())) {
+                wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+                _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+            } else {
+                (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.VISIBLE
+                (requireActivity() as HomeActivity).retryButton.setOnClickListener {
+                    if (Functions.checkConnectivity(requireContext())) {
+                        wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+                        _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+                        (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.GONE
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.couldn_t_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
 
             lifecycleScope.launch {
                 _viewModel.wishlistDraftOrderFlow.collectLatest {
@@ -139,8 +158,11 @@ class WishListFragment : Fragment() {
                 val lineItem = wishlistAdapter.currentList[position]
                 deleteItemFromCart(lineItem)
 
-                Snackbar.make(binding.rvWishlist, getString(R.string.product_removed_from_wishlist), Snackbar.LENGTH_LONG)
-                    .apply {
+                Snackbar.make(
+                    binding.rvWishlist,
+                    getString(R.string.product_removed_from_wishlist),
+                    Snackbar.LENGTH_LONG
+                ).apply {
                         setAction("Undo") {
                             val newList = lastLineItems.toMutableList()
                             newList.add(position + 1, lineItem)
@@ -163,9 +185,6 @@ class WishListFragment : Fragment() {
     }
 
     private fun deleteItemFromCart(lineItem: LineItem) {
-//        Toast.makeText(
-//            requireContext(), getString(R.string.product_removed_from_wishlist),Toast.LENGTH_SHORT
-//        ).show()
 
         val updatedItems = lastLineItems.filter { it.id != lineItem.id }
         lastLineItems = updatedItems

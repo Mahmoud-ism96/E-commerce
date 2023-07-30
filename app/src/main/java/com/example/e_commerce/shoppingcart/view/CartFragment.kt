@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.MainActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
@@ -76,7 +77,31 @@ class CartFragment : Fragment() {
                 requireActivity().finish()
             }
         } else {
-            cartViewModel.getPriceRules()
+            if (Functions.checkConnectivity(requireContext())) {
+                cartViewModel.getPriceRules()
+
+                cartViewModel.getDraftOrderByDraftId(
+                    cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
+                )
+            } else {
+                (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.VISIBLE
+                (requireActivity() as HomeActivity).retryButton.setOnClickListener {
+                    if (Functions.checkConnectivity(requireContext())) {
+                        cartViewModel.getPriceRules()
+                        cartViewModel.getDraftOrderByDraftId(
+                            cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
+                        )
+                        (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.GONE
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.couldn_t_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
             cartAdapter = CartAdapter(onOperationClicked = { index, quantity ->
                 val list = lastLineItems.toMutableList()
                 list[index + 1].quantity = quantity
@@ -88,10 +113,6 @@ class CartFragment : Fragment() {
 
             binding.rvCartItems.adapter = cartAdapter
             deleteWhenSwipe()
-
-            cartViewModel.getDraftOrderByDraftId(
-                cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
-            )
 
             lifecycleScope.launch {
                 cartViewModel.cartDraftOrderStateFlow.collectLatest {
@@ -175,7 +196,11 @@ class CartFragment : Fragment() {
                     index > 0
                 })
 
-                Snackbar.make(binding.rvCartItems, getString(R.string.product_removed_from_cart), Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    binding.rvCartItems,
+                    getString(R.string.product_removed_from_cart),
+                    Snackbar.LENGTH_LONG
+                )
                     .apply {
                         setAction("Undo") {
                             newList.add(position + 1, lineItem)
