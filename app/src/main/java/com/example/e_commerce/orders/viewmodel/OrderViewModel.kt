@@ -23,8 +23,8 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
 
 
     fun getCustomerOrders(id: Long) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getCustomerOrders(id)
                     .catch {
                         _listOfOrdersMutableStateFlow.value = ApiState.Failure(it)
@@ -34,15 +34,16 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
                             _listOfOrdersMutableStateFlow.value = ApiState.Success(it.body()!!)
                         }
                     }
+            } catch (e: SocketTimeoutException) {
+                _listOfOrdersMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
+                getCustomerOrders(id)
             }
-        } catch (e: SocketTimeoutException) {
-            _listOfOrdersMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
     }
 
     fun getOrderById(id: Long) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getOrderById(id)
                     .catch {
                         _orderMutableStateFlow.value = ApiState.Failure(it)
@@ -52,22 +53,23 @@ class OrderViewModel(private val repo: RepoInterface) : ViewModel() {
                             _orderMutableStateFlow.value = ApiState.Success(it.body()!!)
                         }
                     }
+            } catch (e: SocketTimeoutException) {
+                _orderMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
+                getOrderById(id)
             }
-        } catch (e: SocketTimeoutException) {
-            _orderMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
     }
 
-    fun readFromSp(key:String):String{
+    fun readFromSp(key: String): String {
         return repo.readStringFromSettingSP(key)
     }
 
-    fun refreshOrderList(){
-        _listOfOrdersMutableStateFlow.value=ApiState.Loading
+    fun refreshOrderList() {
+        _listOfOrdersMutableStateFlow.value = ApiState.Loading
     }
 
     fun refreshOrderDetailsList() {
-        _orderMutableStateFlow.value=ApiState.Loading
+        _orderMutableStateFlow.value = ApiState.Loading
     }
 
 }

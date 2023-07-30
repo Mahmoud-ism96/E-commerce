@@ -22,8 +22,8 @@ class SettingViewModel(private val repo: RepoInterface) : ViewModel() {
     val currentCustomerStateFlow: StateFlow<ApiState> get() = _currentCustomerMutableStateFlow
 
     fun getAddressesForCustomer(customer_id: String) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getAddressesForCustomer(customer_id).catch {
                     _addressesMutableStateFlow.value = ApiState.Failure(it)
                 }.collect {
@@ -34,15 +34,17 @@ class SettingViewModel(private val repo: RepoInterface) : ViewModel() {
                             ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
+            } catch (_: SocketTimeoutException) {
+                _addressesMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
+                getAddressesForCustomer(customer_id)
             }
-        } catch (_: SocketTimeoutException) {
-            _addressesMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
+
     }
 
     fun getCurrentCustomer(email: String, name: String) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.getCustomerByEmailAndName(email, name).catch {
                     _currentCustomerMutableStateFlow.value = ApiState.Failure(it)
                 }.collect {
@@ -53,42 +55,47 @@ class SettingViewModel(private val repo: RepoInterface) : ViewModel() {
                             ApiState.Failure(Throwable(it.code().toString()))
                     }
                 }
+            } catch (_: SocketTimeoutException) {
+                _currentCustomerMutableStateFlow.value =
+                    ApiState.Failure(Throwable("Poor Connection"))
+                getCurrentCustomer(email, name)
             }
-        } catch (_: SocketTimeoutException) {
-            _currentCustomerMutableStateFlow.value = ApiState.Failure(Throwable("Poor Connection"))
         }
     }
 
     fun createAddressForCustomer(customer_id: String, sendAddress: SendAddressDTO) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.createAddressForCustomer(customer_id, sendAddress)
                 getAddressesForCustomer(customer_id)
+            } catch (_: SocketTimeoutException) {
+                createAddressForCustomer(customer_id, sendAddress)
             }
-        } catch (_: SocketTimeoutException) {
-
         }
+
     }
 
     fun makeAddressDefault(customer_id: String, address_id: String) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.makeAddressDefault(customer_id, address_id)
                 getAddressesForCustomer(customer_id)
 
+            } catch (_: SocketTimeoutException) {
+                makeAddressDefault(customer_id, address_id)
             }
-        } catch (_: SocketTimeoutException) {
-
         }
     }
 
     fun deleteAddressForCustomer(customer_id: String, address_id: String) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repo.deleteAddressForCustomer(customer_id, address_id)
                 getAddressesForCustomer(customer_id)
+            } catch (_: SocketTimeoutException) {
+                deleteAddressForCustomer(customer_id, address_id)
             }
-        }catch (_: SocketTimeoutException){}
+        }
     }
 
     fun writeStringToSettingSP(key: String, value: String) {

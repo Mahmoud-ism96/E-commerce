@@ -76,11 +76,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun retrieveData() {
-        lifecycleScope.launch(Dispatchers.IO) {
             homeViewModel.getBrands()
             homeViewModel.getPriceRules()
             homeViewModel.convertCurrency()
-        }
+
 
         lifecycleScope.launch {
             homeViewModel.usdAmountStateFlow.collectLatest {

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
 class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
     private val _productDetailsState: MutableStateFlow<ApiState> =
@@ -34,61 +35,81 @@ class ProductDetailsViewModel(private val repo: RepoInterface) : ViewModel() {
 
     fun getProductDetails(productID: Long) {
         viewModelScope.launch {
-            repo.getProductById(productID)
-                .catch { _productDetailsState.value = ApiState.Failure(it) }
-                .collect {
-                    if (it.isSuccessful) {
-                        _productDetailsState.value = ApiState.Success(it.body()!!)
+            try {
+                repo.getProductById(productID)
+                    .catch { _productDetailsState.value = ApiState.Failure(it) }
+                    .collect {
+                        if (it.isSuccessful) {
+                            _productDetailsState.value = ApiState.Success(it.body()!!)
+                        }
                     }
-                }
+            } catch (_: SocketTimeoutException) {
+                getProductDetails(productID)
+            }
         }
     }
 
     fun getCartDraftOrders(draftOrderId: Long) {
         viewModelScope.launch {
-            repo.getDraftOrderByDraftId(draftOrderId)
-                .catch { _cartDraftOrdersState.value = ApiState.Failure(it) }
-                .collect {
-                    if (it.isSuccessful) {
-                        _cartDraftOrdersState.value = ApiState.Success(it.body()!!)
+            try {
+                repo.getDraftOrderByDraftId(draftOrderId)
+                    .catch { _cartDraftOrdersState.value = ApiState.Failure(it) }
+                    .collect {
+                        if (it.isSuccessful) {
+                            _cartDraftOrdersState.value = ApiState.Success(it.body()!!)
+                        }
                     }
-                }
+            } catch (_: SocketTimeoutException) {
+                getCartDraftOrders(draftOrderId)
+            }
         }
     }
 
     fun getWishlistDraftOrders(draftOrderId: Long) {
         viewModelScope.launch {
-            repo.getDraftOrderByDraftId(draftOrderId)
-                .catch { _wishlistDraftOrdersState.value = ApiState.Failure(it) }
-                .collect {
-                    if (it.isSuccessful) {
-                        _wishlistDraftOrdersState.value = ApiState.Success(it.body()!!)
+            try {
+                repo.getDraftOrderByDraftId(draftOrderId)
+                    .catch { _wishlistDraftOrdersState.value = ApiState.Failure(it) }
+                    .collect {
+                        if (it.isSuccessful) {
+                            _wishlistDraftOrdersState.value = ApiState.Success(it.body()!!)
+                        }
                     }
-                }
+            } catch (_: SocketTimeoutException) {
+                getWishlistDraftOrders(draftOrderId)
+            }
         }
     }
 
     fun modifyCartDraftOrder(draftOrderId: Long, sendDraftRequest: SendDraftRequest) {
         viewModelScope.launch {
-            repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
-                .catch { _modifyCartDraftOrderState.value = ApiState.Failure(it) }
-                .collect {
-                    if (it.isSuccessful) {
-                        _modifyCartDraftOrderState.value = ApiState.Success(it.body()!!)
+            try {
+                repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
+                    .catch { _modifyCartDraftOrderState.value = ApiState.Failure(it) }
+                    .collect {
+                        if (it.isSuccessful) {
+                            _modifyCartDraftOrderState.value = ApiState.Success(it.body()!!)
+                        }
                     }
-                }
+            } catch (_: SocketTimeoutException) {
+                modifyCartDraftOrder(draftOrderId, sendDraftRequest)
+            }
         }
     }
 
     fun modifyWishlistDraftOrder(draftOrderId: Long, sendDraftRequest: SendDraftRequest) {
         viewModelScope.launch {
-            repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
-                .catch { _modifyWishlistDraftOrderState.value = ApiState.Failure(it) }
-                .collect {
-                    if (it.isSuccessful) {
-                        _modifyWishlistDraftOrderState.value = ApiState.Success(it.body()!!)
+            try {
+                repo.modifyDraftOrder(draftOrderId, sendDraftRequest)
+                    .catch { _modifyWishlistDraftOrderState.value = ApiState.Failure(it) }
+                    .collect {
+                        if (it.isSuccessful) {
+                            _modifyWishlistDraftOrderState.value = ApiState.Success(it.body()!!)
+                        }
                     }
-                }
+            }catch (_:SocketTimeoutException){
+                modifyWishlistDraftOrder(draftOrderId, sendDraftRequest)
+            }
         }
     }
 
