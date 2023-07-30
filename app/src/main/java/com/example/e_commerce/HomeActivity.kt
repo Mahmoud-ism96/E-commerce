@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.Group
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -18,6 +19,7 @@ import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Functions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -29,6 +31,10 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var homeViewModelFactory: HomeViewModelFactory
+
+    lateinit var retryButton : MaterialCardView
+    lateinit var noConnectionGroup : Group
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -48,11 +54,13 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel =
             ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
 
+        retryButton = binding.btnRetryConnection
+        noConnectionGroup = binding.groupNoConnection
 
-        binding.btnRetryConnection.setOnClickListener {
+        retryButton.setOnClickListener {
             if (Functions.checkConnectivity(this)) {
                 retrieveData()
-                binding.groupNoConnection.visibility = View.GONE
+                noConnectionGroup.visibility = View.GONE
             } else {
                 Toast.makeText(this, getString(R.string.couldn_t_retrieve_data), Toast.LENGTH_SHORT).show()
             }
@@ -61,9 +69,9 @@ class HomeActivity : AppCompatActivity() {
         if (Functions.checkConnectivity(this)) {
             retrieveData()
 
-            binding.groupNoConnection.visibility = View.GONE
+            noConnectionGroup.visibility = View.GONE
         } else {
-            binding.groupNoConnection.visibility = View.VISIBLE
+            noConnectionGroup.visibility = View.VISIBLE
         }
     }
 
