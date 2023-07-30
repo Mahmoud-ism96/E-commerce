@@ -3,20 +3,21 @@ package com.example.e_commerce.shoppingcart.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.MainActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
+import com.example.e_commerce.model.pojo.CheckArgument
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
 import com.example.e_commerce.model.pojo.draftorder.send.SendDraftOrder
@@ -29,6 +30,8 @@ import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.shoppingcart.viewmodel.CartViewModel
 import com.example.e_commerce.shoppingcart.viewmodel.CartViewModelFactory
 import com.example.e_commerce.utility.Constants
+import com.example.e_commerce.utility.Functions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -58,6 +61,13 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
+        val factory = CartViewModelFactory(
+            Repo.getInstance(
+                ConcreteRemoteSource,
+                ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
+        cartViewModel = ViewModelProvider(requireActivity(), factory)[CartViewModel::class.java]
         if (mAuth.currentUser == null) {
             binding.groupSigned.visibility = View.GONE
             binding.groupNotSigned.visibility = View.VISIBLE
@@ -67,14 +77,31 @@ class CartFragment : Fragment() {
                 requireActivity().finish()
             }
         } else {
-            val factory = CartViewModelFactory(
-                Repo.getInstance(
-                    ConcreteRemoteSource,
-                    ConcreteLocalSource.getInstance(requireContext())
+            if (Functions.checkConnectivity(requireContext())) {
+                cartViewModel.getPriceRules()
+
+                cartViewModel.getDraftOrderByDraftId(
+                    cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
                 )
-            )
-            cartViewModel = ViewModelProvider(requireActivity(), factory)[CartViewModel::class.java]
-            cartViewModel.getPriceRules()
+            } else {
+                (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.VISIBLE
+                (requireActivity() as HomeActivity).retryButton.setOnClickListener {
+                    if (Functions.checkConnectivity(requireContext())) {
+                        cartViewModel.getPriceRules()
+                        cartViewModel.getDraftOrderByDraftId(
+                            cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
+                        )
+                        (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.GONE
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.couldn_t_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
             cartAdapter = CartAdapter(onOperationClicked = { index, quantity ->
                 val list = lastLineItems.toMutableList()
                 list[index + 1].quantity = quantity
@@ -86,10 +113,6 @@ class CartFragment : Fragment() {
 
             binding.rvCartItems.adapter = cartAdapter
             deleteWhenSwipe()
-
-            cartViewModel.getDraftOrderByDraftId(
-                cartViewModel.readStringFromSettingSP(Constants.CART_KEY).toLong()
-            )
 
             lifecycleScope.launch {
                 cartViewModel.cartDraftOrderStateFlow.collectLatest {
@@ -114,14 +137,15 @@ class CartFragment : Fragment() {
 
             binding.btnCheckout.setOnClickListener {
                 if (lastLineItems.size > 1) {
-                    val navController = Navigation.findNavController(view)
-                    navController.navigate(R.id.action_cartFragment2_to_checkoutFragment)
-                }else{
+                    binding.relodGroub.visibility = View.VISIBLE
+                    val action = CartFragmentDirections.actionCartFragment2ToCheckoutFragment(
+                        CheckArgument(lastLineItems)
+                    )
+                    findNavController().navigate(action)
+                } else {
                     Toast.makeText(requireContext(), "add item first", Toast.LENGTH_SHORT).show()
                 }
             }
-
-
         }
     }
 
@@ -165,30 +189,32 @@ class CartFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val lineItem = cartAdapter.currentList[position]
-                binding.relodGroub.visibility = View.VISIBLE
-                deleteItemFromCart(lineItem)
+                val newList = lastLineItems.toMutableList()
+                newList.removeAt(position + 1)
+                lastLineItems = newList
+                cartAdapter.submitList(lastLineItems.filterIndexed { index, _ ->
+                    index > 0
+                })
+
+                Snackbar.make(
+                    binding.rvCartItems,
+                    getString(R.string.product_removed_from_cart),
+                    Snackbar.LENGTH_LONG
+                )
+                    .apply {
+                        setAction("Undo") {
+                            newList.add(position + 1, lineItem)
+                            cartAdapter.submitList(lastLineItems.filterIndexed { index, _ ->
+                                index > 0
+                            })
+                        }
+                        show()
+                    }
             }
         }
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallBack)
         itemTouchHelper.attachToRecyclerView(binding.rvCartItems)
-    }
-
-    private fun deleteItemFromCart(lineItem: LineItem) {
-        val updatedItems = lastLineItems.filter { it.id != lineItem.id }
-        lastLineItems = updatedItems
-        modifyCartDraftOrder(updatedItems)
-        lifecycleScope.launch {
-            cartViewModel.modifyDraftStatusStateFlow.collectLatest {
-                if (it is ApiState.Success) {
-                    cartViewModel.getDraftOrderByDraftId(
-                        cartViewModel.readStringFromSettingSP(
-                            Constants.CART_KEY
-                        ).toLong()
-                    )
-                }
-            }
-        }
     }
 
     private fun calculateTotal() {
@@ -204,6 +230,9 @@ class CartFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        modifyCartDraftOrder(lastLineItems)
+        if (mAuth.currentUser != null) {
+            modifyCartDraftOrder(lastLineItems)
+            cartViewModel.resetState()
+        }
     }
 }

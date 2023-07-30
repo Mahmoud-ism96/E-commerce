@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentSearchBinding
 import com.example.e_commerce.listOfProduct.view.ProductRecycleAdapter
@@ -25,6 +26,7 @@ import com.example.e_commerce.search.viewmodel.SearchViewModelFactory
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
+import com.example.e_commerce.utility.Functions
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -55,11 +57,24 @@ class SearchFragment : Fragment() {
             requireActivity(), _viewModelFactory
         )[SearchViewModel::class.java]
 
-        _viewModel.getAllProducts()
-        _viewModel.getAllBrands()
-
         productList = emptyList()
         brandListHint = emptyList()
+
+        if(Functions.checkConnectivity(requireContext())){
+            _viewModel.getAllProducts()
+            _viewModel.getAllBrands()
+        }else {
+            (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.VISIBLE
+            (requireActivity() as HomeActivity).retryButton.setOnClickListener {
+                if(Functions.checkConnectivity(requireContext())){
+                    _viewModel.getAllProducts()
+                    _viewModel.getAllBrands()
+                    (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.GONE
+                }else {
+                    Toast.makeText(requireContext(), getString(R.string.couldn_t_retrieve_data), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         lifecycleScope.launch {
             _viewModel.productList.collectLatest {
@@ -152,8 +167,14 @@ class SearchFragment : Fragment() {
             productHintAdapter.submitList(filteredList)
         }
 
-//        binding.searchview.isFocusedByDefault = true
-//        binding.searchview.requestFocusAndShowKeyboard()
+        binding.searchview
+            .getEditText()
+            .setOnEditorActionListener { v, actionId, event ->
+                binding.searchBar.setText(binding.searchview.getText())
+                binding.searchview.hide()
+                false
+            }
+
 
         return binding.root
     }

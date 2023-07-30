@@ -260,4 +260,14 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"/>
+
+    <ProgressBar
+        android:id="@+id/payment_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

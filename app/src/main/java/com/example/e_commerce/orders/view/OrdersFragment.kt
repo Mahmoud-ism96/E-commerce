@@ -1,7 +1,6 @@
 package com.example.e_commerce.orders.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +17,13 @@ import com.example.e_commerce.HomeActivity
 import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentOrdersBinding
 import com.example.e_commerce.model.pojo.customer_order_response.CustomerOrderResponse
-import com.example.e_commerce.model.pojo.customer_resposnse.CustomerResponse
 import com.example.e_commerce.model.repo.Repo
 import com.example.e_commerce.orders.viewmodel.OrderViewModel
 import com.example.e_commerce.orders.viewmodel.OrderViewModelFactory
 import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
-import com.google.firebase.auth.FirebaseAuth
+import com.example.e_commerce.utility.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -34,11 +32,9 @@ class OrdersFragment : Fragment() {
     private lateinit var binding: FragmentOrdersBinding
     private lateinit var factory: OrderViewModelFactory
     private lateinit var orderViewModel: OrderViewModel
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var orderAdapter: OrderRecycleAdapter
     private lateinit var navController: NavController
-    private var email: String? = null
-    private var name: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +61,7 @@ class OrdersFragment : Fragment() {
 
         orderViewModel = ViewModelProvider(requireActivity(), factory)[OrderViewModel::class.java]
 
-        orderAdapter = OrderRecycleAdapter() {
+        orderAdapter = OrderRecycleAdapter {
             orderViewModel.getOrderById(it)
             navController.navigate(R.id.action_ordersFragment_to_orderDetailsFragment)
         }
@@ -76,25 +72,9 @@ class OrdersFragment : Fragment() {
             }
         }
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        email = firebaseAuth.currentUser?.email
-        name = firebaseAuth.currentUser?.displayName
+        val customerId = orderViewModel.readFromSp(Constants.CUSTOMER_ID_KEY)
+        orderViewModel.getCustomerOrders(customerId.toLong())
 
-        orderViewModel.getCustomerId(email!!, name!!)
-
-        lifecycleScope.launch {
-            orderViewModel.customerStateFlow.collectLatest {
-                when (it) {
-                    is ApiState.Success -> {
-                        val customer = it.data as CustomerResponse
-                        val customerId = customer.customers[0].id
-                        orderViewModel.getCustomerOrders(customerId)
-                    }
-
-                    else -> {}
-                }
-            }
-        }
         lifecycleScope.launch {
             orderViewModel.listOfOrdersStateFlow.collectLatest {
                 when (it) {
@@ -105,10 +85,11 @@ class OrdersFragment : Fragment() {
                     }
 
                     is ApiState.Failure -> {
-                        Toast.makeText(requireContext(), "Failed ..", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), it.throwable.message, Toast.LENGTH_SHORT)
+                            .show()
                     }
 
-                    else -> {
+                    is ApiState.Loading -> {
                         binding.orderLoading.apply {
                             visibility = View.VISIBLE
                             setAnimation(R.raw.loading)
@@ -133,4 +114,9 @@ class OrdersFragment : Fragment() {
         (requireActivity() as HomeActivity).bottomNavigationBar.visibility = View.VISIBLE
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        orderViewModel.refreshOrderList()
+        orderAdapter.submitList(emptyList())
+    }
 }

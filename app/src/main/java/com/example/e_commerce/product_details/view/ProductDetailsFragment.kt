@@ -38,6 +38,7 @@ import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants
 import com.example.e_commerce.utility.Constants.CART_KEY
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
+import com.example.e_commerce.utility.Functions
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -63,6 +64,9 @@ class ProductDetailsFragment : Fragment() {
 
     private lateinit var cartDraftID: String
     private lateinit var wishlistDraftID: String
+
+    private lateinit var currency: String
+    private lateinit var usdAmount: String
 
     private lateinit var productDetails: ProductDetailsResponse
 
@@ -102,13 +106,22 @@ class ProductDetailsFragment : Fragment() {
 
         val productID = ProductDetailsFragmentArgs.fromBundle(requireArguments()).productId
 
-        _viewModel.getProductDetails(productID)
-
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            cartDraftID = _viewModel.readStringFromSettingSP(CART_KEY)
-            wishlistDraftID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
-            _viewModel.getCartDraftOrders(cartDraftID.toLong())
-            _viewModel.getWishlistDraftOrders(wishlistDraftID.toLong())
+        if (Functions.checkConnectivity(requireContext())) {
+            retrieveData(productID)
+        } else {
+            (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.VISIBLE
+            (requireActivity() as HomeActivity).retryButton.setOnClickListener {
+                if (Functions.checkConnectivity(requireContext())) {
+                    retrieveData(productID)
+                    (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.GONE
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.couldn_t_retrieve_data),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
 
         lifecycleScope.launch {
@@ -120,7 +133,11 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     is ApiState.Failure -> {
-                        //TODO:
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     is ApiState.Loading -> {
@@ -139,7 +156,11 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     is ApiState.Failure -> {
-                        //TODO:
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     is ApiState.Loading -> {
@@ -282,16 +303,14 @@ class ProductDetailsFragment : Fragment() {
                             }
                         }
 
-                        val currency = _viewModel.readStringFromSettingSP(Constants.CURRENCY)
-                        val usdAmount = _viewModel.readStringFromSettingSP(Constants.USDAMOUNT)
-
                         binding.apply {
                             tvDetailVendorName.text = vendor
                             tvDetailProductName.text = title
                             if (currency == Constants.USD) {
-                                tvDetailPrice.text = String.format("%.2f $",price.toDouble()*usdAmount.toDouble())
+                                tvDetailPrice.text =
+                                    String.format("%.2f $", price.toDouble() * usdAmount.toDouble())
                             } else {
-                                tvDetailPrice.text="$price EGP"
+                                tvDetailPrice.text = "$price EGP"
                             }
                             tvDescDetails.text = desc
                             tvProductDetailRating.text = averageRating.toString()
@@ -369,6 +388,20 @@ class ProductDetailsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun retrieveData(productID: Long) {
+        _viewModel.getProductDetails(productID)
+
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            cartDraftID = _viewModel.readStringFromSettingSP(CART_KEY)
+            wishlistDraftID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+            _viewModel.getCartDraftOrders(cartDraftID.toLong())
+            _viewModel.getWishlistDraftOrders(wishlistDraftID.toLong())
+        }
+
+        currency = _viewModel.readStringFromSettingSP(Constants.CURRENCY)
+        usdAmount = _viewModel.readStringFromSettingSP(Constants.USDAMOUNT)
     }
 
     private fun addToCart() {
@@ -466,7 +499,8 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _viewModel.resetState()
+        if (::_viewModel.isInitialized)
+            _viewModel.resetState()
     }
 
     override fun onStart() {

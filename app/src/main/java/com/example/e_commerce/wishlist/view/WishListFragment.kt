@@ -1,5 +1,6 @@
 package com.example.e_commerce.wishlist.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_commerce.HomeActivity
+import com.example.e_commerce.MainActivity
+import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentWishListBinding
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
 import com.example.e_commerce.model.pojo.draftorder.response.LineItem
@@ -24,8 +28,10 @@ import com.example.e_commerce.services.db.ConcreteLocalSource
 import com.example.e_commerce.services.network.ApiState
 import com.example.e_commerce.services.network.ConcreteRemoteSource
 import com.example.e_commerce.utility.Constants.WISHLIST_KEY
+import com.example.e_commerce.utility.Functions
 import com.example.e_commerce.wishlist.viewmodel.WishListViewModel
 import com.example.e_commerce.wishlist.viewmodel.WishListViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,8 +44,10 @@ class WishListFragment : Fragment() {
 
     private lateinit var wishlistID: String
     private lateinit var lastLineItems: List<LineItem>
+    private lateinit var newSendLineItems: MutableList<SendLineItem>
 
     private lateinit var wishlistAdapter: WishListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -72,9 +80,27 @@ class WishListFragment : Fragment() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
 
-            wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+            binding.wishListFragmentSignInFirst.visibility = View.GONE
 
-            _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+            if (Functions.checkConnectivity(requireContext())) {
+                wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+                _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+            } else {
+                (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.VISIBLE
+                (requireActivity() as HomeActivity).retryButton.setOnClickListener {
+                    if (Functions.checkConnectivity(requireContext())) {
+                        wishlistID = _viewModel.readStringFromSettingSP(WISHLIST_KEY)
+                        _viewModel.getDraftOrderByDraftId(wishlistID.toLong())
+                        (requireActivity() as HomeActivity).noConnectionGroup.visibility = View.GONE
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.couldn_t_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
 
             lifecycleScope.launch {
                 _viewModel.wishlistDraftOrderFlow.collectLatest {
@@ -93,6 +119,13 @@ class WishListFragment : Fragment() {
                         }
                     }
                 }
+            }
+        } else {
+            binding.wishListFragmentSignInFirst.visibility = View.VISIBLE
+            binding.btnSignInFirst.setOnClickListener {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
             }
         }
 
@@ -123,8 +156,27 @@ class WishListFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val lineItem = wishlistAdapter.currentList[position]
-//                binding.relodGroub.visibility = View.VISIBLE
                 deleteItemFromCart(lineItem)
+
+                Snackbar.make(
+                    binding.rvWishlist,
+                    getString(R.string.product_removed_from_wishlist),
+                    Snackbar.LENGTH_LONG
+                ).apply {
+                        setAction("Undo") {
+                            val newList = lastLineItems.toMutableList()
+                            newList.add(position + 1, lineItem)
+                            newSendLineItems.add(
+                                SendLineItem(
+                                    lineItem.variant_id, lineItem.quantity, lineItem.properties
+                                )
+                            )
+                            wishlistAdapter.submitList(newList.filterIndexed { index, _ ->
+                                index > 0
+                            })
+                        }
+                        show()
+                    }
             }
         }
 
@@ -133,9 +185,6 @@ class WishListFragment : Fragment() {
     }
 
     private fun deleteItemFromCart(lineItem: LineItem) {
-        Toast.makeText(
-            requireContext(), "Product removed from wishlist.", Toast.LENGTH_SHORT
-        ).show()
 
         val updatedItems = lastLineItems.filter { it.id != lineItem.id }
         lastLineItems = updatedItems
@@ -147,21 +196,10 @@ class WishListFragment : Fragment() {
             wishlistAdapter.submitList(viewedLineItems)
         }
 
-        val newSendLineItems = mutableListOf<SendLineItem>()
+        newSendLineItems = mutableListOf<SendLineItem>()
         for (item in lastLineItems) {
             newSendLineItems.add(
                 SendLineItem(item.variant_id, item.quantity, item.properties)
-            )
-        }
-        lifecycleScope.launch {
-            _viewModel.removeLineItem(
-                wishlistID.toLong(), SendDraftRequest(
-                    SendDraftOrder(
-                        newSendLineItems,
-                        FirebaseAuth.getInstance().currentUser!!.email!!,
-                        WISHLIST_KEY
-                    )
-                )
             )
         }
     }
@@ -171,4 +209,14 @@ class WishListFragment : Fragment() {
         _viewModel.resetState()
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (::_viewModel.isInitialized) if (::newSendLineItems.isInitialized) _viewModel.removeLineItem(
+            wishlistID.toLong(), SendDraftRequest(
+                SendDraftOrder(
+                    newSendLineItems, FirebaseAuth.getInstance().currentUser!!.email!!, WISHLIST_KEY
+                )
+            )
+        )
+    }
 }

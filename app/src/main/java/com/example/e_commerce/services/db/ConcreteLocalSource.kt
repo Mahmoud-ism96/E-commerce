@@ -6,10 +6,6 @@ import com.example.e_commerce.services.settingsharedpreference.SettingSharedPref
 
 class ConcreteLocalSource private constructor(context: Context): LocalSource {
 
-    private val cartDao: CartDao by lazy {
-        CartDatabase.getInstance(context).getDao()
-    }
-
     private val settingSharedPref : SettingSharedPref by lazy {
         SettingSharedPref.getInstance(context)
     }
@@ -22,10 +18,6 @@ class ConcreteLocalSource private constructor(context: Context): LocalSource {
                 instance = it
             }
         }
-    }
-
-    override suspend fun insertItem(item: CartItem) {
-        cartDao.insertItem(item)
     }
 
     override fun writeStringToSettingSP(key: String, value: String) {

@@ -39,13 +39,14 @@ class CartAdapter(
                 tvItemName.text = currentItem.title
                 tvItemPrice.text = currentItem.price
                 tvItemCount.text = currentItem.quantity.toString()
-                Glide.with(ivItemImage.context)
-                    .load(currentItem.properties[0].value)
-                    .apply(RequestOptions().override(200, 200))
-                    .placeholder(R.drawable.loading_svgrepo_com)
-                    .error(R.drawable.error)
-                    .into(ivItemImage)
-
+                try {
+                    Glide.with(ivItemImage.context)
+                        .load(currentItem.properties[0].value)
+                        .apply(RequestOptions().override(200, 200))
+                        .placeholder(R.drawable.loading_svgrepo_com)
+                        .error(R.drawable.error)
+                        .into(ivItemImage)
+                }catch (_:Exception){}
                 btnPlus.setOnClickListener {
                     if (currentItem.properties[1].value.toInt() > currentItem.quantity + 1 && currentItem.quantity < 10) {
                         currentItem.quantity += 1

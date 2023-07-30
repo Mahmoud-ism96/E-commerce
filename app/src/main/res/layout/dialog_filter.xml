@@ -55,8 +55,8 @@
             <RadioGroup
                 android:id="@+id/rg_type"
                 android:layout_width="wrap_content"
-                android:layout_margin="4dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -84,6 +84,7 @@
                     android:textStyle="bold" />
             </RadioGroup>
         </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/textView27"
             android:layout_width="wrap_content"
@@ -110,42 +111,51 @@
             android:id="@+id/textView31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
             android:text="@string/to"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView30"
+            app:layout_constraintEnd_toStartOf="@+id/et_to_price"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/et_from_price"
             app:layout_constraintTop_toTopOf="@+id/textView30"
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText
             android:id="@+id/et_from_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/views_rounded_background"
             android:elevation="6dp"
             android:inputType="numberDecimal"
             android:paddingHorizontal="4dp"
             android:textSize="17sp"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            tools:hint="125.0"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/textView31"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView30"
             app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
 
         <EditText
             android:id="@+id/et_to_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/views_rounded_background"
             android:elevation="6dp"
             android:inputType="numberDecimal"
             android:paddingHorizontal="4dp"
             android:textSize="17sp"
+            tools:hint="125.0"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="@+id/textView31"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView31"
             app:layout_constraintTop_toTopOf="@+id/textView31"
             app:layout_constraintVertical_bias="0.521" />

@@ -64,12 +64,22 @@ class AddAddressFragment : Fragment() {
                         currentCustomer = (it.data as CustomerResponse).customers[0]
                     }
 
-                    is ApiState.Failure -> {}
+                    is ApiState.Failure -> {
+                        if (it.throwable.message == "Poor Connection") {
+                            Toast.makeText(
+                                requireContext(),
+                                it.throwable.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             }
         }
 
         binding.etRegion.isEnabled = false
+        binding.etCity.isEnabled = false
+        binding.etAddress.isEnabled = false
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -150,13 +160,13 @@ class AddAddressFragment : Fragment() {
         }
 
         if (binding.etCity.text.toString().isBlank()) {
-            return "City field is Required"
+            return "pick city from map"
         } else if ((binding.etCity.text?.length ?: 3) <= 2 ) {
             return "Enter Valid city Name"
         }
 
         if (binding.etAddress.text.toString().isBlank()) {
-            return "Address field is Required"
+            return "pick city from map"
         } else if ((binding.etAddress.text?.length ?: 3) <= 2) {
             return "Enter Valid address"
         }

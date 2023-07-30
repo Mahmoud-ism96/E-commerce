@@ -1,327 +1,334 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".profile.view.ProfileFragment">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_profile_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="35dp">
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/my_account"
+        android:textColor="@color/text_color"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_profile_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/my_account"
-            android:textColor="@color/text_color"
-            android:textSize="26sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:cardCornerRadius="18dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_profile_title">
-
-            <ImageView
-                android:id="@+id/iv_profile_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/item"
-                android:src="@drawable/dummy_profile" />
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/tv_profile_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/luka_marjanovic"
-            android:textColor="@color/text_color"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_email_name_setting"
-            app:layout_constraintStart_toEndOf="@id/cv_profile"
-            app:layout_constraintTop_toTopOf="@id/cv_profile" />
-
-        <TextView
-            android:id="@+id/tv_email_name_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/add_new_address"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/cv_profile"
-            app:layout_constraintStart_toStartOf="@id/tv_profile_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
-
-        <View
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_profile" />
-
-        <Button
-            android:id="@+id/tv_order_details"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:gravity="start"
-            android:text="@string/orders"
-            android:textColor="@color/text_color"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line1"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-        <View
-            android:id="@+id/line5"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_details" />
-
-        <Button
-            android:id="@+id/tv_account_details"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:gravity="start"
-            android:text="@string/address_book"
-            android:textColor="@color/text_color"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line5"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_account_details" />
-
-        <Button
-            android:id="@+id/tv_language"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="@string/setting"
-            android:textColor="@color/text_color"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line2" />
-
-        <ImageButton
-            android:id="@+id/btn_open_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#00FFFFFF"
-            android:clickable="true"
-            android:contentDescription="@string/edit_address"
-            android:src="@drawable/arrow_down"
-            app:layout_constraintBottom_toBottomOf="@id/tv_language"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line2"
-            tools:ignore="ImageContrastCheck" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/tv_language"
-            app:layout_constraintTop_toBottomOf="@id/tv_language"
-            app:strokeWidth="0dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_title_language"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="@string/language"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@id/radioGroup_setting_language"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/radioGroup_setting_language" />
-
-                <RadioGroup
-                    android:id="@+id/radioGroup_setting_language"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkedButton="@+id/radio_setting_english"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintStart_toEndOf="@id/tv_title_language"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/radio_setting_english"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/montserrat_semi_bold"
-                        android:text="@string/english"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_setting_arabic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semi_bold"
-                        android:text="@string/arabic"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp" />
-                </RadioGroup>
-
-                <TextView
-                    android:id="@+id/tv_title_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="@string/currency"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@id/radio_group_setting_currency"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/radio_group_setting_currency" />
-
-                <RadioGroup
-                    android:id="@+id/radio_group_setting_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkedButton="@+id/radio_setting_egp"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintStart_toStartOf="@id/radioGroup_setting_language"
-                    app:layout_constraintTop_toBottomOf="@+id/radioGroup_setting_language">
-
-                    <RadioButton
-                        android:id="@+id/radio_setting_usd"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/montserrat_semi_bold"
-                        android:text="@string/usd"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_setting_egp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semi_bold"
-                        android:text="@string/egp"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp" />
-                </RadioGroup>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <View
-            android:id="@+id/line3"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_setting" />
-
-        <Button
-            android:id="@+id/tv_log_out"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:gravity="start"
-            android:text="@string/logout"
-            android:textColor="@color/text_color"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line3" />
-
-        <View
-            android:id="@+id/line4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/views_rounded_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_log_out" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_title">
 
         <ImageView
-            android:id="@+id/iv_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/plzlogin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/iv_profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@string/item"
+            android:src="@drawable/dummy_profile" />
+    </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btn_signin_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/btn_ripple_transparent"
-            android:text="@string/sign_in"
-            app:layout_constraintEnd_toEndOf="@id/iv_login"
-            app:layout_constraintStart_toStartOf="@id/iv_login"
-            app:layout_constraintTop_toBottomOf="@id/iv_login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+    <TextView
+        android:id="@+id/tv_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/luka_marjanovic"
+        android:textColor="@color/text_color"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_email_name_setting"
+        app:layout_constraintStart_toEndOf="@id/cv_profile"
+        app:layout_constraintTop_toTopOf="@id/cv_profile" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_not_signed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="iv_login,btn_signin_setting" />
+    <TextView
+        android:id="@+id/tv_email_name_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/add_new_address"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/cv_profile"
+        app:layout_constraintStart_toStartOf="@id/tv_profile_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_when_signed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tv_profile_title,cv_profile,tv_profile_name,tv_email_name_setting,line1,tv_order_details,line5,tv_account_details,line2,line3,tv_log_out,line4" />
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:paddingHorizontal="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/cv_profile"
+        tools:context=".profile.view.ProfileFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/views_rounded_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/tv_order_details"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:gravity="start"
+                android:text="@string/orders"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line1"
+                tools:ignore="DuplicateSpeakableTextCheck" />
+
+            <View
+                android:id="@+id/line5"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/views_rounded_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_order_details" />
+
+            <Button
+                android:id="@+id/tv_account_details"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:gravity="start"
+                android:text="@string/address_book"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line5"
+                tools:ignore="DuplicateSpeakableTextCheck" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/views_rounded_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_account_details" />
+
+            <Button
+                android:id="@+id/tv_language"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:text="@string/setting"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line2" />
+
+            <ImageButton
+                android:id="@+id/btn_open_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#00FFFFFF"
+                android:clickable="true"
+                android:contentDescription="@string/edit_address"
+                android:src="@drawable/arrow_down"
+                app:layout_constraintBottom_toBottomOf="@id/tv_language"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line2"
+                tools:ignore="ImageContrastCheck" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:visibility="gone"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="@id/tv_language"
+                app:layout_constraintTop_toBottomOf="@id/tv_language">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true">
+
+                    <TextView
+                        android:id="@+id/tv_title_language"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/language"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/radioGroup_setting_language"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/radioGroup_setting_language" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup_setting_language"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkedButton="@+id/radio_setting_english"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toEndOf="@id/tv_title_language"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RadioButton
+                            android:id="@+id/radio_setting_english"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="@string/english"
+                            android:textColor="@color/text_color"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/radio_setting_arabic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="@string/arabic"
+                            android:textColor="@color/text_color"
+                            android:textSize="16sp" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/tv_title_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/currency"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/radio_group_setting_currency"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/radio_group_setting_currency" />
+
+                    <RadioGroup
+                        android:id="@+id/radio_group_setting_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkedButton="@+id/radio_setting_egp"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintStart_toStartOf="@id/radioGroup_setting_language"
+                        app:layout_constraintTop_toBottomOf="@+id/radioGroup_setting_language">
+
+                        <RadioButton
+                            android:id="@+id/radio_setting_usd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="@string/usd"
+                            android:textColor="@color/text_color"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/radio_setting_egp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="@string/egp"
+                            android:textColor="@color/text_color"
+                            android:textSize="16sp" />
+                    </RadioGroup>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/views_rounded_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_setting" />
+
+            <Button
+                android:id="@+id/tv_log_out"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:gravity="start"
+                android:text="@string/logout"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line3" />
+
+            <View
+                android:id="@+id/line4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/views_rounded_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_log_out" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/iv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sign_in_first"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_signin_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/btn_ripple_transparent"
+        android:text="@string/sign_in"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_not_signed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iv_login,btn_signin_setting" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_when_signed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="scrollView2,cv_profile,tv_profile_title,tv_email_name_setting,tv_profile_name" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

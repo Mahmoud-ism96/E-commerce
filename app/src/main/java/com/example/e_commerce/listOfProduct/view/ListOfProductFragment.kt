@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +45,10 @@ class ListOfProductFragment : Fragment() {
     private var fromPrice: Double = 0.0
     private var toPrice: Double = 10000.0
     private lateinit var navController: NavController
+
+    private lateinit var currency: String
+    private lateinit var usdAmount: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -93,8 +96,8 @@ class ListOfProductFragment : Fragment() {
             filterDialog.show()
         }
 
-        val currency = homeViewModel.readFromSP(Constants.CURRENCY)
-        val usdAmount = homeViewModel.readFromSP(Constants.USDAMOUNT)
+        currency = homeViewModel.readFromSP(Constants.CURRENCY)
+        usdAmount = homeViewModel.readFromSP(Constants.USDAMOUNT)
 
         lifecycleScope.launch {
             homeViewModel.productsByIdStateFlow.collectLatest {
@@ -219,9 +222,7 @@ class ListOfProductFragment : Fragment() {
                                 productRecycleAdapter.submitList(filteredProducts)
                             } else {
                                 Toast.makeText(
-                                    requireContext(),
-                                    "!Unable Price Filter",
-                                    Toast.LENGTH_SHORT
+                                    requireContext(), "!Unable Price Filter", Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }

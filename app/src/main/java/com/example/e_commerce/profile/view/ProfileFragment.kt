@@ -2,10 +2,10 @@ package com.example.e_commerce.profile.view
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -44,6 +44,14 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mAuth = FirebaseAuth.getInstance()
+        val factory = SettingViewModelFactory(
+            Repo.getInstance(
+                ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
+
+        settingViewModel =
+            ViewModelProvider(requireActivity(), factory)[SettingViewModel::class.java]
 
         if (mAuth.currentUser == null) {
             binding.groupWhenSigned.visibility = View.GONE
@@ -55,15 +63,6 @@ class ProfileFragment : Fragment() {
             }
         } else {
             setUserData()
-
-            val factory = SettingViewModelFactory(
-                Repo.getInstance(
-                    ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())
-                )
-            )
-
-            settingViewModel =
-                ViewModelProvider(requireActivity(), factory)[SettingViewModel::class.java]
 
             setDefaultRadioButton()
 
@@ -139,8 +138,8 @@ class ProfileFragment : Fragment() {
         Glide.with(requireContext())
             .load(mAuth.currentUser!!.photoUrl)
             .apply(RequestOptions().override(200, 200))
-            .placeholder(R.drawable.loading_svgrepo_com)
-            .error(R.drawable.error)
+            .placeholder(R.drawable.profile_placeholder)
+            .error(R.drawable.profile_placeholder)
             .into(binding.ivProfileImage)
     }
 

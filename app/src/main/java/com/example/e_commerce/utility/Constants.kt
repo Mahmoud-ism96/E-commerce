@@ -10,6 +10,7 @@ object Constants {
 
     const val PRICE_RULE_ID_1 = "1453529268523"
     const val PRICE_RULE_ID_2 = "1453526679851"
+    const val PRICE_RULE_ID_3 = "1458036244779"
     const val CODE_DISCOUNT_100 = "NewSummer"
     const val CODE_DISCOUNT_35 = "Summer35"
 
