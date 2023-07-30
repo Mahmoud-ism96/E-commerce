@@ -154,10 +154,13 @@ class HomeFragment : Fragment() {
         //for coupons
         couponsRecyclerAdapter = CouponsRecyclerAdapter {
             Functions.copyToClipboard(requireContext(), it)
-            Toast.makeText(requireContext(), "Coupon copied to clipboard", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.coupon_copied_to_clipboard), Toast.LENGTH_SHORT)
                 .show()
         }
-        binding.rvOffer.adapter = couponsRecyclerAdapter
+
+        binding.rvOffer.apply {
+            adapter = couponsRecyclerAdapter
+        }
 
         lifecycleScope.launch {
             homeViewModel.pricesRulesStateFlow.collectLatest {
