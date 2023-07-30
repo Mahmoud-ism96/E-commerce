@@ -120,7 +120,11 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     is ApiState.Failure -> {
-                        //TODO:
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     is ApiState.Loading -> {
@@ -139,7 +143,11 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     is ApiState.Failure -> {
-                        //TODO:
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.failed_to_retrieve_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     is ApiState.Loading -> {

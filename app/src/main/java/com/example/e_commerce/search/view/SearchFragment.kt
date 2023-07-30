@@ -55,11 +55,11 @@ class SearchFragment : Fragment() {
             requireActivity(), _viewModelFactory
         )[SearchViewModel::class.java]
 
-        _viewModel.getAllProducts()
-        _viewModel.getAllBrands()
-
         productList = emptyList()
         brandListHint = emptyList()
+
+        _viewModel.getAllProducts()
+        _viewModel.getAllBrands()
 
         lifecycleScope.launch {
             _viewModel.productList.collectLatest {
@@ -152,8 +152,14 @@ class SearchFragment : Fragment() {
             productHintAdapter.submitList(filteredList)
         }
 
-//        binding.searchview.isFocusedByDefault = true
-//        binding.searchview.requestFocusAndShowKeyboard()
+        binding.searchview
+            .getEditText()
+            .setOnEditorActionListener { v, actionId, event ->
+                binding.searchBar.setText(binding.searchview.getText())
+                binding.searchview.hide()
+                false
+            }
+
 
         return binding.root
     }
