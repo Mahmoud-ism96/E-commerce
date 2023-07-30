@@ -135,4 +135,7 @@
     <string name="changing_the_language">Changing The Language</string>
     <string name="may_cause_app_restart">May Cause App Restart</string>
     <string name="ok">OK</string>
+    <string name="couldn_t_retrieve_data">Couldn\'t retrieve data</string>
+    <string name="failed_to_retrieve_data">Failed to retrieve data.</string>
+    <string name="product_removed_from_cart">Product removed from cart.</string>
 </resources>

@@ -54,7 +54,7 @@ class HomeActivity : AppCompatActivity() {
                 retrieveData()
                 binding.groupNoConnection.visibility = View.GONE
             } else {
-                Toast.makeText(this, "Couldn't retrieve data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.couldn_t_retrieve_data), Toast.LENGTH_SHORT).show()
             }
         }
 

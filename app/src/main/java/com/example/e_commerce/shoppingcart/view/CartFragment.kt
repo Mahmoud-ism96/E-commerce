@@ -3,17 +3,18 @@ package com.example.e_commerce.shoppingcart.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.MainActivity
+import com.example.e_commerce.R
 import com.example.e_commerce.databinding.FragmentCartBinding
 import com.example.e_commerce.model.pojo.CheckArgument
 import com.example.e_commerce.model.pojo.draftorder.response.DraftResponse
@@ -173,7 +174,7 @@ class CartFragment : Fragment() {
                     index > 0
                 })
 
-                Snackbar.make(binding.rvCartItems, "deleting Item.... ", Snackbar.LENGTH_LONG)
+                Snackbar.make(binding.rvCartItems, getString(R.string.product_removed_from_cart), Snackbar.LENGTH_LONG)
                     .apply {
                         setAction("Undo") {
                             newList.add(position + 1, lineItem)
